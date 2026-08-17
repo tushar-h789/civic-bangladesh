@@ -1,0 +1,220 @@
+import type { TranslationShape } from "@/locales/types";
+
+export const courseLearn = {
+  back: "Back to course",
+  sampleNote:
+    "Sample player. Progress on this visit only — not a live classroom.",
+  progress: "{completed} / {total} lessons",
+  curriculum: "Curriculum",
+  openCurriculum: "Lessons",
+  closeCurriculum: "Close lessons",
+  locked: "Locked",
+  current: "Now",
+  completed: "Done",
+  video: "Video",
+  quiz: "Quiz",
+  duration: "{minutes} min",
+  player: {
+    play: "Play sample video",
+    pause: "Pause",
+    sample:
+      "This video is for Civic Bangladesh course learning. It is not a government class.",
+    playing: "Playing sample",
+  },
+  description: {
+    title: "Lesson description",
+    video:
+      "This short lesson covers “{lesson}” in the module “{module}”. Use it to prepare. Confirm every official step on the government portal.",
+    quiz: "A short check that you understood the earlier lessons. This is a Civic Bangladesh sample quiz, not a government exam.",
+    assessment:
+      "A final check for this sample course. Passing here does not issue a government certificate or process an application.",
+  },
+  resources: {
+    title: "Resources",
+    sample:
+      "Sample files for practice on this page. Not official government forms.",
+    checklist: "Paper checklist (sample)",
+    guide: "Step-by-step notes (sample)",
+    service: "Open the related government service",
+  },
+  keyPoints: {
+    title: "Key points",
+    video1: "Keep names and spellings the same on every paper.",
+    video2: "Confirm the official list on the government portal before you go.",
+    video3:
+      "Civic Bangladesh teaches preparation. It does not submit your file.",
+    quiz1: "Read each question once before you choose.",
+    quiz2: "The right answer is the one that keeps you on the official path.",
+    quiz3: "A wrong sample answer here does not affect any government file.",
+    assessment1: "This check is for learning, not for a government stamp.",
+    assessment2: "If you are ready, apply only on the official portal.",
+    assessment3:
+      "Any certificate from this course is a Civic Bangladesh learning credential.",
+  },
+  notes: {
+    title: "Notes",
+    placeholder: "Write a short note for yourself…",
+    sample: "Notes stay on this visit only. They are not sent to any office.",
+  },
+  next: {
+    label: "Next lesson",
+    finish: "Back to course",
+    markComplete: "Complete and continue",
+  },
+  lockedHint:
+    "Finish the current lesson to open this one. Sample lock — not a live enrolment rule.",
+  quizUi: {
+    title: "Check what you learned",
+    submit: "Check answers",
+    next: "See results",
+    correct: "Correct",
+    review: "Look again",
+    q1: {
+      prompt: "Where should you submit the official application?",
+      a: "On Civic Bangladesh",
+      b: "On the official government portal",
+      c: "By email to the tutor",
+      answer: "b",
+      why: "Civic Bangladesh prepares you. The application belongs on the official portal.",
+    },
+    q2: {
+      prompt: "What should match on every paper?",
+      a: "The course price",
+      b: "Names and spellings",
+      c: "The sample certificate date",
+      answer: "b",
+      why: "Mismatched names are a common reason files are delayed.",
+    },
+  },
+  assessment: {
+    title: "Final assessment",
+    sampleBadge: "Sample assessment",
+    instructions: {
+      title: "Before you begin",
+      lead: "This final check confirms you understood the course. It is for learning only.",
+      count: "{count} multiple-choice questions. Answer one at a time.",
+      pass: "You need {pass} correct answers to pass.",
+      retry: "If you do not pass, you may try again on this visit.",
+      notExam:
+        "This is not a government exam. Passing does not stamp papers or process an application.",
+      start: "Start assessment",
+    },
+    progress: "Question {current} of {total}",
+    next: "Next question",
+    back: "Previous",
+    submit: "Submit assessment",
+    results: {
+      title: "Assessment result",
+      score: "Score",
+      scoreValue: "{correct} of {total} correct",
+      passMark: "Pass mark: {pass} correct",
+      passedBadge: "Passed",
+      failedBadge: "Not passed",
+      passTitle: "You passed this assessment",
+      passBody:
+        "You may now finish the course. This result is a Civic Bangladesh learning check — not a government result.",
+      failTitle: "You did not pass this time",
+      failBody:
+        "Review the notes below, then try again. A sample fail does not affect any government file.",
+      retry: "Try the assessment again",
+      reviewTitle: "Review",
+      yourAnswer: "Your answer",
+      correctAnswer: "Suggested answer",
+      completedTitle: "Course Completed",
+      certificateAvailable: "Certificate Available",
+      viewCertificate: "View Certificate",
+      closeCertificate: "Close preview",
+      noCertificate:
+        "This catalog course has no completion certificate. You can still use what you learned.",
+      backToCourse: "Back to course",
+      sampleNote:
+        "Any certificate here is a Civic Bangladesh learning credential — not a government certificate.",
+    },
+    serviceQuestions: {
+      officialPortal: {
+        prompt: "Where should you submit the official application?",
+        a: "On Civic Bangladesh",
+        b: "On the official government portal",
+        c: "By email to the course tutor",
+        answer: "b",
+        why: "Civic Bangladesh prepares you. The application belongs on the official portal.",
+      },
+      matchingNames: {
+        prompt: "What should match on every paper?",
+        a: "The course price",
+        b: "Names and spellings",
+        c: "The sample certificate date",
+        answer: "b",
+        why: "Mismatched names are a common reason files are delayed.",
+      },
+      governmentFees: {
+        prompt: "Government fees should be paid:",
+        a: "To Civic Bangladesh with the course fee",
+        b: "Only where the official portal or office says",
+        c: "To the sample tutor listed on the card",
+        answer: "b",
+        why: "Course fees and government fees are not the same.",
+      },
+      learningCredential: {
+        prompt: "A Civic Bangladesh certificate means:",
+        a: "The government has approved your application",
+        b: "You finished a Civic Bangladesh learning course",
+        c: "You may skip the official portal",
+        answer: "b",
+        why: "It is a learning credential only — not a government certificate.",
+      },
+      missingPaper: {
+        prompt: "If a paper is missing, you should:",
+        a: "Submit anyway and hope",
+        b: "Confirm the official list, then gather the paper",
+        c: "Ask Civic Bangladesh to issue it",
+        answer: "b",
+        why: "We cannot issue government papers. Check the official list first.",
+      },
+    },
+    civicQuestions: {
+      sharedPlaces: {
+        prompt: "A shared public place should be treated as:",
+        a: "Yours first, if you arrived early",
+        b: "Everyone’s, including people you do not know",
+        c: "Only the local office’s responsibility",
+        answer: "b",
+        why: "Civic sense starts with treating shared places as everyone’s.",
+      },
+      queues: {
+        prompt: "In a public queue, the careful habit is to:",
+        a: "Move ahead if the line is slow",
+        b: "Wait your turn and leave space for others",
+        c: "Ask Civic Bangladesh to hold your place",
+        answer: "b",
+        why: "Waiting your turn keeps a shared process calm and fair.",
+      },
+      lookingOut: {
+        prompt: "On a busy road, looking out for others means:",
+        a: "Crossing as soon as you see a gap",
+        b: "Giving time to people who need longer to cross",
+        c: "Waiting for an official to stop the traffic",
+        answer: "b",
+        why: "A safer habit is patience, not rushing a crossing.",
+      },
+      practice: {
+        prompt: "This course is most useful if you:",
+        a: "Watch once and do nothing further",
+        b: "Take one habit into daily life the same week",
+        c: "Wait for a government class to begin",
+        answer: "b",
+        why: "Civic learning is practice in real places, not only on this page.",
+      },
+      notGovernment: {
+        prompt: "Civic Bangladesh in this course is:",
+        a: "A government office that issues certificates",
+        b: "A learning platform that teaches civic habits",
+        c: "The official application portal",
+        answer: "b",
+        why: "We teach. We do not replace the government portal or office.",
+      },
+    },
+  },
+} as const;
+
+export type CourseLearnTranslations = TranslationShape<typeof courseLearn>;
