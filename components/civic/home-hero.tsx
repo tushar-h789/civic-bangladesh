@@ -10,30 +10,8 @@ import { ROUTES } from "@/constants/routes";
 import { Container } from "@/components/common/container";
 import { Button } from "@/components/ui/button";
 
-const SLIDE_INTERVAL_MS = 6500;
-
-const SLIDES = [
-  {
-    src: "/images/home/hero-shaheed-minar.png",
-    key: "shaheedMinar",
-  },
-  {
-    src: "/images/home/hero-smriti-soudho.png",
-    key: "smritiSoudho",
-  },
-  {
-    src: "/images/home/hero-ahsan-manzil.png",
-    key: "ahsanManzil",
-  },
-  {
-    src: "/images/home/hero-sixty-dome.png",
-    key: "sixtyDome",
-  },
-  {
-    src: "/images/home/hero-bangladesh.png",
-    key: "countryside",
-  },
-] as const;
+const HERO_VIDEO = "/videos/hero-civic.mp4";
+const HERO_POSTER = "/videos/hero-civic-poster.jpg";
 
 function prefersReducedMotion() {
   if (typeof window === "undefined") return false;
@@ -47,11 +25,16 @@ function HomeHero() {
   const { t, locale } = useTranslation();
   const hero = t.home.hero;
   const isBangla = locale === "bn";
-  const [active, setActive] = React.useState(0);
-  const [motionEnabled, setMotionEnabled] = React.useState(true);
+  const videoRef = React.useRef<HTMLVideoElement>(null);
+  const [motionEnabled, setMotionEnabled] = React.useState(false);
+  const [videoReady, setVideoReady] = React.useState(false);
 
   React.useEffect(() => {
-    const update = () => setMotionEnabled(!prefersReducedMotion());
+    const update = () => {
+      const enabled = !prefersReducedMotion();
+      setMotionEnabled(enabled);
+      if (!enabled) setVideoReady(false);
+    };
     update();
 
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -70,41 +53,50 @@ function HomeHero() {
 
   React.useEffect(() => {
     if (!motionEnabled) return;
-
-    const timer = window.setInterval(() => {
-      setActive((current) => (current + 1) % SLIDES.length);
-    }, SLIDE_INTERVAL_MS);
-
-    return () => window.clearInterval(timer);
-  }, [motionEnabled]);
-
-  const activeSlide = SLIDES[active];
-  const activeLabel = hero.slides[activeSlide.key];
+    const video = videoRef.current;
+    if (!video) return;
+    video.muted = true;
+    video.playsInline = true;
+    const play = () => {
+      video.play().catch(() => {});
+    };
+    play();
+  }, [motionEnabled, videoReady]);
 
   return (
     <section className="relative z-10 isolate min-h-[calc(100svh-4rem)] overflow-hidden bg-primary">
       <div className="absolute inset-0" aria-hidden="true">
-        {SLIDES.map((slide, index) => {
-          const isActive = index === active;
-
-          return (
-            <Image
-              key={slide.src}
-              src={slide.src}
-              alt=""
-              fill
-              priority={index === 0}
-              sizes="100vw"
-              className={cn(
-                "object-cover object-center transition-[opacity,transform] duration-1000 ease-standard",
-                isActive
-                  ? "z-10 opacity-100 translate-x-0 scale-100"
-                  : "z-0 opacity-0 translate-x-8 scale-105",
-              )}
-            />
-          );
-        })}
+        <Image
+          src={HERO_POSTER}
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center"
+        />
+        {motionEnabled ? (
+          <video
+            ref={videoRef}
+            className={cn(
+              "absolute inset-0 h-full w-full object-cover object-center transition-opacity duration-700 ease-standard",
+              videoReady ? "opacity-100" : "opacity-0",
+            )}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            poster={HERO_POSTER}
+            disablePictureInPicture
+            disableRemotePlayback
+            onCanPlay={() => setVideoReady(true)}
+            onPlaying={() => setVideoReady(true)}
+          >
+            <source src={HERO_VIDEO} type="video/mp4" />
+          </video>
+        ) : null}
       </div>
+      <span className="sr-only">{hero.videoAlt}</span>
 
       <div
         aria-hidden="true"
@@ -161,40 +153,6 @@ function HomeHero() {
             >
               <Link href={ROUTES.challenges}>{hero.secondaryCta}</Link>
             </Button>
-          </div>
-        </div>
-
-        <div className="hero-copy-motion hero-copy-motion-delay-3 mt-10 flex flex-col gap-3 sm:mt-14">
-          <p
-            className={cn(
-              "text-sm font-medium text-white/80",
-              isBangla && "font-bengali",
-            )}
-            aria-live="polite"
-          >
-            {activeLabel}
-          </p>
-          <div
-            className="flex items-center gap-2"
-            role="tablist"
-            aria-label={hero.sliderLabel}
-          >
-            {SLIDES.map((slide, index) => (
-              <button
-                key={slide.src}
-                type="button"
-                role="tab"
-                aria-selected={index === active}
-                aria-label={`${hero.goToSlide} ${hero.slides[slide.key]}`}
-                onClick={() => setActive(index)}
-                className={cn(
-                  "h-1.5 rounded-full transition-all duration-500 ease-standard",
-                  index === active
-                    ? "w-8 bg-white"
-                    : "w-3 bg-white/40 hover:bg-white/70",
-                )}
-              />
-            ))}
           </div>
         </div>
       </Container>

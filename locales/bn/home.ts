@@ -8,15 +8,8 @@ export const home: HomeTranslations = {
       "প্রতিদিন একটু একটু ভালো কাজ করলে সমাজ পরিষ্কার, নিরাপদ আর সুন্দর হয়।",
     primaryCta: "Explore Civic Sense",
     secondaryCta: "Take the Civic Challenge",
-    slides: {
-      shaheedMinar: "শহীদ মিনার, ঢাকা",
-      smritiSoudho: "জাতীয় স্মৃতিসৌধ, সাভার",
-      ahsanManzil: "আহসান মঞ্জিল, পুরান ঢাকা",
-      sixtyDome: "ষাট গম্বুজ মসজিদ, বাগেরহাট",
-      countryside: "গ্রামীণ বাংলাদেশ",
-    },
-    sliderLabel: "বাংলাদেশের বিখ্যাত স্থান",
-    goToSlide: "দেখুন",
+    videoAlt:
+      "বাংলাদেশের নাগরিক ঐতিহ্যের একটি ধীর চলচ্চিত্র—শহীদ মিনার, জাতীয় স্মৃতিসৌধ, আহসান মঞ্জিল, ষাট গম্বুজ মসজিদ আর গ্রামীণ বাংলাদেশ।",
   },
   civicSense: {
     title: "সিভিক সেন্স কী?",

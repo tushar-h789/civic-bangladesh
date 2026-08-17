@@ -8,15 +8,8 @@ export const home = {
       "Small, responsible choices every day are what build a cleaner, safer, and more beautiful society.",
     primaryCta: "Explore Civic Sense",
     secondaryCta: "Take the Civic Challenge",
-    slides: {
-      shaheedMinar: "Shaheed Minar, Dhaka",
-      smritiSoudho: "Jatiyo Smriti Soudho, Savar",
-      ahsanManzil: "Ahsan Manzil, Old Dhaka",
-      sixtyDome: "Sixty Dome Mosque, Bagerhat",
-      countryside: "Rural Bangladesh",
-    },
-    sliderLabel: "Bangladesh landmarks",
-    goToSlide: "Show",
+    videoAlt:
+      "A slow cinematic film of Bangladesh civic landmarks: Shaheed Minar, Jatiyo Smriti Soudho, Ahsan Manzil, the Sixty Dome Mosque, and the countryside.",
   },
   civicSense: {
     title: "What is Civic Sense?",
