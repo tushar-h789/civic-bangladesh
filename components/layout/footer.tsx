@@ -24,7 +24,7 @@ interface FooterColumnProps {
 function FooterColumn({ id, title, links }: FooterColumnProps) {
   return (
     <nav aria-labelledby={id}>
-      <h2 id={id} className="text-sm font-semibold text-foreground">
+      <h2 id={id} className="text-base font-semibold text-foreground">
         {title}
       </h2>
       <ul className="mt-3 flex flex-col gap-2.5">
@@ -32,7 +32,7 @@ function FooterColumn({ id, title, links }: FooterColumnProps) {
           <li key={`${link.label}:${link.href}`}>
             <Link
               href={link.href}
-              className="text-sm text-text-secondary transition-colors hover:text-primary"
+              className="text-base text-text-secondary transition-colors hover:text-primary"
             >
               {link.label}
             </Link>
@@ -123,7 +123,7 @@ function Footer() {
             </Link>
             <p
               className={cn(
-                "text-sm font-medium text-primary",
+                "text-base font-medium text-primary",
                 isBangla && "font-bengali",
               )}
             >
@@ -131,7 +131,7 @@ function Footer() {
             </p>
             <p
               className={cn(
-                "max-w-sm text-sm text-text-secondary",
+                "max-w-sm text-base text-text-secondary",
                 isBangla && "font-bengali",
               )}
             >
@@ -139,7 +139,7 @@ function Footer() {
             </p>
 
             <div className="mt-2 flex flex-col gap-2">
-              <p className="text-xs font-semibold tracking-wide text-text-secondary uppercase">
+              <p className="text-sm font-semibold tracking-wide text-text-secondary uppercase">
                 {footerText.social.title}
               </p>
               <ul className="flex flex-wrap gap-2">
@@ -150,7 +150,7 @@ function Footer() {
                       aria-disabled="true"
                       aria-label={`${platform} — ${footerText.social.comingSoon}`}
                       title={`${platform} — ${footerText.social.comingSoon}`}
-                      className="inline-flex cursor-not-allowed items-center rounded-btn border border-border px-3 py-1.5 text-xs font-medium text-text-secondary opacity-70"
+                      className="inline-flex cursor-not-allowed items-center rounded-btn border border-border px-3 py-1.5 text-sm font-medium text-text-secondary opacity-70"
                     >
                       {platform}
                     </span>
@@ -190,14 +190,14 @@ function Footer() {
         </div>
 
         <div className="flex flex-col gap-4 border-t border-border pt-6 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-sm text-text-secondary">
+          <p className="text-base text-text-secondary">
             © {year} {nav.brandName}. {footerText.copyright}
           </p>
           <div className="flex items-center gap-3">
-            <span className="text-sm text-text-secondary">
+            <span className="text-base text-text-secondary">
               {footerText.language.label}
             </span>
-            <LanguageSwitcher />
+            <LanguageSwitcher className="h-9 px-3 text-base" />
           </div>
         </div>
       </Container>
