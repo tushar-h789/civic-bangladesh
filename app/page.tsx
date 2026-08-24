@@ -9,11 +9,13 @@ import { HomeFeaturedCampaigns } from "@/components/civic/home-featured-campaign
 import { HomeStories } from "@/components/civic/home-stories";
 import { HomeCivicPromise } from "@/components/civic/home-civic-promise";
 import { HomeInstitutions } from "@/components/civic/home-institutions";
+import { HomePurpose } from "@/components/civic/home-purpose";
 
 export default function Home() {
   return (
     <>
       <HomeHero />
+      <HomePurpose />
       <HomeIntroduction />
       <HomeTopics />
       <HomeScenarios />

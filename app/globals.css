@@ -335,6 +335,61 @@ html.a11y-highlight-headings h6 {
   animation-delay: 0.48s;
 }
 
+.purpose-grid {
+  background-image:
+    linear-gradient(to right, color-mix(in oklch, var(--color-border) 70%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklch, var(--color-border) 70%, transparent) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(ellipse at 70% 40%, #000 18%, transparent 72%);
+}
+
+.purpose-copy-motion {
+  animation: hero-rise 0.7s var(--ease-standard) both;
+}
+
+.purpose-copy-delay-1 {
+  animation-delay: 0.1s;
+}
+
+.purpose-copy-delay-2 {
+  animation-delay: 0.18s;
+}
+
+.purpose-copy-delay-3 {
+  animation-delay: 0.26s;
+}
+
+.purpose-line {
+  animation: purpose-draw 1.4s var(--ease-standard) 0.2s both;
+}
+
+@keyframes purpose-draw {
+  from {
+    stroke-dashoffset: 28;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.purpose-float {
+  animation: purpose-float 7s var(--ease-standard) infinite;
+}
+
+.purpose-float-delay {
+  animation-delay: 1.2s;
+}
+
+@keyframes purpose-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
 /*
  * Anchor each strip's INNER edge to the content box (container
  * width minus inline padding). Zero gap, zero overlap into cards.
