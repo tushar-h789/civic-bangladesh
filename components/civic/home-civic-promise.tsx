@@ -75,7 +75,7 @@ function HomeCivicPromise() {
               >
                 {chosen.description}
               </p>
-              <p className="text-xs text-text-secondary">{copy.sampleNote}</p>
+              <p className="text-sm text-text-secondary">{copy.sampleNote}</p>
               <Button
                 asChild
                 size="lg"

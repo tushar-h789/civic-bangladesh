@@ -681,7 +681,7 @@ function Results({
 
       <p
         className={cn(
-          "flex gap-2 text-sm text-text-secondary",
+          "flex gap-2 text-base text-text-secondary",
           isBangla && "leading-[1.75]",
         )}
       >

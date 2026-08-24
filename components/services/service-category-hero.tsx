@@ -99,7 +99,7 @@ function ServiceCategoryHero({
           </p>
           <p
             className={cn(
-              "max-w-xl text-sm text-white/70",
+              "max-w-xl text-base text-white/70",
               isBangla && "leading-[1.75]",
             )}
           >
@@ -125,7 +125,7 @@ function ServiceCategoryHero({
 
 function HeroStat({ icon, label }: { icon: ReactNode; label: string }) {
   return (
-    <li className="inline-flex max-w-full items-center gap-2 rounded-btn bg-white/12 px-3 py-1.5 text-sm font-medium text-white ring-1 ring-white/15">
+    <li className="inline-flex max-w-full items-center gap-2 rounded-btn bg-white/12 px-3 py-1.5 text-base font-medium text-white ring-1 ring-white/15">
       {icon}
       <span>{label}</span>
     </li>

@@ -67,6 +67,7 @@ function HomeFeaturedCourses() {
       <Container>
         <SectionHeader
           title={<span id="featured-courses-heading">{section.title}</span>}
+          titleClassName="text-[1.375rem] leading-snug sm:text-2xl md:text-section-heading md:leading-[var(--text-section-heading--line-height)]"
           description={section.description}
           actions={
             <Link
@@ -188,7 +189,7 @@ function HomeFeaturedCourses() {
 
           <p
             className={cn(
-              "mt-6 max-w-3xl text-sm text-text-secondary",
+              "mt-6 max-w-3xl text-base text-text-secondary",
               isBangla && "leading-[1.7]",
             )}
           >

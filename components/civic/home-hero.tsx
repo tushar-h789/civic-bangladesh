@@ -64,7 +64,7 @@ function HomeHero() {
   }, [motionEnabled, videoReady]);
 
   return (
-    <section className="relative z-10 isolate min-h-[calc(100svh-4rem)] overflow-hidden bg-primary">
+    <section className="relative z-10 isolate min-h-[calc(100svh-4.5rem)] overflow-hidden bg-primary">
       <div className="absolute inset-0" aria-hidden="true">
         <Image
           src={HERO_POSTER}
@@ -107,7 +107,7 @@ function HomeHero() {
         className="absolute inset-0 z-20 bg-linear-to-t from-text/55 via-transparent to-text/20"
       />
 
-      <Container className="relative z-30 flex min-h-[calc(100svh-4rem)] flex-col justify-end py-16 sm:py-20 lg:justify-center lg:py-24">
+      <Container className="relative z-30 flex min-h-[calc(100svh-4.5rem)] flex-col justify-end py-16 sm:py-20 lg:justify-center lg:py-24">
         <div className="flex max-w-3xl flex-col gap-6">
           <div className="hero-copy-motion flex flex-col gap-3">
             <h1

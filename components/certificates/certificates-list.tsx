@@ -60,7 +60,7 @@ function CertificatesList() {
             </p>
             <p
               className={cn(
-                "mt-3 text-sm text-text-secondary",
+                "mt-3 text-base text-text-secondary",
                 isBangla && "leading-[1.75]",
               )}
             >
@@ -68,7 +68,7 @@ function CertificatesList() {
             </p>
             <p
               className={cn(
-                "mt-3 text-sm text-text-secondary",
+                "mt-3 text-base text-text-secondary",
                 isBangla && "leading-[1.75]",
               )}
             >

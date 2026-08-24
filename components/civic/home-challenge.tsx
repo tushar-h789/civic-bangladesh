@@ -184,7 +184,7 @@ function HomeChallenge() {
                     total: totalDays,
                   })}
                 />
-                <p className="text-xs text-text-secondary">
+                <p className="text-sm text-text-secondary">
                   {copy.progress.sampleNote}
                 </p>
 

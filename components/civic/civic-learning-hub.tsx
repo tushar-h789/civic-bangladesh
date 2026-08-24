@@ -186,7 +186,7 @@ function CivicLearningHub() {
             </p>
             <p
               className={cn(
-                "max-w-xl text-sm text-white/70",
+                "max-w-xl text-base text-white/70",
                 isBangla && "leading-[1.75]",
               )}
             >
@@ -221,7 +221,7 @@ function CivicLearningHub() {
           </ul>
 
           <nav aria-label={copy.jump.label}>
-            <ul className="m-0 flex list-none flex-wrap gap-x-4 gap-y-2 p-0 text-sm">
+            <ul className="m-0 flex list-none flex-wrap gap-x-4 gap-y-2 p-0 text-base">
               {jump.map((item) => (
                 <li key={item.href}>
                   <a
@@ -418,7 +418,7 @@ function CivicLearningHub() {
           />
           <p
             className={cn(
-              "mt-4 text-sm text-text-secondary",
+              "mt-4 text-base text-text-secondary",
               isBangla && "leading-[1.75]",
             )}
           >
@@ -559,7 +559,7 @@ function CivicLearningHub() {
                   >
                     {todayHabit.summary}
                   </p>
-                  <p className="text-xs text-text-secondary">
+                  <p className="text-sm text-text-secondary">
                     {t.challenge.progress.sampleNote}
                   </p>
                   <Button asChild className="mt-auto w-fit text-primary-foreground">
@@ -637,7 +637,7 @@ function CivicLearningHub() {
           />
           <p
             className={cn(
-              "mt-4 text-sm text-text-secondary",
+              "mt-4 text-base text-text-secondary",
               isBangla && "leading-[1.75]",
             )}
           >
@@ -697,7 +697,7 @@ function CivicLearningHub() {
 
 function HeroStat({ children }: { children: string }) {
   return (
-    <li className="inline-flex max-w-full items-center rounded-btn bg-white/12 px-3 py-1.5 text-sm font-medium text-white ring-1 ring-white/15">
+    <li className="inline-flex max-w-full items-center rounded-btn bg-white/12 px-3 py-1.5 text-base font-medium text-white ring-1 ring-white/15">
       {children}
     </li>
   );
@@ -847,7 +847,7 @@ function HubCivicPromise({ isBangla }: { isBangla: boolean }) {
           >
             {chosen.description}
           </p>
-          <p className="text-xs text-text-secondary">{copy.sampleNote}</p>
+          <p className="text-sm text-text-secondary">{copy.sampleNote}</p>
           <Button asChild size="lg" className="h-11 rounded-btn px-5 text-button text-primary-foreground">
             <Link href={ROUTES.challenges}>
               {copy.practiceCta}

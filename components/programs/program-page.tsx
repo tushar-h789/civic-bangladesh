@@ -73,7 +73,7 @@ function ProgramPage({
             </p>
             <p
               className={cn(
-                "max-w-xl text-sm text-white/70",
+                "max-w-xl text-base text-white/70",
                 isBangla && "leading-[1.75]",
               )}
             >

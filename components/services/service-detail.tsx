@@ -311,7 +311,7 @@ function ServiceDetail({ slug }: { slug: string }) {
             title={<span id="documents-heading">{copy.documents.title}</span>}
             description={copy.documents.description}
           />
-          <p className="mt-4 max-w-2xl text-sm text-text-secondary">
+          <p className="mt-4 max-w-2xl text-base text-text-secondary">
             {copy.documents.sampleNote}
           </p>
           <div className="mt-8 sm:mt-10">
@@ -582,7 +582,7 @@ function ServiceDetail({ slug }: { slug: string }) {
               <p
                 id="official-portal-note"
                 className={cn(
-                  "mt-3 text-sm text-white/70",
+                  "mt-3 text-base text-white/70",
                   isBangla && "leading-[1.75]",
                 )}
               >

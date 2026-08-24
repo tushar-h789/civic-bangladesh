@@ -20,11 +20,21 @@ import {
  */
 interface LanguageSwitcherProps {
   className?: string;
+  /** Short locale code for tight headers (EN / বাং). Footer keeps the full label. */
+  compact?: boolean;
 }
 
-function LanguageSwitcher({ className }: LanguageSwitcherProps) {
+function LanguageSwitcher({
+  className,
+  compact = false,
+}: LanguageSwitcherProps) {
   const { locale, setLocale } = useLocale();
   const { t } = useTranslation();
+  const label = compact
+    ? locale === "en"
+      ? "EN"
+      : "বাং"
+    : LOCALE_LABELS[locale].native;
 
   return (
     <DropdownMenu>
@@ -37,7 +47,7 @@ function LanguageSwitcher({ className }: LanguageSwitcherProps) {
           className={className}
         >
           <LanguagesIcon />
-          {LOCALE_LABELS[locale].native}
+          {label}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">

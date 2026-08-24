@@ -44,7 +44,7 @@ function NavbarMobileMenu() {
         size="icon"
         onClick={() => setOpen(true)}
         aria-label={navText.mobileMenu.open}
-        className="xl:hidden"
+        className="size-10 rounded-btn xl:hidden"
       >
         <MenuIcon />
       </Button>

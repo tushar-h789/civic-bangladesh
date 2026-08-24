@@ -105,7 +105,7 @@ function HomeCivicScore() {
                 </p>
               </div>
 
-              <p className="text-xs text-text-secondary">{copy.sampleNote}</p>
+              <p className="text-sm text-text-secondary">{copy.sampleNote}</p>
             </div>
 
             <div className="flex flex-col gap-6 p-6 sm:p-8 lg:col-span-7 lg:p-10">

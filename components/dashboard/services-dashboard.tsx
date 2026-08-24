@@ -122,7 +122,7 @@ function ServicesDashboard() {
             </p>
             <p
               className={cn(
-                "mt-3 text-sm text-text-secondary",
+                "mt-3 text-base text-text-secondary",
                 isBangla && "leading-[1.75]",
               )}
             >
@@ -173,7 +173,7 @@ function ServicesDashboard() {
           </div>
 
           <nav aria-label={copy.jump.label}>
-            <ul className="m-0 flex list-none flex-wrap gap-x-4 gap-y-2 p-0 text-sm">
+            <ul className="m-0 flex list-none flex-wrap gap-x-4 gap-y-2 p-0 text-base">
               {jump.map((item) => (
                 <li key={item.href}>
                   <a
@@ -599,7 +599,7 @@ function ServicesDashboard() {
 
 function HeroStat({ children }: { children: string }) {
   return (
-    <li className="inline-flex items-center rounded-btn bg-surface px-3 py-1.5 text-sm font-medium text-foreground ring-1 ring-border">
+    <li className="inline-flex items-center rounded-btn bg-surface px-3 py-1.5 text-base font-medium text-foreground ring-1 ring-border">
       {children}
     </li>
   );
