@@ -3,10 +3,12 @@
 import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { ArrowRight, BookOpen, ChevronDown, ClipboardList } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { useTranslation } from "@/hooks/use-translation";
 import { ROUTES } from "@/constants/routes";
+import { coursesCatalogHref } from "@/data/course-catalog";
 import { Container } from "@/components/common/container";
 import { Button } from "@/components/ui/button";
 
@@ -24,6 +26,7 @@ function prefersReducedMotion() {
 function HomeHero() {
   const { t, locale } = useTranslation();
   const hero = t.home.hero;
+  const paths = t.home.featuredCourses.paths;
   const isBangla = locale === "bn";
   const videoRef = React.useRef<HTMLVideoElement>(null);
   const [motionEnabled, setMotionEnabled] = React.useState(false);
@@ -64,7 +67,7 @@ function HomeHero() {
   }, [motionEnabled, videoReady]);
 
   return (
-    <section className="relative z-10 isolate min-h-[calc(100svh-4rem)] overflow-hidden bg-primary">
+    <section className="relative z-10 isolate min-h-[calc(100svh-4.5rem)] overflow-hidden bg-text">
       <div className="absolute inset-0" aria-hidden="true">
         <Image
           src={HERO_POSTER}
@@ -72,13 +75,13 @@ function HomeHero() {
           fill
           priority
           sizes="100vw"
-          className="object-cover object-center"
+          className="object-cover object-[70%_center] lg:object-center"
         />
         {motionEnabled ? (
           <video
             ref={videoRef}
             className={cn(
-              "absolute inset-0 h-full w-full object-cover object-center transition-opacity duration-700 ease-standard",
+              "absolute inset-0 h-full w-full object-cover object-[70%_center] transition-opacity duration-700 ease-standard lg:object-center",
               videoReady ? "opacity-100" : "opacity-0",
             )}
             autoPlay
@@ -100,63 +103,143 @@ function HomeHero() {
 
       <div
         aria-hidden="true"
-        className="absolute inset-0 z-20 bg-linear-to-r from-primary/88 via-primary/62 to-primary/18"
+        className="absolute inset-0 z-20 bg-linear-to-r from-text via-text/70 to-text/20 lg:to-transparent"
       />
       <div
         aria-hidden="true"
-        className="absolute inset-0 z-20 bg-linear-to-t from-text/55 via-transparent to-text/20"
+        className="absolute inset-0 z-20 bg-linear-to-t from-text/80 via-transparent to-text/25"
       />
 
-      <Container className="relative z-30 flex min-h-[calc(100svh-4rem)] flex-col justify-end py-16 sm:py-20 lg:justify-center lg:py-24">
-        <div className="flex max-w-3xl flex-col gap-6">
-          <div className="hero-copy-motion flex flex-col gap-3">
-            <h1
-              className={cn(
-                "text-hero-mobile font-semibold text-white lg:text-hero-desktop",
-                isBangla && "font-bengali",
-              )}
-            >
-              {hero.headline}
-            </h1>
+      <Container className="relative z-30 flex min-h-[calc(100svh-4.5rem)] flex-col justify-center py-14 sm:py-18 lg:py-20">
+        <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-12">
+          <div className="flex flex-col gap-6 lg:col-span-7 lg:gap-7">
+            <div className="hero-copy-motion flex flex-col gap-3">
+              <h1
+                className={cn(
+                  "text-hero-mobile font-semibold tracking-tight text-balance text-white lg:text-hero-desktop",
+                  isBangla && "font-bengali leading-tight",
+                )}
+              >
+                {hero.headline}
+              </h1>
+              <p
+                className={cn(
+                  "text-xl font-medium text-white/90 sm:text-2xl",
+                  !isBangla && "font-bengali",
+                )}
+              >
+                {hero.headlineSecondary}
+              </p>
+            </div>
+
             <p
               className={cn(
-                "text-xl font-medium text-white/85 sm:text-2xl",
-                !isBangla && "font-bengali",
+                "hero-copy-motion hero-copy-motion-delay-1 max-w-xl text-body text-white/88 sm:text-lg",
+                isBangla && "font-bengali leading-[1.8]",
               )}
             >
-              {hero.headlineSecondary}
+              {hero.description}
             </p>
+            <p
+              className={cn(
+                "hero-copy-motion hero-copy-motion-delay-1 max-w-xl text-base text-white/75",
+                isBangla && "font-bengali leading-[1.75]",
+              )}
+            >
+              {hero.support}
+            </p>
+
+            <div className="hero-copy-motion hero-copy-motion-delay-2 flex flex-col gap-3 sm:flex-row sm:items-center">
+              <Button
+                asChild
+                size="lg"
+                className="h-12 px-7 text-button bg-white text-primary hover:bg-light-green"
+              >
+                <Link href={ROUTES.learn}>
+                  {hero.primaryCta}
+                  <ArrowRight className="size-4" aria-hidden />
+                </Link>
+              </Button>
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="h-12 px-7 text-button border-white/60 bg-transparent text-white hover:bg-white/12 hover:text-white"
+              >
+                <Link href={ROUTES.challenges}>{hero.secondaryCta}</Link>
+              </Button>
+            </div>
           </div>
 
-          <p
-            className={cn(
-              "hero-copy-motion hero-copy-motion-delay-1 max-w-xl text-body text-white/80",
-              isBangla && "font-bengali",
-            )}
-          >
-            {hero.description}
-          </p>
-
-          <div className="hero-copy-motion hero-copy-motion-delay-2 flex flex-col gap-3 sm:flex-row sm:items-center">
-            <Button
-              asChild
-              size="lg"
-              className="h-12 px-6 text-button bg-white text-primary hover:bg-light-green"
-            >
-              <Link href={ROUTES.learn}>{hero.primaryCta}</Link>
-            </Button>
-            <Button
-              asChild
-              size="lg"
-              variant="outline"
-              className="h-12 px-6 text-button border-white/40 bg-transparent text-white hover:bg-white/10 hover:text-white"
-            >
-              <Link href={ROUTES.challenges}>{hero.secondaryCta}</Link>
-            </Button>
+          <div className="hero-copy-motion hero-copy-motion-delay-3 flex flex-col gap-3 lg:col-span-5">
+            <HeroPillar
+              href={coursesCatalogHref("civic")}
+              icon={BookOpen}
+              title={paths.civic.title}
+              hint={hero.pillars.civic.hint}
+              isBangla={isBangla}
+            />
+            <HeroPillar
+              href={coursesCatalogHref("servicePrep")}
+              icon={ClipboardList}
+              title={paths.servicePrep.title}
+              hint={hero.pillars.service.hint}
+              isBangla={isBangla}
+            />
           </div>
         </div>
       </Container>
+
+      <a
+        href="#purpose"
+        className="absolute bottom-5 left-1/2 z-30 hidden -translate-x-1/2 text-white/65 outline-none transition-colors duration-200 ease-standard hover:text-white focus-visible:ring-3 focus-visible:ring-white/50 lg:flex"
+        aria-label={t.home.purpose.heading}
+      >
+        <ChevronDown className="size-7" aria-hidden />
+      </a>
     </section>
+  );
+}
+
+function HeroPillar({
+  href,
+  icon: Icon,
+  title,
+  hint,
+  isBangla,
+}: {
+  href: string;
+  icon: typeof BookOpen;
+  title: string;
+  hint: string;
+  isBangla: boolean;
+}) {
+  return (
+    <Link
+      href={href}
+      className="group flex cursor-pointer items-start gap-4 rounded-card bg-surface p-5 shadow-card ring-1 ring-border outline-none transition-shadow duration-200 ease-standard hover:shadow-card-hover focus-visible:ring-3 focus-visible:ring-ring/50 sm:p-6"
+    >
+      <span className="flex size-11 shrink-0 items-center justify-center rounded-btn bg-light-green text-primary">
+        <Icon className="size-5" aria-hidden />
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="block text-lg font-semibold text-foreground">
+          {title}
+        </span>
+        <span
+          className={cn(
+            "mt-1 block text-body text-text-secondary",
+            isBangla && "leading-[1.7]",
+          )}
+        >
+          {hint}
+        </span>
+      </span>
+      <ArrowRight
+        className="mt-1 size-5 shrink-0 text-primary transition-transform duration-200 ease-standard group-hover:translate-x-0.5"
+        aria-hidden
+      />
+    </Link>
   );
 }
 

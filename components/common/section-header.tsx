@@ -8,6 +8,7 @@ interface SectionHeaderProps extends Omit<React.ComponentProps<"div">, "title"> 
   description?: React.ReactNode;
   align?: "left" | "center";
   actions?: React.ReactNode;
+  titleClassName?: string;
 }
 
 function SectionHeader({
@@ -17,6 +18,7 @@ function SectionHeader({
   align = "left",
   actions,
   className,
+  titleClassName,
   ...props
 }: SectionHeaderProps) {
   return (
@@ -40,7 +42,12 @@ function SectionHeader({
             {eyebrow}
           </span>
         )}
-        <h2 className="text-section-heading text-balance font-semibold text-foreground">
+        <h2
+          className={cn(
+            "text-section-heading text-balance font-semibold text-foreground",
+            titleClassName,
+          )}
+        >
           {title}
         </h2>
         {description && (

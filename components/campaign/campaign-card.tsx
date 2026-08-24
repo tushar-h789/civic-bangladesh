@@ -4,13 +4,6 @@ import Link from "next/link";
 import { ArrowRight, MapPin, Users } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/common/card";
 import { ProgressBar } from "@/components/common/progress-bar";
 
 interface CampaignCardProps {
@@ -39,16 +32,15 @@ function CampaignCard({
   className,
 }: CampaignCardProps) {
   return (
-    <Card
-      hoverable
+    <article
       className={cn(
-        "group h-full gap-0 rounded-card py-0 ring-border",
+        "group h-full overflow-hidden rounded-card bg-surface shadow-card ring-1 ring-border transition-shadow duration-200 ease-standard hover:shadow-card-hover",
         className,
       )}
     >
       <Link
         href={href}
-        className="flex flex-1 flex-col rounded-t-card outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
+        className="flex h-full cursor-pointer flex-col outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
       >
         <div className="relative aspect-16/10 overflow-hidden">
           <Image
@@ -56,46 +48,50 @@ function CampaignCard({
             alt={imageAlt}
             fill
             sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-            className="object-cover transition-transform duration-700 ease-standard group-hover:scale-105"
+            className="object-cover transition-transform duration-700 ease-standard group-hover:scale-[1.04]"
           />
+          <div
+            aria-hidden
+            className="absolute inset-0 bg-linear-to-t from-text/60 via-text/15 to-transparent"
+          />
+          <span className="absolute top-3 left-3 inline-flex items-center gap-1.5 rounded-btn bg-surface px-3 py-1.5 text-sm font-semibold text-primary ring-1 ring-border">
+            <MapPin className="size-3.5 shrink-0" aria-hidden />
+            {location}
+          </span>
         </div>
 
-        <CardHeader className="gap-3 pt-5">
-          <CardTitle className="text-lg font-semibold text-balance text-foreground">
+        <div className="flex flex-1 flex-col p-5 sm:p-6">
+          <h3 className="text-lg font-semibold text-balance text-foreground sm:text-xl">
             {title}
-          </CardTitle>
-          <p className="inline-flex items-center gap-2 text-sm text-text-secondary">
-            <MapPin className="size-4 shrink-0" aria-hidden />
-            {location}
-          </p>
-        </CardHeader>
+          </h3>
 
-        <CardContent className="flex flex-1 flex-col gap-4 pt-2">
-          <p className="inline-flex items-center gap-2 text-sm text-text-secondary">
-            <Users className="size-4 shrink-0" aria-hidden />
+          <p className="mt-3 inline-flex items-center gap-2 text-body text-text-secondary">
+            <span className="flex size-8 shrink-0 items-center justify-center rounded-btn bg-light-green text-primary">
+              <Users className="size-4" aria-hidden />
+            </span>
             {participants}
           </p>
-        </CardContent>
+
+          <div className="mt-4">
+            <ProgressBar
+              value={progress}
+              label={progressLabel}
+              showValue={false}
+            />
+          </div>
+
+          <div className="mt-auto pt-5">
+            <span className="inline-flex h-11 w-full items-center justify-center gap-1.5 rounded-btn bg-primary px-4 text-button font-medium text-primary-foreground">
+              {cta}
+              <ArrowRight
+                className="size-4 transition-transform duration-200 ease-standard group-hover:translate-x-0.5"
+                aria-hidden
+              />
+            </span>
+          </div>
+        </div>
       </Link>
-
-      <CardContent className="pt-0">
-        <ProgressBar
-          value={progress}
-          label={progressLabel}
-          showValue={false}
-        />
-      </CardContent>
-
-      <CardFooter className="mt-auto border-border">
-        <Link
-          href={href}
-          className="inline-flex h-10 items-center gap-1.5 rounded-btn bg-primary px-4 text-button font-medium text-primary-foreground outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
-        >
-          {cta}
-          <ArrowRight className="size-4" aria-hidden />
-        </Link>
-      </CardFooter>
-    </Card>
+    </article>
   );
 }
 

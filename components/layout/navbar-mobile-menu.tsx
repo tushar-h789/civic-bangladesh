@@ -44,7 +44,7 @@ function NavbarMobileMenu() {
         size="icon"
         onClick={() => setOpen(true)}
         aria-label={navText.mobileMenu.open}
-        className="xl:hidden"
+        className="size-10 rounded-btn xl:hidden"
       >
         <MenuIcon />
       </Button>
@@ -97,7 +97,7 @@ function NavbarMobileMenu() {
               })}
             </ul>
 
-            <p className="mt-4 mb-1 px-3 text-xs font-semibold tracking-wide text-text-secondary uppercase">
+            <p className="mt-4 mb-1 px-3 text-sm font-semibold tracking-wide text-text-secondary uppercase">
               {navText.mobileMenu.resourcesSectionLabel}
             </p>
             <ul className="flex flex-col gap-1">
@@ -111,7 +111,7 @@ function NavbarMobileMenu() {
                         href={link.href}
                         aria-current={active ? "page" : undefined}
                         className={cn(
-                          "block rounded-btn px-3 py-2.5 text-sm text-foreground transition-colors hover:bg-muted",
+                          "block rounded-btn px-3 py-2.5 text-base text-foreground transition-colors hover:bg-muted",
                           active && "bg-light-green text-primary",
                         )}
                       >

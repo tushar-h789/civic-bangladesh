@@ -43,19 +43,20 @@ function HomeScenarios() {
     <section
       aria-labelledby="what-would-you-do-heading"
       className={cn(
-        "bg-background py-section-mobile md:py-section-tablet lg:py-section-desktop",
+        "bg-background py-10 md:py-12 lg:py-14",
         isBangla && "font-bengali",
       )}
     >
       <Container>
         <SectionHeader
+          className="gap-3"
           title={
             <span id="what-would-you-do-heading">{section.title}</span>
           }
           description={section.description}
         />
 
-        <div className="mt-10 sm:mt-12 lg:mt-14">
+        <div className="mt-5">
           <ScenarioPlayer scenarios={scenarios} copy={t.scenarios.player} />
         </div>
       </Container>

@@ -8,14 +8,6 @@ import type { CourseAccess } from "@/data/civic-courses";
 import type { CourseTypeKey } from "@/data/course-types";
 import { Badge } from "@/components/common/badge";
 import { CourseTypeLabel } from "@/components/learning/course-type-label";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/common/card";
 
 interface CourseCardProps {
   href: string;
@@ -59,16 +51,15 @@ function CourseCard({
   className,
 }: CourseCardProps) {
   return (
-    <Card
-      hoverable
+    <article
       className={cn(
-        "group h-full gap-0 rounded-card py-0 ring-border",
+        "group h-full overflow-hidden rounded-card bg-surface shadow-card ring-1 ring-border transition-shadow duration-200 ease-standard hover:shadow-card-hover",
         className,
       )}
     >
       <Link
         href={href}
-        className="flex h-full flex-col rounded-card outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
+        className="flex h-full cursor-pointer flex-col outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
       >
         <div className="relative aspect-16/10 overflow-hidden">
           <Image
@@ -76,76 +67,88 @@ function CourseCard({
             alt={imageAlt}
             fill
             sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-            className="object-cover transition-transform duration-700 ease-standard group-hover:scale-105"
+            className="object-cover transition-transform duration-700 ease-standard group-hover:scale-[1.04]"
+          />
+          <div
+            aria-hidden
+            className="absolute inset-0 bg-linear-to-t from-text/55 via-text/10 to-transparent"
           />
           <Badge
             variant={access === "free" ? "success" : "warning"}
-            className="absolute top-3 left-3 h-6 px-2.5"
+            className="absolute top-3 left-3 h-7 px-2.5 font-semibold"
           >
             {accessLabel}
           </Badge>
+          {courseType && courseTypeLabel ? (
+            <CourseTypeLabel
+              type={courseType}
+              label={courseTypeLabel}
+              className="absolute bottom-3 left-3 bg-surface text-primary ring-1 ring-border"
+            />
+          ) : null}
         </div>
 
-        <CardHeader className="gap-2 pt-5">
-          {courseType && courseTypeLabel ? (
-            <CourseTypeLabel type={courseType} label={courseTypeLabel} />
-          ) : null}
+        <div className="flex flex-1 flex-col p-5 sm:p-6">
           {typePurpose ? (
-            <p className="text-xs text-text-secondary">{typePurpose}</p>
+            <p className="mb-2 text-sm text-text-secondary">{typePurpose}</p>
           ) : null}
-          <CardTitle className="text-lg font-semibold text-balance text-foreground">
+          <h3 className="text-lg font-semibold text-balance text-foreground sm:text-xl">
             {title}
-          </CardTitle>
-          <CardDescription className="text-body text-text-secondary">
+          </h3>
+          <p className="mt-2 line-clamp-2 text-body text-text-secondary">
             {description}
-          </CardDescription>
-        </CardHeader>
+          </p>
 
-        <CardContent className="flex flex-1 flex-col pt-2">
-          <ul className="mt-auto grid list-none grid-cols-2 gap-x-3 gap-y-2.5 p-0 text-sm text-text-secondary">
-            <MetaItem icon={Clock}>{duration}</MetaItem>
-            <MetaItem icon={BookOpen}>{lessons}</MetaItem>
-            <MetaItem icon={Gauge}>{difficulty}</MetaItem>
-            <MetaItem
-              icon={Award}
-              className={hasCertificate ? "text-success" : undefined}
-            >
-              {certificate}
-            </MetaItem>
+          <ul className="mt-4 flex list-none flex-wrap gap-2 p-0">
+            <MetaChip icon={Clock}>{duration}</MetaChip>
+            <MetaChip icon={BookOpen}>{lessons}</MetaChip>
+            <MetaChip icon={Gauge}>{difficulty}</MetaChip>
+            {hasCertificate ? (
+              <MetaChip icon={Award} emphasis>
+                {certificate}
+              </MetaChip>
+            ) : null}
           </ul>
-        </CardContent>
 
-        <CardFooter
-          className={cn(
-            "mt-auto gap-3 border-border",
-            price ? "justify-between" : undefined,
-          )}
-        >
-          {price ? (
-            <span className="text-sm font-semibold text-foreground">{price}</span>
-          ) : null}
-          <span className="inline-flex h-10 items-center gap-1.5 rounded-btn bg-primary px-4 text-button font-medium text-primary-foreground">
-            {cta}
-            <ArrowRight className="size-4" aria-hidden />
-          </span>
-        </CardFooter>
+          <div className="mt-auto flex flex-col gap-3 pt-5">
+            {price ? (
+              <p className="text-xl font-semibold tracking-tight text-primary">
+                {price}
+              </p>
+            ) : null}
+            <span className="inline-flex h-11 w-full items-center justify-center gap-1.5 rounded-btn bg-primary px-4 text-button font-medium text-primary-foreground">
+              {cta}
+              <ArrowRight
+                className="size-4 transition-transform duration-200 ease-standard group-hover:translate-x-0.5"
+                aria-hidden
+              />
+            </span>
+          </div>
+        </div>
       </Link>
-    </Card>
+    </article>
   );
 }
 
-function MetaItem({
+function MetaChip({
   icon: Icon,
   children,
-  className,
+  emphasis = false,
 }: {
   icon: typeof Clock;
   children: ReactNode;
-  className?: string;
+  emphasis?: boolean;
 }) {
   return (
-    <li className={cn("inline-flex items-center gap-2", className)}>
-      <Icon className="size-4 shrink-0" aria-hidden />
+    <li
+      className={cn(
+        "inline-flex items-center gap-1.5 rounded-btn px-2.5 py-1 text-sm",
+        emphasis
+          ? "bg-success/10 font-medium text-success"
+          : "bg-light-green text-primary",
+      )}
+    >
+      <Icon className="size-3.5 shrink-0" aria-hidden />
       <span>{children}</span>
     </li>
   );

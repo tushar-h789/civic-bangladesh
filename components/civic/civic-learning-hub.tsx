@@ -26,11 +26,9 @@ import {
   type CivicTopicKey,
 } from "@/data/civic-topics";
 import { THIRTY_DAY_CHALLENGE } from "@/data/civic-challenge";
+import type { CivicRecommendedPathKey } from "@/data/civic-learning";
 import { ChallengeTypeLabel } from "@/components/challenge/challenge-type-label";
-import {
-  CIVIC_PROMISES,
-  type CivicPromiseKey,
-} from "@/data/civic-promises";
+import { CIVIC_PROMISES, type CivicPromiseKey } from "@/data/civic-promises";
 import { useTranslation } from "@/hooks/use-translation";
 import {
   getCivicFeaturedLessons,
@@ -52,7 +50,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
-const HERO_IMAGE = "/images/home/intro-safer.png";
+const HERO_IMAGE = "/images/home/civic-learning-hero-livable.png";
 
 const TOPIC_ICONS: Record<
   CivicTopicKey,
@@ -66,6 +64,15 @@ const TOPIC_ICONS: Record<
   socialResponsibility: HeartHandshake,
   digitalCitizenship: Smartphone,
   communityResponsibility: UsersRound,
+};
+
+const RECOMMENDED_ICONS: Record<
+  CivicRecommendedPathKey,
+  ComponentType<{ className?: string; "aria-hidden"?: boolean }>
+> = {
+  startHere: Sparkles,
+  practiceStreets: CarFront,
+  leadAGroup: UsersRound,
 };
 
 const TOPIC_ROWS: {
@@ -146,19 +153,19 @@ function CivicLearningHub() {
             fill
             priority
             sizes="100vw"
-            className="object-cover object-[55%_center]"
+            className="object-cover object-[68%_center]"
           />
         </div>
         <div
           aria-hidden="true"
-          className="absolute inset-0 bg-linear-to-r from-text/90 via-text/70 to-text/25"
+          className="absolute inset-0 bg-linear-to-r from-text/82 via-text/45 to-text/15"
         />
         <div
           aria-hidden="true"
-          className="absolute inset-0 bg-linear-to-t from-text/55 via-transparent to-text/20"
+          className="absolute inset-0 bg-linear-to-t from-text/50 via-transparent to-text/20"
         />
 
-        <Container className="relative flex flex-col gap-8 pt-14 pb-16 sm:pt-16 sm:pb-20 lg:pt-20 lg:pb-24">
+        <Container className="relative flex flex-col gap-5 pt-10 pb-12 sm:pt-12 sm:pb-14 lg:pt-14 lg:pb-16">
           <Breadcrumb
             tone="onPrimary"
             items={[
@@ -167,7 +174,7 @@ function CivicLearningHub() {
             ]}
           />
 
-          <div className="flex max-w-2xl flex-col gap-5">
+          <div className="flex max-w-2xl flex-col gap-3">
             <h1
               className={cn(
                 "text-hero-mobile font-semibold text-balance text-white lg:text-5xl",
@@ -186,7 +193,7 @@ function CivicLearningHub() {
             </p>
             <p
               className={cn(
-                "max-w-xl text-sm text-white/70",
+                "max-w-xl text-base text-white/70",
                 isBangla && "leading-[1.75]",
               )}
             >
@@ -213,7 +220,9 @@ function CivicLearningHub() {
 
           <ul className="m-0 flex list-none flex-wrap gap-2.5 p-0">
             <HeroStat>
-              {formatTemplate(copy.stats.topics, { count: CIVIC_TOPICS.length })}
+              {formatTemplate(copy.stats.topics, {
+                count: CIVIC_TOPICS.length,
+              })}
             </HeroStat>
             <HeroStat>{copy.stats.lessons}</HeroStat>
             <HeroStat>{copy.stats.challenge}</HeroStat>
@@ -221,7 +230,7 @@ function CivicLearningHub() {
           </ul>
 
           <nav aria-label={copy.jump.label}>
-            <ul className="m-0 flex list-none flex-wrap gap-x-4 gap-y-2 p-0 text-sm">
+            <ul className="m-0 flex list-none flex-wrap gap-x-4 gap-y-2 p-0 text-base">
               {jump.map((item) => (
                 <li key={item.href}>
                   <a
@@ -241,18 +250,19 @@ function CivicLearningHub() {
       <section
         id="civic-topics"
         aria-labelledby="civic-topics-heading"
-        className="scroll-mt-28 bg-light-green py-section-mobile md:py-section-tablet lg:py-section-desktop"
+        className="scroll-mt-28 bg-light-green py-10 md:py-12 lg:py-14"
       >
         <Container>
           <SectionHeader
+            className="gap-3"
             title={<span id="civic-topics-heading">{copy.topics.title}</span>}
             description={copy.topics.description}
           />
-          <div className="mt-10 flex flex-col gap-4 sm:mt-12 lg:mt-14 lg:gap-5">
+          <div className="mt-5 flex flex-col gap-3">
             {TOPIC_ROWS.map((row) => (
               <ul
                 key={row.variant}
-                className={cn("grid list-none gap-4 p-0 lg:gap-5", row.columns)}
+                className={cn("grid list-none gap-3 p-0", row.columns)}
               >
                 {row.keys.map((key) => {
                   const topic = CIVIC_TOPICS.find((entry) => entry.key === key);
@@ -299,24 +309,25 @@ function CivicLearningHub() {
       <section
         id="featured-lessons"
         aria-labelledby="featured-lessons-heading"
-        className="scroll-mt-28 bg-background py-section-mobile md:py-section-tablet lg:py-section-desktop"
+        className="scroll-mt-28 bg-background py-10 md:py-12 lg:py-14"
       >
         <Container>
           <SectionHeader
+            className="gap-3"
             title={
               <span id="featured-lessons-heading">{copy.lessons.title}</span>
             }
             description={copy.lessons.description}
           />
           {lessons.length === 0 ? (
-            <div className="mt-8 sm:mt-10">
+            <div className="mt-5">
               <EmptyState
                 title={copy.lessons.emptyTitle}
                 description={copy.lessons.emptyDescription}
               />
             </div>
           ) : (
-            <ul className="mt-10 grid list-none gap-4 p-0 sm:mt-12 sm:grid-cols-2 lg:mt-14 lg:grid-cols-3 lg:gap-5">
+            <ul className="mt-5 grid list-none gap-3 p-0 sm:grid-cols-2 lg:grid-cols-3">
               {lessons.map((lesson) => (
                 <li key={lesson.key}>
                   <StoryCard
@@ -342,10 +353,11 @@ function CivicLearningHub() {
       <section
         id="short-videos"
         aria-labelledby="short-videos-heading"
-        className="scroll-mt-28 bg-light-green py-section-mobile md:py-section-tablet lg:py-section-desktop"
+        className="scroll-mt-28 bg-light-green py-10 md:py-12 lg:py-14"
       >
         <Container>
           <SectionHeader
+            className="gap-3"
             title={<span id="short-videos-heading">{copy.videos.title}</span>}
             description={copy.videos.description}
             actions={
@@ -355,14 +367,14 @@ function CivicLearningHub() {
             }
           />
           {videos.length === 0 ? (
-            <div className="mt-8 sm:mt-10">
+            <div className="mt-5">
               <EmptyState
                 title={copy.videos.emptyTitle}
                 description={copy.videos.emptyDescription}
               />
             </div>
           ) : (
-            <ul className="mt-10 grid list-none gap-4 p-0 sm:mt-12 sm:grid-cols-2 lg:mt-14 lg:grid-cols-3 lg:gap-5">
+            <ul className="mt-5 grid list-none gap-3 p-0 sm:grid-cols-2 lg:grid-cols-3">
               {videos.map((video) => (
                 <li key={video.key}>
                   <StoryCard
@@ -391,16 +403,17 @@ function CivicLearningHub() {
       <section
         id="civic-scenarios"
         aria-labelledby="civic-scenarios-heading"
-        className="scroll-mt-28 bg-background py-section-mobile md:py-section-tablet lg:py-section-desktop"
+        className="scroll-mt-28 bg-background py-10 md:py-12 lg:py-14"
       >
         <Container>
           <SectionHeader
+            className="gap-3"
             title={
               <span id="civic-scenarios-heading">{copy.scenarios.title}</span>
             }
             description={copy.scenarios.description}
           />
-          <div className="mt-10 sm:mt-12 lg:mt-14">
+          <div className="mt-5">
             <ScenarioPlayer scenarios={scenarios} copy={t.scenarios.player} />
           </div>
         </Container>
@@ -409,30 +422,31 @@ function CivicLearningHub() {
       <section
         id="civic-quizzes"
         aria-labelledby="civic-quizzes-heading"
-        className="scroll-mt-28 bg-light-green py-section-mobile md:py-section-tablet lg:py-section-desktop"
+        className="scroll-mt-28 relative z-10 isolate overflow-hidden bg-light-green py-10 md:py-12 lg:py-14"
       >
         <Container>
           <SectionHeader
+            className="gap-3"
             title={<span id="civic-quizzes-heading">{copy.quizzes.title}</span>}
             description={copy.quizzes.description}
           />
           <p
             className={cn(
-              "mt-4 text-sm text-text-secondary",
+              "mt-4 text-base text-text-secondary",
               isBangla && "leading-[1.75]",
             )}
           >
             {copy.quizzes.sampleNote}
           </p>
           {quizzes.length === 0 || !activeQuiz ? (
-            <div className="mt-8 sm:mt-10">
+            <div className="mt-5">
               <EmptyState
                 title={copy.quizzes.emptyTitle}
                 description={copy.quizzes.emptyDescription}
               />
             </div>
           ) : (
-            <div className="mt-8 grid gap-6 sm:mt-10 lg:grid-cols-12 lg:gap-8">
+            <div className="mt-5 grid gap-3 lg:grid-cols-12">
               <ul className="m-0 flex list-none flex-col gap-3 p-0 lg:col-span-4">
                 {quizzes.map((quiz) => {
                   const selected = quiz.key === activeQuiz.key;
@@ -495,10 +509,10 @@ function CivicLearningHub() {
       <section
         id="civic-challenges"
         aria-labelledby="civic-challenges-heading"
-        className="scroll-mt-28 relative z-10 bg-text py-section-mobile md:py-section-tablet lg:py-section-desktop"
+        className="scroll-mt-28 relative z-10 bg-text py-10 md:py-12 lg:py-14"
       >
         <Container>
-          <div className="grid gap-8 lg:grid-cols-12 lg:items-start lg:gap-12">
+          <div className="grid gap-5 lg:grid-cols-12 lg:items-start lg:gap-6">
             <div className="lg:col-span-5">
               <ChallengeTypeLabel
                 type="civic"
@@ -507,13 +521,13 @@ function CivicLearningHub() {
               />
               <h2
                 id="civic-challenges-heading"
-                className="mt-4 text-section-heading font-semibold text-balance text-white"
+                className="mt-3 text-section-heading font-semibold text-balance text-white"
               >
                 {copy.challenges.title}
               </h2>
               <p
                 className={cn(
-                  "mt-5 text-body text-white/75",
+                  "mt-3 text-body text-white/75",
                   isBangla && "leading-[1.75]",
                 )}
               >
@@ -535,7 +549,7 @@ function CivicLearningHub() {
                     className="absolute inset-0 bg-linear-to-t from-text/50 via-transparent to-text/10"
                   />
                 </div>
-                <div className="flex flex-col gap-4 p-6 sm:p-8">
+                <div className="flex flex-col gap-3 p-5 sm:p-6">
                   <ChallengeTypeLabel
                     type="civic"
                     label={t.challengeTypes.civic.label}
@@ -559,10 +573,13 @@ function CivicLearningHub() {
                   >
                     {todayHabit.summary}
                   </p>
-                  <p className="text-xs text-text-secondary">
+                  <p className="text-sm text-text-secondary">
                     {t.challenge.progress.sampleNote}
                   </p>
-                  <Button asChild className="mt-auto w-fit text-primary-foreground">
+                  <Button
+                    asChild
+                    className="mt-auto w-fit text-primary-foreground"
+                  >
                     <Link href={ROUTES.challenges}>
                       {copy.challenges.cta}
                       <ArrowRight className="size-4" aria-hidden />
@@ -572,7 +589,7 @@ function CivicLearningHub() {
               </div>
             </article>
           </div>
-          <article className="mt-6 rounded-card bg-surface p-6 ring-1 ring-border sm:p-8">
+          <article className="mt-4 rounded-card bg-surface p-5 ring-1 ring-border sm:p-6">
             <ChallengeTypeLabel
               type="learning"
               label={t.challengeTypes.learning.label}
@@ -585,7 +602,7 @@ function CivicLearningHub() {
             >
               {t.challengeTypes.learning.purpose}
             </p>
-            <Button asChild variant="outline" className="mt-5 w-fit">
+            <Button asChild variant="outline" className="mt-3 w-fit">
               <Link href={`${ROUTES.challenges}#learning-challenges`}>
                 {t.challenge.page.jump.learning}
                 <ArrowRight className="size-4" aria-hidden />
@@ -598,7 +615,7 @@ function CivicLearningHub() {
       <section
         id="civic-promise"
         aria-labelledby="civic-promise-heading"
-        className="scroll-mt-28 bg-background py-section-mobile md:py-section-tablet lg:py-section-desktop"
+        className="scroll-mt-28 bg-background py-10 md:py-12 lg:py-14"
       >
         <Container>
           <div className="mx-auto max-w-3xl text-center">
@@ -610,7 +627,7 @@ function CivicLearningHub() {
             </h2>
             <p
               className={cn(
-                "mt-5 text-body text-text-secondary",
+                "mt-3 text-body text-text-secondary",
                 isBangla && "leading-[1.75]",
               )}
             >
@@ -624,10 +641,11 @@ function CivicLearningHub() {
       <section
         id="recommended-learning"
         aria-labelledby="recommended-learning-heading"
-        className="scroll-mt-28 bg-light-green py-section-mobile md:py-section-tablet lg:py-section-desktop"
+        className="scroll-mt-28 border-t border-border bg-transparent py-10 md:py-12 lg:py-14"
       >
         <Container>
           <SectionHeader
+            className="gap-3"
             title={
               <span id="recommended-learning-heading">
                 {copy.recommended.title}
@@ -637,57 +655,81 @@ function CivicLearningHub() {
           />
           <p
             className={cn(
-              "mt-4 text-sm text-text-secondary",
+              "mt-4 text-base text-text-secondary",
               isBangla && "leading-[1.75]",
             )}
           >
             {copy.recommended.sampleNote}
           </p>
-          <ul className="mt-10 grid list-none gap-4 p-0 sm:mt-12 lg:mt-14 lg:grid-cols-3 lg:gap-5">
-            {recommended.map((path) => (
-              <li key={path.key}>
-                <article className="group relative min-h-96 overflow-hidden rounded-card shadow-card ring-1 ring-border">
-                  <Link href={path.href} className="absolute inset-0 outline-none">
-                    <Image
-                      src={path.image}
-                      alt={path.imageAlt}
-                      fill
-                      sizes="(min-width: 1024px) 33vw, 100vw"
-                      className="object-cover transition-transform duration-700 ease-standard group-hover:scale-105"
-                    />
-                    <div
-                      aria-hidden="true"
-                      className="absolute inset-0 bg-linear-to-t from-text via-text/55 to-text/15"
-                    />
-                    <div className="absolute inset-0 flex flex-col justify-end gap-3 p-6 sm:p-7">
-                      <p className="text-sm font-semibold text-white/75">
+          <ul className="mt-5 grid list-none gap-4 p-0 lg:grid-cols-3">
+            {recommended.map((path, index) => {
+              const Icon = RECOMMENDED_ICONS[path.key];
+
+              return (
+                <li key={path.key}>
+                  <Link
+                    href={path.href}
+                    className="group relative flex h-full cursor-pointer flex-col overflow-hidden rounded-card bg-surface shadow-card ring-1 ring-border outline-none transition-shadow duration-200 ease-standard hover:shadow-card-hover focus-visible:ring-3 focus-visible:ring-ring/50"
+                  >
+                    <div className="relative aspect-16/10 overflow-hidden">
+                      <Image
+                        src={path.image}
+                        alt={path.imageAlt}
+                        fill
+                        sizes="(min-width: 1024px) 33vw, 100vw"
+                        className="object-cover transition-transform duration-700 ease-standard group-hover:scale-[1.04]"
+                      />
+                      <div
+                        aria-hidden
+                        className="absolute inset-0 bg-linear-to-t from-text/70 via-text/20 to-transparent"
+                      />
+                      <span className="absolute top-3 left-3 inline-flex h-8 items-center rounded-btn bg-surface px-3 text-sm font-semibold text-primary ring-1 ring-border">
+                        {t.learning.access[path.access]}
+                      </span>
+                      <span
+                        aria-hidden
+                        className="absolute right-3 bottom-8 text-4xl font-semibold tracking-tight text-white/35"
+                      >
+                        {formatIndex(index)}
+                      </span>
+                    </div>
+                    <div className="relative z-10 -mt-8 mx-3 mb-3 flex flex-1 flex-col rounded-card bg-surface p-4 ring-1 ring-border sm:mx-4 sm:mb-4 sm:p-5">
+                      <p className="text-xs font-semibold text-primary">
                         {path.kicker}
                       </p>
-                      <h3
-                        className={cn(
-                          "text-2xl font-semibold text-balance text-white",
-                          isBangla && "leading-[1.35]",
-                        )}
-                      >
-                        {path.title}
-                      </h3>
+                      <div className="mt-2 flex items-start gap-3">
+                        <span className="flex size-10 shrink-0 items-center justify-center rounded-btn bg-light-green text-primary">
+                          <Icon className="size-5" aria-hidden />
+                        </span>
+                        <h3
+                          className={cn(
+                            "text-xl font-semibold text-balance text-foreground",
+                            isBangla && "leading-[1.35]",
+                          )}
+                        >
+                          {path.title}
+                        </h3>
+                      </div>
                       <p
                         className={cn(
-                          "max-w-md text-body text-white/80",
+                          "mt-2 flex-1 text-body text-text-secondary",
                           isBangla && "leading-[1.75]",
                         )}
                       >
                         {path.description}
                       </p>
-                      <span className="mt-1 inline-flex h-10 w-fit items-center gap-1.5 rounded-btn bg-white px-4 text-button font-medium text-primary">
+                      <span className="mt-3 inline-flex h-10 w-fit items-center gap-1.5 rounded-btn bg-primary px-4 text-button font-medium text-primary-foreground">
                         {copy.recommended.cta}
-                        <ArrowRight className="size-4" aria-hidden />
+                        <ArrowRight
+                          className="size-4 transition-transform duration-200 ease-standard group-hover:translate-x-0.5"
+                          aria-hidden
+                        />
                       </span>
                     </div>
                   </Link>
-                </article>
-              </li>
-            ))}
+                </li>
+              );
+            })}
           </ul>
         </Container>
       </section>
@@ -697,7 +739,7 @@ function CivicLearningHub() {
 
 function HeroStat({ children }: { children: string }) {
   return (
-    <li className="inline-flex max-w-full items-center rounded-btn bg-white/12 px-3 py-1.5 text-sm font-medium text-white ring-1 ring-white/15">
+    <li className="inline-flex max-w-full items-center rounded-btn bg-white/12 px-3 py-1.5 text-base font-medium text-white ring-1 ring-white/15">
       {children}
     </li>
   );
@@ -751,7 +793,10 @@ function StoryCard({
         </span>
       ) : null}
       {badge ? (
-        <Badge variant="outline" className="absolute top-3 left-3 h-6 bg-white/90 px-2.5">
+        <Badge
+          variant="outline"
+          className="absolute top-3 left-3 h-6 bg-white/90 px-2.5"
+        >
           {badge}
         </Badge>
       ) : null}
@@ -761,7 +806,7 @@ function StoryCard({
   const body = (
     <>
       {media}
-      <div className="flex flex-1 flex-col gap-2 p-5">
+      <div className="flex flex-1 flex-col gap-1.5 p-4">
         <p className="text-xs font-semibold text-primary">{kicker}</p>
         <h3
           className={cn(
@@ -828,8 +873,8 @@ function HubCivicPromise({ isBangla }: { isBangla: boolean }) {
 
   if (confirmed) {
     return (
-      <article className="mx-auto mt-10 max-w-3xl overflow-hidden rounded-card bg-surface shadow-card sm:mt-12">
-        <div className="flex flex-col items-center gap-5 px-6 py-10 text-center sm:px-10 sm:py-12">
+      <article className="mx-auto mt-5 max-w-3xl overflow-hidden rounded-card bg-surface shadow-card">
+        <div className="flex flex-col items-center gap-3 px-5 py-8 text-center sm:px-8 sm:py-10">
           <p className="text-sm font-semibold text-primary">{copy.confirmed}</p>
           <h3
             className={cn(
@@ -847,8 +892,12 @@ function HubCivicPromise({ isBangla }: { isBangla: boolean }) {
           >
             {chosen.description}
           </p>
-          <p className="text-xs text-text-secondary">{copy.sampleNote}</p>
-          <Button asChild size="lg" className="h-11 rounded-btn px-5 text-button text-primary-foreground">
+          <p className="text-sm text-text-secondary">{copy.sampleNote}</p>
+          <Button
+            asChild
+            size="lg"
+            className="h-11 rounded-btn px-5 text-button text-primary-foreground"
+          >
             <Link href={ROUTES.challenges}>
               {copy.practiceCta}
               <ArrowRight className="size-4" aria-hidden />
@@ -860,9 +909,9 @@ function HubCivicPromise({ isBangla }: { isBangla: boolean }) {
   }
 
   return (
-    <article className="mx-auto mt-10 max-w-3xl overflow-hidden rounded-card bg-surface shadow-card sm:mt-12">
+    <article className="mx-auto mt-5 max-w-3xl overflow-hidden rounded-card bg-surface shadow-card">
       <form
-        className="flex flex-col gap-6 p-6 sm:p-8 lg:p-10"
+        className="flex flex-col gap-4 p-5 sm:p-6 lg:p-7"
         onSubmit={(event) => {
           event.preventDefault();
           setConfirmed(true);
@@ -871,8 +920,7 @@ function HubCivicPromise({ isBangla }: { isBangla: boolean }) {
         <RadioGroup
           value={selected}
           onValueChange={(value) => setSelected(value as CivicPromiseKey)}
-          className="gap-3"
-          aria-label={t.civicLearning.promise.title}
+          className="gap-2"
         >
           {CIVIC_PROMISES.map((item) => {
             const promise = copy.items[item.key];
@@ -883,13 +931,17 @@ function HubCivicPromise({ isBangla }: { isBangla: boolean }) {
                 key={item.key}
                 htmlFor={inputId}
                 className={cn(
-                  "flex cursor-pointer items-start gap-4 rounded-card p-4 ring-1 ring-border transition-colors duration-200 ease-standard",
+                  "flex cursor-pointer items-start gap-3 rounded-card p-3 ring-1 ring-border transition-colors duration-200 ease-standard",
                   selected === item.key
                     ? "bg-light-green ring-primary"
                     : "bg-background hover:bg-light-green/60",
                 )}
               >
-                <RadioGroupItem id={inputId} value={item.key} className="mt-1" />
+                <RadioGroupItem
+                  id={inputId}
+                  value={item.key}
+                  className="mt-1"
+                />
                 <span className="min-w-0 flex-1">
                   <span
                     className={cn(

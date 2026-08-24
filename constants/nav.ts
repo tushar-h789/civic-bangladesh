@@ -11,11 +11,7 @@ export function getPrimaryNavLinks(nav: NavTranslations): NavLink[] {
   return [
     { label: nav.links.home, href: ROUTES.home },
     { label: nav.links.civicLearning, href: ROUTES.learn },
-    {
-      label: nav.links.governmentServices,
-      href: ROUTES.governmentServices,
-      emphasis: true,
-    },
+    { label: nav.links.governmentServices, href: ROUTES.governmentServices },
     { label: nav.links.courses, href: ROUTES.courses },
     { label: nav.links.challenges, href: ROUTES.challenges },
   ];

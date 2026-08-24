@@ -35,21 +35,22 @@ function HomeIntroduction() {
       <section
         aria-labelledby="civic-sense-heading"
         className={cn(
-          "bg-background py-section-mobile md:py-section-tablet lg:py-section-desktop",
+          "bg-background py-10 md:py-12 lg:py-14",
           isBangla && "font-bengali",
         )}
       >
         <Container>
           <SectionHeader
+            className="gap-3"
             title={<span id="civic-sense-heading">{civicSense.title}</span>}
             description={civicSense.description}
           />
 
           <nav
             aria-label={civicSense.title}
-            className="mt-8 border-y border-border py-4 sm:mt-10"
+            className="mt-5 border-y border-border py-3"
           >
-            <ol className="flex list-none flex-wrap items-center gap-x-6 gap-y-2 p-0 sm:gap-x-8">
+            <ol className="flex list-none flex-wrap items-center gap-x-4 gap-y-1.5 p-0 sm:gap-x-6">
               {PILLARS.map(({ key }, index) => (
                 <li key={key}>
                   <a
@@ -65,7 +66,7 @@ function HomeIntroduction() {
             </ol>
           </nav>
 
-          <div className="mt-8 flex flex-col gap-4 sm:mt-10 lg:mt-12 lg:grid lg:grid-cols-12 lg:gap-5">
+          <div className="mt-5 flex flex-col gap-3 lg:grid lg:grid-cols-12 lg:gap-3">
             {PILLARS.slice(0, 3).map(({ key, src }, index) => {
               const isFeatured = key === "people";
 
@@ -93,15 +94,15 @@ function HomeIntroduction() {
                   }
                   imageClassName={
                     isFeatured
-                      ? "min-h-80 lg:min-h-0 lg:flex-1"
-                      : "min-h-56 lg:min-h-64"
+                      ? "min-h-64 lg:min-h-0 lg:flex-1"
+                      : "min-h-44 lg:min-h-52"
                   }
                 />
               );
             })}
           </div>
 
-          <div className="mt-4 lg:mt-5">
+          <div className="mt-3">
             <PillarTile
               id="civic-pillar-environment"
               number="04"
@@ -113,7 +114,7 @@ function HomeIntroduction() {
               practiceLabel={civicSense.practiceLabel}
               imageAlt={civicSense.pillars.environment.imageAlt}
               isBangla={isBangla}
-              imageClassName="min-h-64 sm:min-h-80 lg:min-h-96"
+              imageClassName="min-h-52 sm:min-h-64 lg:min-h-72"
             />
           </div>
         </Container>
@@ -123,7 +124,7 @@ function HomeIntroduction() {
         aria-labelledby="why-it-matters-heading"
         className={cn("relative z-10 bg-text", isBangla && "font-bengali")}
       >
-        <Container className="py-section-mobile md:py-section-tablet lg:py-section-desktop">
+        <Container className="py-10 md:py-12 lg:py-14">
           <div className="max-w-2xl">
             <h2
               id="why-it-matters-heading"
@@ -133,7 +134,7 @@ function HomeIntroduction() {
             </h2>
             <p
               className={cn(
-                "mt-5 text-body text-white/75",
+                "mt-3 text-body text-white/75",
                 isBangla && "leading-[1.75]",
               )}
             >
@@ -141,14 +142,14 @@ function HomeIntroduction() {
             </p>
           </div>
 
-          <ol className="mt-10 grid list-none gap-4 p-0 sm:mt-12 lg:mt-14 lg:grid-cols-3 lg:gap-5">
+          <ol className="mt-6 grid list-none gap-3 p-0 lg:grid-cols-3">
             {OUTCOMES.map(({ key, src }, index) => {
               const outcome = whyItMatters.outcomes[key];
               const number = formatIndex(index);
 
               return (
                 <li key={key}>
-                  <article className="group relative min-h-112 overflow-hidden rounded-card sm:min-h-128">
+                  <article className="group relative min-h-80 overflow-hidden rounded-card sm:min-h-96">
                     <Image
                       src={src}
                       alt={outcome.imageAlt}
@@ -160,7 +161,7 @@ function HomeIntroduction() {
                       aria-hidden="true"
                       className="absolute inset-0 bg-linear-to-t from-text via-text/55 to-text/10"
                     />
-                    <div className="absolute inset-x-0 bottom-0 flex flex-col gap-2 p-6 sm:p-7">
+                    <div className="absolute inset-x-0 bottom-0 flex flex-col gap-1.5 p-5 sm:p-6">
                       <p className="text-sm font-semibold text-white/70">
                         {number}
                       </p>
@@ -236,7 +237,7 @@ function PillarTile({
         />
       </div>
 
-      <div className="flex flex-col justify-center gap-3 p-6 sm:p-7">
+      <div className="flex flex-col justify-center gap-2 p-4 sm:p-5">
         <p className="text-sm font-semibold text-primary">{number}</p>
         <h3 className="text-xl font-semibold text-balance text-foreground sm:text-2xl">
           {title}
@@ -249,7 +250,7 @@ function PillarTile({
         >
           {description}
         </p>
-        <p className="mt-2 border-l-2 border-primary pl-4">
+        <p className="border-l-2 border-primary pl-3">
           <span className="block text-xs font-semibold text-primary">
             {practiceLabel}
           </span>

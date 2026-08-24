@@ -206,7 +206,7 @@ function CourseCheckoutDialog({
 
           <p
             className={cn(
-              "flex gap-2 rounded-btn bg-light-green p-3 text-sm text-text-secondary",
+              "flex gap-2 rounded-btn bg-light-green p-3 text-base text-text-secondary",
               isBangla && "leading-[1.75]",
             )}
           >

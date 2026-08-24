@@ -15,13 +15,6 @@ import { useTranslation } from "@/hooks/use-translation";
 import { getCourseCopy } from "@/lib/get-course-copy";
 import { Container } from "@/components/common/container";
 import { SectionHeader } from "@/components/common/section-header";
-import {
-  Card,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/common/card";
 import { CourseCard } from "@/components/learning/course-card";
 
 const COURSE_PATHS = [
@@ -60,13 +53,15 @@ function HomeFeaturedCourses() {
     <section
       aria-labelledby="featured-courses-heading"
       className={cn(
-        "bg-light-green py-section-mobile md:py-section-tablet lg:py-section-desktop",
+        "bg-light-green py-10 md:py-12 lg:py-14",
         isBangla && "font-bengali",
       )}
     >
       <Container>
         <SectionHeader
+          className="gap-3"
           title={<span id="featured-courses-heading">{section.title}</span>}
+          titleClassName="text-[1.375rem] leading-snug sm:text-2xl md:text-section-heading md:leading-[var(--text-section-heading--line-height)]"
           description={section.description}
           actions={
             <Link
@@ -79,70 +74,85 @@ function HomeFeaturedCourses() {
           }
         />
 
-        <ul className="mt-10 grid list-none gap-4 p-0 sm:mt-12 lg:mt-14 lg:grid-cols-2 lg:gap-5">
-          {COURSE_PATHS.map((path) => {
+        <ul className="mt-5 grid list-none gap-3 p-0 lg:grid-cols-2">
+          {COURSE_PATHS.map((path, index) => {
             const item = section.paths[path.key];
             const Icon: ComponentType<{
               className?: string;
               "aria-hidden"?: boolean;
             }> = path.icon;
+            const accessLabel =
+              path.key === "civic"
+                ? learning.access.free
+                : learning.access.premium;
+            const indexLabel = String(index + 1).padStart(2, "0");
 
             return (
               <li key={path.key}>
-                <Card
-                  hoverable
-                  className="group h-full gap-0 rounded-card py-0 ring-border"
+                <Link
+                  href={path.href}
+                  className="group relative flex h-full cursor-pointer flex-col overflow-hidden rounded-card bg-surface shadow-card ring-1 ring-border outline-none transition-shadow duration-200 ease-standard hover:shadow-card-hover focus-visible:ring-3 focus-visible:ring-ring/50"
                 >
-                  <Link
-                    href={path.href}
-                    className="flex h-full flex-col rounded-card outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
-                  >
-                    <div className="relative aspect-video overflow-hidden">
-                      <Image
-                        src={path.image}
-                        alt={item.imageAlt}
-                        fill
-                        sizes="(min-width: 1024px) 50vw, 100vw"
-                        className="object-cover transition-transform duration-700 ease-standard group-hover:scale-105"
-                      />
-                    </div>
+                  <div className="relative aspect-16/10 overflow-hidden sm:aspect-5/3">
+                    <Image
+                      src={path.image}
+                      alt={item.imageAlt}
+                      fill
+                      sizes="(min-width: 1024px) 50vw, 100vw"
+                      className="object-cover transition-transform duration-700 ease-standard group-hover:scale-[1.04]"
+                    />
+                    <div
+                      aria-hidden
+                      className="absolute inset-0 bg-linear-to-t from-text/70 via-text/20 to-transparent"
+                    />
+                    <span className="absolute top-3 left-3 inline-flex h-8 items-center rounded-btn bg-surface px-3 text-sm font-semibold text-primary ring-1 ring-border">
+                      {accessLabel}
+                    </span>
+                    <span
+                      aria-hidden
+                      className="absolute right-3 bottom-8 text-4xl font-semibold tracking-tight text-white/35 sm:bottom-10 sm:text-5xl"
+                    >
+                      {indexLabel}
+                    </span>
+                  </div>
 
-                    <CardHeader className="gap-3 pt-6">
-                      <span className="flex size-11 items-center justify-center rounded-btn bg-light-green text-primary">
+                  <div className="relative z-10 -mt-8 mx-3 mb-3 flex flex-1 flex-col rounded-card bg-surface p-4 ring-1 ring-border sm:mx-4 sm:mb-4 sm:p-5">
+                    <div className="flex items-center gap-3">
+                      <span className="flex size-10 shrink-0 items-center justify-center rounded-btn bg-light-green text-primary">
                         <Icon className="size-5" aria-hidden />
                       </span>
-                      <CardTitle className="text-xl font-semibold text-balance text-foreground sm:text-2xl">
+                      <h3 className="text-xl font-semibold text-balance text-foreground sm:text-2xl">
                         {item.title}
-                      </CardTitle>
-                      <CardDescription
-                        className={cn(
-                          "text-body text-text-secondary",
-                          isBangla && "leading-[1.7]",
-                        )}
-                      >
-                        {item.description}
-                      </CardDescription>
-                    </CardHeader>
-
-                    <CardFooter className="mt-auto border-border">
-                      <span className="inline-flex h-10 items-center gap-1.5 rounded-btn bg-primary px-4 text-button font-medium text-primary-foreground">
-                        {item.cta}
-                        <ArrowRight className="size-4" aria-hidden />
-                      </span>
-                    </CardFooter>
-                  </Link>
-                </Card>
+                      </h3>
+                    </div>
+                    <p
+                      className={cn(
+                        "mt-2 text-body text-text-secondary",
+                        isBangla && "leading-[1.7]",
+                      )}
+                    >
+                      {item.description}
+                    </p>
+                    <span className="mt-3 inline-flex h-10 w-fit items-center gap-1.5 rounded-btn bg-primary px-4 text-button font-medium text-primary-foreground">
+                      {item.cta}
+                      <ArrowRight
+                        className="size-4 transition-transform duration-200 ease-standard group-hover:translate-x-0.5"
+                        aria-hidden
+                      />
+                    </span>
+                  </div>
+                </Link>
               </li>
             );
           })}
         </ul>
 
-        <div className="mt-12 sm:mt-14 lg:mt-16">
+        <div className="mt-8">
           <h3 className="text-xl font-semibold text-balance text-foreground sm:text-2xl">
             {section.featuredTitle}
           </h3>
 
-          <ul className="mt-6 grid list-none gap-4 p-0 sm:mt-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
+          <ul className="mt-4 grid list-none gap-3 p-0 sm:grid-cols-2 lg:grid-cols-3">
             {courses.map((course) => {
               const copy = getCourseCopy(course, t);
               const typeCopy = t.courseTypes[course.type];
@@ -188,7 +198,7 @@ function HomeFeaturedCourses() {
 
           <p
             className={cn(
-              "mt-6 max-w-3xl text-sm text-text-secondary",
+              "mt-4 max-w-3xl text-base text-text-secondary",
               isBangla && "leading-[1.7]",
             )}
           >

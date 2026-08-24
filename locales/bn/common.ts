@@ -11,4 +11,5 @@ export const common: CommonTranslations = {
     save: "সংরক্ষণ করুন",
     cancel: "বাতিল করুন",
   },
+  scrollToTop: "উপরে যান",
 };

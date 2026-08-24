@@ -142,7 +142,7 @@ function FaqPage() {
             </p>
             <p
               className={cn(
-                "max-w-xl text-sm text-white/70",
+                "max-w-xl text-base text-white/70",
                 isBangla && "leading-[1.75]",
               )}
             >
@@ -150,7 +150,7 @@ function FaqPage() {
             </p>
           </div>
           <nav aria-label={copy.jump.label}>
-            <ul className="m-0 flex list-none flex-wrap gap-x-4 gap-y-2 p-0 text-sm">
+            <ul className="m-0 flex list-none flex-wrap gap-x-4 gap-y-2 p-0 text-base">
               <li>
                 <a
                   href="#faq-questions"
@@ -428,7 +428,7 @@ function FaqPage() {
               <p
                 id="faq-official-portal-note"
                 className={cn(
-                  "mt-3 text-sm text-white/70",
+                  "mt-3 text-base text-white/70",
                   isBangla && "leading-[1.75]",
                 )}
               >

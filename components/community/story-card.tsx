@@ -5,14 +5,6 @@ import { ArrowRight } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/common/badge";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/common/card";
 
 interface StoryCardProps {
   href: string;
@@ -38,16 +30,15 @@ function StoryCard({
   className,
 }: StoryCardProps) {
   return (
-    <Card
-      hoverable
+    <article
       className={cn(
-        "group h-full gap-0 rounded-card py-0 ring-border",
+        "group h-full overflow-hidden rounded-card bg-surface shadow-card ring-1 ring-border transition-shadow duration-200 ease-standard hover:shadow-card-hover",
         className,
       )}
     >
       <Link
         href={href}
-        className="flex h-full flex-col rounded-card outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
+        className="flex h-full cursor-pointer flex-col outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
       >
         <div className="relative aspect-16/10 overflow-hidden">
           <Image
@@ -55,34 +46,40 @@ function StoryCard({
             alt={imageAlt}
             fill
             sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-            className="object-cover transition-transform duration-700 ease-standard group-hover:scale-105"
+            className="object-cover transition-transform duration-700 ease-standard group-hover:scale-[1.04]"
           />
-          <Badge variant="info" className="absolute top-3 left-3 h-6 px-2.5">
+          <div
+            aria-hidden
+            className="absolute inset-0 bg-linear-to-t from-text/55 via-text/10 to-transparent"
+          />
+          <Badge
+            variant="info"
+            className="absolute top-3 left-3 h-7 bg-surface px-2.5 font-semibold text-primary ring-1 ring-border"
+          >
             {kind}
           </Badge>
         </div>
 
-        <CardHeader className="gap-2 pt-5">
-          <CardTitle className="text-lg font-semibold text-balance text-foreground">
+        <div className="flex flex-1 flex-col p-5 sm:p-6">
+          <h3 className="text-lg font-semibold text-balance text-foreground sm:text-xl">
             {title}
-          </CardTitle>
-          <CardDescription className="text-body text-text-secondary">
+          </h3>
+          <p className="mt-2 line-clamp-3 text-body text-text-secondary">
             {excerpt}
-          </CardDescription>
-        </CardHeader>
-
-        <CardContent className="mt-auto pt-2">
-          <p className="text-sm text-text-secondary">{byline}</p>
-        </CardContent>
-
-        <CardFooter className="mt-auto justify-between gap-3 border-border">
-          <span className="inline-flex h-10 items-center gap-1.5 rounded-btn bg-primary px-4 text-button font-medium text-primary-foreground">
-            {cta}
-            <ArrowRight className="size-4" aria-hidden />
-          </span>
-        </CardFooter>
+          </p>
+          <p className="mt-3 text-base text-text-secondary">{byline}</p>
+          <div className="mt-auto pt-5">
+            <span className="inline-flex h-11 w-full items-center justify-center gap-1.5 rounded-btn bg-primary px-4 text-button font-medium text-primary-foreground">
+              {cta}
+              <ArrowRight
+                className="size-4 transition-transform duration-200 ease-standard group-hover:translate-x-0.5"
+                aria-hidden
+              />
+            </span>
+          </div>
+        </div>
       </Link>
-    </Card>
+    </article>
   );
 }
 

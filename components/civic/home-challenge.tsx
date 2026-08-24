@@ -6,7 +6,11 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { THIRTY_DAY_CHALLENGE, getCivicHabitCategory, getDayStatus } from "@/data/civic-challenge";
+import {
+  THIRTY_DAY_CHALLENGE,
+  getCivicHabitCategory,
+  getDayStatus,
+} from "@/data/civic-challenge";
 import { ROUTES } from "@/constants/routes";
 import { useTranslation } from "@/hooks/use-translation";
 import { Container } from "@/components/common/container";
@@ -58,7 +62,7 @@ function HomeChallenge() {
     <section
       aria-labelledby="thirty-day-challenge-heading"
       className={cn(
-        "relative z-10 bg-text pt-8 pb-section-mobile md:pt-10 md:pb-section-tablet lg:pt-12 lg:pb-section-desktop",
+        "relative z-10 bg-text pt-8 pb-10 md:pt-9 md:pb-12 lg:pt-10 lg:pb-14",
         isBangla && "font-bengali",
       )}
     >
@@ -72,7 +76,7 @@ function HomeChallenge() {
           </h2>
           <p
             className={cn(
-              "mt-5 text-body text-white/75",
+              "mt-3 text-body text-white/75",
               isBangla && "leading-[1.75]",
             )}
           >
@@ -80,18 +84,18 @@ function HomeChallenge() {
           </p>
         </div>
 
-        <div className="relative mt-8 sm:mt-10 lg:mt-12">
+        <div className="relative mt-5 sm:mt-6">
           <div className="mb-1 flex justify-center lg:absolute lg:right-0 lg:bottom-full lg:mb-0 lg:block">
             <Image
               src={mapImage}
               alt={section.mapAlt}
-              className="h-44 w-44 object-contain object-bottom sm:h-52 sm:w-52 lg:h-64 lg:w-64"
+              className="h-36 w-36 object-contain object-bottom sm:h-44 sm:w-44 lg:h-52 lg:w-52"
             />
           </div>
 
           <article className="overflow-hidden rounded-card bg-surface shadow-card">
             <div className="grid lg:grid-cols-12">
-              <div className="relative min-h-64 sm:min-h-80 lg:col-span-5 lg:min-h-full">
+              <div className="relative min-h-52 sm:min-h-64 lg:col-span-5 lg:min-h-full">
                 <Image
                   src={image}
                   alt={copy.featured.imageAlt}
@@ -103,7 +107,7 @@ function HomeChallenge() {
                   aria-hidden="true"
                   className="absolute inset-0 bg-linear-to-t from-text via-text/40 to-text/10"
                 />
-                <div className="absolute inset-x-0 bottom-0 flex flex-col gap-2 p-6 sm:p-7">
+                <div className="absolute inset-x-0 bottom-0 flex flex-col gap-1.5 p-5 sm:p-6">
                   <ChallengeTypeLabel
                     type="civic"
                     label={t.challengeTypes.civic.label}
@@ -126,7 +130,7 @@ function HomeChallenge() {
                 </div>
               </div>
 
-              <div className="flex flex-col gap-6 p-6 sm:p-8 lg:col-span-7 lg:p-10">
+              <div className="flex flex-col gap-4 p-5 sm:p-6 lg:col-span-7 lg:p-7">
                 <div className="flex flex-wrap items-center gap-2">
                   <ChallengeTypeLabel
                     type="civic"
@@ -159,7 +163,7 @@ function HomeChallenge() {
                   </h3>
                   <p
                     className={cn(
-                      "mt-3 text-body text-text-secondary",
+                      "mt-2 text-body text-text-secondary",
                       isBangla && "leading-[1.75]",
                     )}
                   >
@@ -167,7 +171,7 @@ function HomeChallenge() {
                   </p>
                   <p
                     className={cn(
-                      "mt-3 text-sm text-text-secondary",
+                      "mt-2 text-sm text-text-secondary",
                       isBangla && "leading-[1.7]",
                     )}
                   >
@@ -184,7 +188,7 @@ function HomeChallenge() {
                     total: totalDays,
                   })}
                 />
-                <p className="text-xs text-text-secondary">
+                <p className="text-sm text-text-secondary">
                   {copy.progress.sampleNote}
                 </p>
 
@@ -203,8 +207,8 @@ function HomeChallenge() {
               </div>
             </div>
 
-            <div className="border-t border-border bg-background/60 px-6 py-6 sm:px-8 sm:py-8 lg:px-10">
-              <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <div className="border-t border-border bg-background/60 px-5 py-5 sm:px-6 sm:py-6 lg:px-7">
+              <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
                 <p className="text-sm font-semibold text-foreground">
                   {copy.calendar.label}
                 </p>

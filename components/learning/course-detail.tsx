@@ -387,7 +387,7 @@ function CourseDetail({ slug }: { slug: string }) {
           />
           <p
             className={cn(
-              "mt-4 max-w-2xl text-sm text-text-secondary",
+              "mt-4 max-w-2xl text-base text-text-secondary",
               isBangla && "leading-[1.75]",
             )}
           >

@@ -115,7 +115,7 @@ function CivicPromisePage({
             </p>
             <p
               className={cn(
-                "max-w-xl text-sm text-white/70",
+                "max-w-xl text-base text-white/70",
                 isBangla && "leading-[1.75]",
               )}
             >
@@ -132,7 +132,7 @@ function CivicPromisePage({
             </Button>
           </div>
           <nav aria-label={page.jump.label}>
-            <ul className="m-0 flex list-none flex-wrap gap-x-4 gap-y-2 p-0 text-sm">
+            <ul className="m-0 flex list-none flex-wrap gap-x-4 gap-y-2 p-0 text-base">
               {(
                 [
                   ["promise-choose", page.jump.choose],
@@ -223,7 +223,7 @@ function CivicPromisePage({
                 </p>
                 <p
                   className={cn(
-                    "max-w-md text-xs text-text-secondary",
+                    "max-w-md text-sm text-text-secondary",
                     isBangla && "leading-[1.75]",
                   )}
                 >

@@ -7,7 +7,8 @@ export const civicLearning = {
   sampleNote:
     "Sample civic education catalog. Lesson counts, clips, and scores are demo fields — not live enrolment or official records.",
   hero: {
-    imageAlt: "Families walking a calm neighborhood street in the evening",
+    imageAlt:
+      "People using a clean tree-lined walkway in a Bangladesh city — everyday habits that keep a place livable",
     primaryCta: "Explore topics",
     secondaryCta: "Take the civic challenge",
     freeNote: "Essential civic education stays free.",

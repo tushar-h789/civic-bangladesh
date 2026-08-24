@@ -33,16 +33,15 @@ function NavbarSearch() {
       <Button
         type="button"
         variant="outline"
-        size="sm"
+        size="icon"
         onClick={() => setOpen(true)}
         aria-label={navText.search.trigger}
-        className="text-text-secondary max-2xl:size-9 max-2xl:p-0 2xl:w-52 2xl:justify-start"
+        className="size-10 shrink-0 rounded-btn border-border bg-surface text-foreground shadow-none hover:bg-light-green hover:text-primary 2xl:h-10 2xl:w-auto 2xl:gap-2 2xl:px-3"
       >
-        <SearchIcon />
-        <span className="hidden 2xl:inline">{t.search.placeholder}</span>
-        <kbd className="ml-auto hidden items-center gap-0.5 rounded-sm border border-border bg-muted px-1.5 py-0.5 text-xs text-text-secondary 2xl:inline-flex">
-          ⌘K
-        </kbd>
+        <SearchIcon className="size-4" />
+        <span className="hidden text-base font-medium 2xl:inline">
+          {navText.search.trigger}
+        </span>
       </Button>
 
       <SiteSearchDialog open={open} onOpenChange={setOpen} />

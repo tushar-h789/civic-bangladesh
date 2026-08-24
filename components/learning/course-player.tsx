@@ -156,7 +156,7 @@ function CoursePlayer({ slug }: { slug: string }) {
               <p className="truncate text-sm font-semibold text-foreground">
                 {item.title}
               </p>
-              <p className="truncate text-xs text-text-secondary">
+              <p className="truncate text-sm text-text-secondary">
                 {copy.sampleNote}
               </p>
             </div>

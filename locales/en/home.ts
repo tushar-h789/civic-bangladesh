@@ -6,10 +6,62 @@ export const home = {
     headlineSecondary: "সচেতন নাগরিক, সুন্দর বাংলাদেশ।",
     description:
       "Small, responsible choices every day are what build a cleaner, safer, and more beautiful society.",
+    support:
+      "Civic education and government-service learning, in one place. Independent — not the official application portal.",
+    pillars: {
+      civic: {
+        hint: "Everyday habits. Core learning stays free.",
+      },
+      service: {
+        hint: "Prepare here. Apply on the official portal.",
+      },
+    },
     primaryCta: "Explore Civic Sense",
     secondaryCta: "Take the Civic Challenge",
     videoAlt:
       "A slow cinematic film of Bangladesh civic landmarks: Shaheed Minar, Jatiyo Smriti Soudho, Ahsan Manzil, the Sixty Dome Mosque, and the countryside.",
+  },
+  purpose: {
+    eyebrow: "Our purpose",
+    heading: "Building a More Informed, Responsible & Empowered Bangladesh",
+    description:
+      "Civic Bangladesh exists to make civic knowledge and government-service information easier to understand, easier to access and easier to act upon.",
+    mission: {
+      label: "Mission",
+      body: "Make civic education and government-service knowledge simple, practical and accessible for everyone.",
+      highlight: "Civic Education + Government Service Knowledge",
+    },
+    vision: {
+      label: "Vision",
+      body: "A Bangladesh where informed citizens create stronger communities and a better future.",
+      highlight: "Responsible Citizens + Stronger Communities",
+    },
+    visualLabel: "Knowledge to action to impact",
+    futureLine: "Better Citizens. Better Bangladesh.",
+    primaryCta: "Explore Our Mission",
+    secondaryCta: "Start Learning",
+    stages: {
+      learn: {
+        chapter: "Today",
+        label: "Learn",
+        body: "Understand your rights, responsibilities and opportunities.",
+      },
+      understand: {
+        chapter: "Action",
+        label: "Understand",
+        body: "Know how civic life and public services work.",
+      },
+      act: {
+        chapter: "Impact",
+        label: "Act",
+        body: "Take informed action with confidence.",
+      },
+      impact: {
+        chapter: "Future",
+        label: "Impact",
+        body: "Help build stronger communities.",
+      },
+    },
   },
   civicSense: {
     title: "What is Civic Sense?",
@@ -203,14 +255,16 @@ export const home = {
       description:
         "Short lessons and challenges teachers can use with a class. Core civic education stays free.",
       cta: "Explore school programs",
-      imageAlt: "Families walking a calm neighborhood street in the evening",
+      imageAlt:
+        "A teacher helping students at their desks in a Bangladesh classroom",
     },
     organizations: {
       title: "For organizations",
       description:
         "Civic learning for teams, NGOs, and CSR programs. This is not an official government partnership.",
       cta: "Explore organization programs",
-      imageAlt: "People waiting calmly in a public queue",
+      imageAlt:
+        "Adults waiting calmly in a public office queue with folders of papers",
     },
   },
 } as const;

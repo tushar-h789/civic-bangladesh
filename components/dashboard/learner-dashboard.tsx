@@ -118,7 +118,7 @@ function LearnerDashboard() {
             </p>
             <p
               className={cn(
-                "mt-3 text-sm text-text-secondary",
+                "mt-3 text-base text-text-secondary",
                 isBangla && "leading-[1.75]",
               )}
             >
@@ -143,7 +143,7 @@ function LearnerDashboard() {
           </ul>
 
           <nav aria-label={copy.jump.label}>
-            <ul className="m-0 flex list-none flex-wrap gap-x-4 gap-y-2 p-0 text-sm">
+            <ul className="m-0 flex list-none flex-wrap gap-x-4 gap-y-2 p-0 text-base">
               {jump.map((item) => (
                 <li key={item.href}>
                   <a
@@ -570,7 +570,7 @@ function LearnerDashboard() {
               <p className="text-sm font-medium text-foreground">
                 {t.score.levels[civic.score.levelKey].title}
               </p>
-              <p className="text-xs text-text-secondary">{t.score.sampleNote}</p>
+              <p className="text-sm text-text-secondary">{t.score.sampleNote}</p>
             </article>
 
             <article className="flex flex-col gap-4 rounded-card bg-surface p-6 ring-1 ring-border">
@@ -600,7 +600,7 @@ function LearnerDashboard() {
                   (civic.challenge.currentDay / civic.challenge.totalDays) * 100,
                 )}
               />
-              <p className="text-xs text-text-secondary">
+              <p className="text-sm text-text-secondary">
                 {t.challenge.progress.sampleNote}
               </p>
               <Button asChild variant="outline" className="mt-auto w-fit">
@@ -647,7 +647,7 @@ function LearnerDashboard() {
 
 function HeroStat({ children }: { children: string }) {
   return (
-    <li className="inline-flex items-center rounded-btn bg-surface px-3 py-1.5 text-sm font-medium text-foreground ring-1 ring-border">
+    <li className="inline-flex items-center rounded-btn bg-surface px-3 py-1.5 text-base font-medium text-foreground ring-1 ring-border">
       {children}
     </li>
   );

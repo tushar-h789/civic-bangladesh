@@ -350,7 +350,7 @@ function ServiceCategoryPage({ category }: { category: ServiceCategoryKey }) {
               <p
                 id="category-official-portal-note"
                 className={cn(
-                  "mt-3 text-sm text-white/70",
+                  "mt-3 text-base text-white/70",
                   isBangla && "leading-[1.75]",
                 )}
               >
