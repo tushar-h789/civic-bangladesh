@@ -6,6 +6,16 @@ export const home = {
     headlineSecondary: "সচেতন নাগরিক, সুন্দর বাংলাদেশ।",
     description:
       "Small, responsible choices every day are what build a cleaner, safer, and more beautiful society.",
+    support:
+      "Civic education and government-service learning, in one place. Independent — not the official application portal.",
+    pillars: {
+      civic: {
+        hint: "Everyday habits. Core learning stays free.",
+      },
+      service: {
+        hint: "Prepare here. Apply on the official portal.",
+      },
+    },
     primaryCta: "Explore Civic Sense",
     secondaryCta: "Take the Civic Challenge",
     videoAlt:
