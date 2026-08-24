@@ -151,7 +151,7 @@ function HomeFeaturedCourses() {
             {section.featuredTitle}
           </h3>
 
-          <ul className="mt-6 grid list-none gap-4 p-0 sm:mt-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
+          <ul className="mt-6 grid list-none gap-5 p-0 sm:mt-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
             {courses.map((course) => {
               const copy = getCourseCopy(course, t);
               const typeCopy = t.courseTypes[course.type];

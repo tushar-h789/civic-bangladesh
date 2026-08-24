@@ -27,10 +27,7 @@ import {
 } from "@/data/civic-topics";
 import { THIRTY_DAY_CHALLENGE } from "@/data/civic-challenge";
 import { ChallengeTypeLabel } from "@/components/challenge/challenge-type-label";
-import {
-  CIVIC_PROMISES,
-  type CivicPromiseKey,
-} from "@/data/civic-promises";
+import { CIVIC_PROMISES, type CivicPromiseKey } from "@/data/civic-promises";
 import { useTranslation } from "@/hooks/use-translation";
 import {
   getCivicFeaturedLessons,
@@ -213,7 +210,9 @@ function CivicLearningHub() {
 
           <ul className="m-0 flex list-none flex-wrap gap-2.5 p-0">
             <HeroStat>
-              {formatTemplate(copy.stats.topics, { count: CIVIC_TOPICS.length })}
+              {formatTemplate(copy.stats.topics, {
+                count: CIVIC_TOPICS.length,
+              })}
             </HeroStat>
             <HeroStat>{copy.stats.lessons}</HeroStat>
             <HeroStat>{copy.stats.challenge}</HeroStat>
@@ -562,7 +561,10 @@ function CivicLearningHub() {
                   <p className="text-sm text-text-secondary">
                     {t.challenge.progress.sampleNote}
                   </p>
-                  <Button asChild className="mt-auto w-fit text-primary-foreground">
+                  <Button
+                    asChild
+                    className="mt-auto w-fit text-primary-foreground"
+                  >
                     <Link href={ROUTES.challenges}>
                       {copy.challenges.cta}
                       <ArrowRight className="size-4" aria-hidden />
@@ -647,7 +649,10 @@ function CivicLearningHub() {
             {recommended.map((path) => (
               <li key={path.key}>
                 <article className="group relative min-h-96 overflow-hidden rounded-card shadow-card ring-1 ring-border">
-                  <Link href={path.href} className="absolute inset-0 outline-none">
+                  <Link
+                    href={path.href}
+                    className="absolute inset-0 outline-none"
+                  >
                     <Image
                       src={path.image}
                       alt={path.imageAlt}
@@ -751,7 +756,10 @@ function StoryCard({
         </span>
       ) : null}
       {badge ? (
-        <Badge variant="outline" className="absolute top-3 left-3 h-6 bg-white/90 px-2.5">
+        <Badge
+          variant="outline"
+          className="absolute top-3 left-3 h-6 bg-white/90 px-2.5"
+        >
           {badge}
         </Badge>
       ) : null}
@@ -848,7 +856,11 @@ function HubCivicPromise({ isBangla }: { isBangla: boolean }) {
             {chosen.description}
           </p>
           <p className="text-sm text-text-secondary">{copy.sampleNote}</p>
-          <Button asChild size="lg" className="h-11 rounded-btn px-5 text-button text-primary-foreground">
+          <Button
+            asChild
+            size="lg"
+            className="h-11 rounded-btn px-5 text-button text-primary-foreground"
+          >
             <Link href={ROUTES.challenges}>
               {copy.practiceCta}
               <ArrowRight className="size-4" aria-hidden />
@@ -889,7 +901,11 @@ function HubCivicPromise({ isBangla }: { isBangla: boolean }) {
                     : "bg-background hover:bg-light-green/60",
                 )}
               >
-                <RadioGroupItem id={inputId} value={item.key} className="mt-1" />
+                <RadioGroupItem
+                  id={inputId}
+                  value={item.key}
+                  className="mt-1"
+                />
                 <span className="min-w-0 flex-1">
                   <span
                     className={cn(
