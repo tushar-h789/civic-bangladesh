@@ -245,14 +245,16 @@ export const home = {
       description:
         "Short lessons and challenges teachers can use with a class. Core civic education stays free.",
       cta: "Explore school programs",
-      imageAlt: "Families walking a calm neighborhood street in the evening",
+      imageAlt:
+        "A teacher helping students at their desks in a Bangladesh classroom",
     },
     organizations: {
       title: "For organizations",
       description:
         "Civic learning for teams, NGOs, and CSR programs. This is not an official government partnership.",
       cta: "Explore organization programs",
-      imageAlt: "People waiting calmly in a public queue",
+      imageAlt:
+        "Adults waiting calmly in a public office queue with folders of papers",
     },
   },
 } as const;

@@ -12,7 +12,7 @@ export default function OrganizationsPage() {
   return (
     <ProgramPage
       kind="organizations"
-      heroImage="/images/topics/topic-social.png"
+      heroImage="/images/home/institutions-organizations.jpg"
     />
   );
 }

@@ -119,7 +119,7 @@ function PricingPage() {
             </p>
             <p
               className={cn(
-                "max-w-xl text-base text-white/70",
+                "max-w-xl text-body text-white/70",
                 isBangla && "leading-[1.75]",
               )}
             >
@@ -188,7 +188,7 @@ function PricingPage() {
                     </h3>
                     <p
                       className={cn(
-                        "mt-2 text-sm text-text-secondary",
+                        "mt-2 text-body text-text-secondary",
                         isBangla && "leading-[1.75]",
                       )}
                     >
@@ -201,7 +201,7 @@ function PricingPage() {
           </ul>
 
           <article className="mt-8 rounded-card bg-surface p-5 ring-1 ring-border sm:p-6">
-            <h3 className="text-base font-semibold text-foreground">
+            <h3 className="text-lg font-semibold text-foreground">
               {copy.never.title}
             </h3>
             <ul className="mt-3 m-0 flex list-none flex-col gap-2 p-0">
@@ -209,7 +209,7 @@ function PricingPage() {
                 <li
                   key={item}
                   className={cn(
-                    "text-sm text-text-secondary",
+                    "text-body text-text-secondary",
                     isBangla && "leading-[1.75]",
                   )}
                 >
@@ -219,7 +219,7 @@ function PricingPage() {
             </ul>
             <p
               className={cn(
-                "mt-4 text-sm text-text-secondary",
+                "mt-4 text-body text-text-secondary",
                 isBangla && "leading-[1.75]",
               )}
             >
@@ -253,7 +253,7 @@ function PricingPage() {
                 >
                   {primary.usefulness}
                 </p>
-                <p className="text-sm font-medium text-foreground">
+                <p className="text-base font-medium text-foreground">
                   {copy.primary.feeLabel}
                 </p>
                 <p className="text-2xl font-semibold text-foreground">
@@ -264,7 +264,7 @@ function PricingPage() {
                 </p>
                 <p
                   className={cn(
-                    "text-xs text-text-secondary",
+                    "text-base text-text-secondary",
                     isBangla && "leading-[1.7]",
                   )}
                 >
@@ -280,12 +280,12 @@ function PricingPage() {
                 </Button>
               </div>
               <div className="border-t border-border bg-light-green p-6 sm:p-8 lg:col-span-4 lg:border-t-0 lg:border-l">
-                <p className="text-sm font-semibold text-foreground">
+                <p className="text-base font-semibold text-foreground">
                   {copy.range.label}
                 </p>
                 <p
                   className={cn(
-                    "mt-3 text-base text-text-secondary",
+                    "mt-3 text-body text-text-secondary",
                     isBangla && "leading-[1.75]",
                   )}
                 >
@@ -338,7 +338,7 @@ function PricingPage() {
                     </div>
                     <p
                       className={cn(
-                        "mt-3 text-sm text-text-secondary",
+                        "mt-3 text-body text-text-secondary",
                         isBangla && "leading-[1.75]",
                       )}
                     >
@@ -346,7 +346,7 @@ function PricingPage() {
                     </p>
                     <p
                       className={cn(
-                        "mt-2 text-sm text-foreground",
+                        "mt-2 text-body text-foreground",
                         isBangla && "leading-[1.75]",
                       )}
                     >
@@ -354,7 +354,7 @@ function PricingPage() {
                     </p>
                     <Link
                       href={product.href}
-                      className="mt-auto inline-flex items-center gap-1.5 pt-4 text-sm font-semibold text-primary outline-none hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
+                      className="mt-auto inline-flex items-center gap-1.5 pt-4 text-base font-semibold text-primary outline-none hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
                     >
                       {product.cta}
                       <ArrowRight className="size-3.5" aria-hidden />

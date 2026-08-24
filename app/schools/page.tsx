@@ -10,6 +10,9 @@ export const metadata: Metadata = {
 
 export default function SchoolsPage() {
   return (
-    <ProgramPage kind="schools" heroImage="/images/home/intro-safer.png" />
+    <ProgramPage
+      kind="schools"
+      heroImage="/images/home/institutions-schools.jpg"
+    />
   );
 }

@@ -52,7 +52,7 @@ function ProgramPage({
             ]}
           />
           <div className="flex max-w-2xl flex-col gap-5">
-            <p className="text-sm font-semibold tracking-wide text-white/75 uppercase">
+            <p className="text-base font-semibold tracking-wide text-white/75 uppercase">
               {copy.eyebrow}
             </p>
             <h1
@@ -73,7 +73,7 @@ function ProgramPage({
             </p>
             <p
               className={cn(
-                "max-w-xl text-base text-white/70",
+                "max-w-xl text-body text-white/70",
                 isBangla && "leading-[1.75]",
               )}
             >
@@ -91,16 +91,16 @@ function ProgramPage({
               <h2 className="text-xl font-semibold text-foreground">
                 {copy.usefulnessTitle}
               </h2>
-              <ul className="mt-6 m-0 flex list-none flex-col gap-3 p-0">
+              <ul className="mt-6 m-0 flex list-none flex-col gap-3.5 p-0">
                 {usefulness.map((item) => (
-                  <li key={item} className="flex items-start gap-2">
+                  <li key={item} className="flex items-start gap-2.5">
                     <CheckCircle2
-                      className="mt-0.5 size-4 shrink-0 text-primary"
+                      className="mt-0.5 size-5 shrink-0 text-primary"
                       aria-hidden
                     />
                     <span
                       className={cn(
-                        "text-sm text-text-secondary",
+                        "text-body text-text-secondary",
                         isBangla && "leading-[1.75]",
                       )}
                     >
@@ -119,7 +119,7 @@ function ProgramPage({
                   <li
                     key={item}
                     className={cn(
-                      "text-sm text-text-secondary",
+                      "text-body text-text-secondary",
                       isBangla && "leading-[1.75]",
                     )}
                   >
@@ -149,7 +149,7 @@ function ProgramPage({
 
           <p
             className={cn(
-              "mt-8 max-w-2xl text-sm text-text-secondary",
+              "mt-8 max-w-2xl text-body text-text-secondary",
               isBangla && "leading-[1.75]",
             )}
           >
@@ -195,7 +195,7 @@ function ExtraCard({
       <h2 className="text-lg font-semibold text-foreground">{title}</h2>
       <p
         className={cn(
-          "mt-3 text-sm text-text-secondary",
+          "mt-3 text-body text-text-secondary",
           isBangla && "leading-[1.75]",
         )}
       >
