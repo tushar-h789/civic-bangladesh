@@ -59,9 +59,9 @@ function Navbar() {
         <Link href={ROUTES.home} className="flex min-w-0 shrink items-center">
           <BrandLogo
             alt={navText.brandName}
-            height={36}
+            height={44}
             priority
-            className="h-8 w-auto max-w-full xl:h-9"
+            className="h-10 w-auto max-w-full xl:h-11"
           />
         </Link>
 
