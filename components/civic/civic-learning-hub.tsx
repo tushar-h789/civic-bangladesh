@@ -155,7 +155,7 @@ function CivicLearningHub() {
           className="absolute inset-0 bg-linear-to-t from-text/55 via-transparent to-text/20"
         />
 
-        <Container className="relative flex flex-col gap-8 pt-14 pb-16 sm:pt-16 sm:pb-20 lg:pt-20 lg:pb-24">
+        <Container className="relative flex flex-col gap-5 pt-10 pb-12 sm:pt-12 sm:pb-14 lg:pt-14 lg:pb-16">
           <Breadcrumb
             tone="onPrimary"
             items={[
@@ -164,7 +164,7 @@ function CivicLearningHub() {
             ]}
           />
 
-          <div className="flex max-w-2xl flex-col gap-5">
+          <div className="flex max-w-2xl flex-col gap-3">
             <h1
               className={cn(
                 "text-hero-mobile font-semibold text-balance text-white lg:text-5xl",
@@ -240,18 +240,19 @@ function CivicLearningHub() {
       <section
         id="civic-topics"
         aria-labelledby="civic-topics-heading"
-        className="scroll-mt-28 bg-light-green py-section-mobile md:py-section-tablet lg:py-section-desktop"
+        className="scroll-mt-28 bg-light-green py-10 md:py-12 lg:py-14"
       >
         <Container>
           <SectionHeader
+            className="gap-3"
             title={<span id="civic-topics-heading">{copy.topics.title}</span>}
             description={copy.topics.description}
           />
-          <div className="mt-10 flex flex-col gap-4 sm:mt-12 lg:mt-14 lg:gap-5">
+          <div className="mt-5 flex flex-col gap-3">
             {TOPIC_ROWS.map((row) => (
               <ul
                 key={row.variant}
-                className={cn("grid list-none gap-4 p-0 lg:gap-5", row.columns)}
+                className={cn("grid list-none gap-3 p-0", row.columns)}
               >
                 {row.keys.map((key) => {
                   const topic = CIVIC_TOPICS.find((entry) => entry.key === key);
@@ -298,24 +299,25 @@ function CivicLearningHub() {
       <section
         id="featured-lessons"
         aria-labelledby="featured-lessons-heading"
-        className="scroll-mt-28 bg-background py-section-mobile md:py-section-tablet lg:py-section-desktop"
+        className="scroll-mt-28 bg-background py-10 md:py-12 lg:py-14"
       >
         <Container>
           <SectionHeader
+            className="gap-3"
             title={
               <span id="featured-lessons-heading">{copy.lessons.title}</span>
             }
             description={copy.lessons.description}
           />
           {lessons.length === 0 ? (
-            <div className="mt-8 sm:mt-10">
+            <div className="mt-5">
               <EmptyState
                 title={copy.lessons.emptyTitle}
                 description={copy.lessons.emptyDescription}
               />
             </div>
           ) : (
-            <ul className="mt-10 grid list-none gap-4 p-0 sm:mt-12 sm:grid-cols-2 lg:mt-14 lg:grid-cols-3 lg:gap-5">
+            <ul className="mt-5 grid list-none gap-3 p-0 sm:grid-cols-2 lg:grid-cols-3">
               {lessons.map((lesson) => (
                 <li key={lesson.key}>
                   <StoryCard
@@ -341,10 +343,11 @@ function CivicLearningHub() {
       <section
         id="short-videos"
         aria-labelledby="short-videos-heading"
-        className="scroll-mt-28 bg-light-green py-section-mobile md:py-section-tablet lg:py-section-desktop"
+        className="scroll-mt-28 bg-light-green py-10 md:py-12 lg:py-14"
       >
         <Container>
           <SectionHeader
+            className="gap-3"
             title={<span id="short-videos-heading">{copy.videos.title}</span>}
             description={copy.videos.description}
             actions={
@@ -354,14 +357,14 @@ function CivicLearningHub() {
             }
           />
           {videos.length === 0 ? (
-            <div className="mt-8 sm:mt-10">
+            <div className="mt-5">
               <EmptyState
                 title={copy.videos.emptyTitle}
                 description={copy.videos.emptyDescription}
               />
             </div>
           ) : (
-            <ul className="mt-10 grid list-none gap-4 p-0 sm:mt-12 sm:grid-cols-2 lg:mt-14 lg:grid-cols-3 lg:gap-5">
+            <ul className="mt-5 grid list-none gap-3 p-0 sm:grid-cols-2 lg:grid-cols-3">
               {videos.map((video) => (
                 <li key={video.key}>
                   <StoryCard
@@ -390,16 +393,17 @@ function CivicLearningHub() {
       <section
         id="civic-scenarios"
         aria-labelledby="civic-scenarios-heading"
-        className="scroll-mt-28 bg-background py-section-mobile md:py-section-tablet lg:py-section-desktop"
+        className="scroll-mt-28 bg-background py-10 md:py-12 lg:py-14"
       >
         <Container>
           <SectionHeader
+            className="gap-3"
             title={
               <span id="civic-scenarios-heading">{copy.scenarios.title}</span>
             }
             description={copy.scenarios.description}
           />
-          <div className="mt-10 sm:mt-12 lg:mt-14">
+          <div className="mt-5">
             <ScenarioPlayer scenarios={scenarios} copy={t.scenarios.player} />
           </div>
         </Container>
@@ -408,10 +412,11 @@ function CivicLearningHub() {
       <section
         id="civic-quizzes"
         aria-labelledby="civic-quizzes-heading"
-        className="scroll-mt-28 bg-light-green py-section-mobile md:py-section-tablet lg:py-section-desktop"
+        className="scroll-mt-28 bg-light-green py-10 md:py-12 lg:py-14"
       >
         <Container>
           <SectionHeader
+            className="gap-3"
             title={<span id="civic-quizzes-heading">{copy.quizzes.title}</span>}
             description={copy.quizzes.description}
           />
@@ -424,14 +429,14 @@ function CivicLearningHub() {
             {copy.quizzes.sampleNote}
           </p>
           {quizzes.length === 0 || !activeQuiz ? (
-            <div className="mt-8 sm:mt-10">
+            <div className="mt-5">
               <EmptyState
                 title={copy.quizzes.emptyTitle}
                 description={copy.quizzes.emptyDescription}
               />
             </div>
           ) : (
-            <div className="mt-8 grid gap-6 sm:mt-10 lg:grid-cols-12 lg:gap-8">
+            <div className="mt-5 grid gap-3 lg:grid-cols-12">
               <ul className="m-0 flex list-none flex-col gap-3 p-0 lg:col-span-4">
                 {quizzes.map((quiz) => {
                   const selected = quiz.key === activeQuiz.key;
@@ -494,10 +499,10 @@ function CivicLearningHub() {
       <section
         id="civic-challenges"
         aria-labelledby="civic-challenges-heading"
-        className="scroll-mt-28 relative z-10 bg-text py-section-mobile md:py-section-tablet lg:py-section-desktop"
+        className="scroll-mt-28 relative z-10 bg-text py-10 md:py-12 lg:py-14"
       >
         <Container>
-          <div className="grid gap-8 lg:grid-cols-12 lg:items-start lg:gap-12">
+          <div className="grid gap-5 lg:grid-cols-12 lg:items-start lg:gap-6">
             <div className="lg:col-span-5">
               <ChallengeTypeLabel
                 type="civic"
@@ -506,13 +511,13 @@ function CivicLearningHub() {
               />
               <h2
                 id="civic-challenges-heading"
-                className="mt-4 text-section-heading font-semibold text-balance text-white"
+                className="mt-3 text-section-heading font-semibold text-balance text-white"
               >
                 {copy.challenges.title}
               </h2>
               <p
                 className={cn(
-                  "mt-5 text-body text-white/75",
+                  "mt-3 text-body text-white/75",
                   isBangla && "leading-[1.75]",
                 )}
               >
@@ -534,7 +539,7 @@ function CivicLearningHub() {
                     className="absolute inset-0 bg-linear-to-t from-text/50 via-transparent to-text/10"
                   />
                 </div>
-                <div className="flex flex-col gap-4 p-6 sm:p-8">
+                <div className="flex flex-col gap-3 p-5 sm:p-6">
                   <ChallengeTypeLabel
                     type="civic"
                     label={t.challengeTypes.civic.label}
@@ -574,7 +579,7 @@ function CivicLearningHub() {
               </div>
             </article>
           </div>
-          <article className="mt-6 rounded-card bg-surface p-6 ring-1 ring-border sm:p-8">
+          <article className="mt-4 rounded-card bg-surface p-5 ring-1 ring-border sm:p-6">
             <ChallengeTypeLabel
               type="learning"
               label={t.challengeTypes.learning.label}
@@ -587,7 +592,7 @@ function CivicLearningHub() {
             >
               {t.challengeTypes.learning.purpose}
             </p>
-            <Button asChild variant="outline" className="mt-5 w-fit">
+            <Button asChild variant="outline" className="mt-3 w-fit">
               <Link href={`${ROUTES.challenges}#learning-challenges`}>
                 {t.challenge.page.jump.learning}
                 <ArrowRight className="size-4" aria-hidden />
@@ -600,7 +605,7 @@ function CivicLearningHub() {
       <section
         id="civic-promise"
         aria-labelledby="civic-promise-heading"
-        className="scroll-mt-28 bg-background py-section-mobile md:py-section-tablet lg:py-section-desktop"
+        className="scroll-mt-28 bg-background py-10 md:py-12 lg:py-14"
       >
         <Container>
           <div className="mx-auto max-w-3xl text-center">
@@ -612,7 +617,7 @@ function CivicLearningHub() {
             </h2>
             <p
               className={cn(
-                "mt-5 text-body text-text-secondary",
+                "mt-3 text-body text-text-secondary",
                 isBangla && "leading-[1.75]",
               )}
             >
@@ -626,10 +631,11 @@ function CivicLearningHub() {
       <section
         id="recommended-learning"
         aria-labelledby="recommended-learning-heading"
-        className="scroll-mt-28 bg-light-green py-section-mobile md:py-section-tablet lg:py-section-desktop"
+        className="scroll-mt-28 bg-light-green py-10 md:py-12 lg:py-14"
       >
         <Container>
           <SectionHeader
+            className="gap-3"
             title={
               <span id="recommended-learning-heading">
                 {copy.recommended.title}
@@ -645,10 +651,10 @@ function CivicLearningHub() {
           >
             {copy.recommended.sampleNote}
           </p>
-          <ul className="mt-10 grid list-none gap-4 p-0 sm:mt-12 lg:mt-14 lg:grid-cols-3 lg:gap-5">
+          <ul className="mt-5 grid list-none gap-3 p-0 lg:grid-cols-3">
             {recommended.map((path) => (
               <li key={path.key}>
-                <article className="group relative min-h-96 overflow-hidden rounded-card shadow-card ring-1 ring-border">
+                <article className="group relative min-h-80 overflow-hidden rounded-card shadow-card ring-1 ring-border">
                   <Link
                     href={path.href}
                     className="absolute inset-0 outline-none"
@@ -664,7 +670,7 @@ function CivicLearningHub() {
                       aria-hidden="true"
                       className="absolute inset-0 bg-linear-to-t from-text via-text/55 to-text/15"
                     />
-                    <div className="absolute inset-0 flex flex-col justify-end gap-3 p-6 sm:p-7">
+                    <div className="absolute inset-0 flex flex-col justify-end gap-2 p-5">
                       <p className="text-sm font-semibold text-white/75">
                         {path.kicker}
                       </p>
@@ -769,7 +775,7 @@ function StoryCard({
   const body = (
     <>
       {media}
-      <div className="flex flex-1 flex-col gap-2 p-5">
+      <div className="flex flex-1 flex-col gap-1.5 p-4">
         <p className="text-xs font-semibold text-primary">{kicker}</p>
         <h3
           className={cn(
@@ -836,8 +842,8 @@ function HubCivicPromise({ isBangla }: { isBangla: boolean }) {
 
   if (confirmed) {
     return (
-      <article className="mx-auto mt-10 max-w-3xl overflow-hidden rounded-card bg-surface shadow-card sm:mt-12">
-        <div className="flex flex-col items-center gap-5 px-6 py-10 text-center sm:px-10 sm:py-12">
+      <article className="mx-auto mt-5 max-w-3xl overflow-hidden rounded-card bg-surface shadow-card">
+        <div className="flex flex-col items-center gap-3 px-5 py-8 text-center sm:px-8 sm:py-10">
           <p className="text-sm font-semibold text-primary">{copy.confirmed}</p>
           <h3
             className={cn(
@@ -872,9 +878,9 @@ function HubCivicPromise({ isBangla }: { isBangla: boolean }) {
   }
 
   return (
-    <article className="mx-auto mt-10 max-w-3xl overflow-hidden rounded-card bg-surface shadow-card sm:mt-12">
+    <article className="mx-auto mt-5 max-w-3xl overflow-hidden rounded-card bg-surface shadow-card">
       <form
-        className="flex flex-col gap-6 p-6 sm:p-8 lg:p-10"
+        className="flex flex-col gap-4 p-5 sm:p-6 lg:p-7"
         onSubmit={(event) => {
           event.preventDefault();
           setConfirmed(true);
@@ -883,8 +889,7 @@ function HubCivicPromise({ isBangla }: { isBangla: boolean }) {
         <RadioGroup
           value={selected}
           onValueChange={(value) => setSelected(value as CivicPromiseKey)}
-          className="gap-3"
-          aria-label={t.civicLearning.promise.title}
+          className="gap-2"
         >
           {CIVIC_PROMISES.map((item) => {
             const promise = copy.items[item.key];
@@ -895,7 +900,7 @@ function HubCivicPromise({ isBangla }: { isBangla: boolean }) {
                 key={item.key}
                 htmlFor={inputId}
                 className={cn(
-                  "flex cursor-pointer items-start gap-4 rounded-card p-4 ring-1 ring-border transition-colors duration-200 ease-standard",
+                  "flex cursor-pointer items-start gap-3 rounded-card p-3 ring-1 ring-border transition-colors duration-200 ease-standard",
                   selected === item.key
                     ? "bg-light-green ring-primary"
                     : "bg-background hover:bg-light-green/60",
