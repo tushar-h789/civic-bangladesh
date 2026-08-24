@@ -28,7 +28,7 @@ import { NavbarMobileMenu } from "@/components/layout/navbar-mobile-menu";
 
 function navLinkClassName(active: boolean, emphasis = false) {
   return cn(
-    "rounded-btn px-2 py-2 text-sm font-medium whitespace-nowrap transition-colors 2xl:px-2.5",
+    "rounded-btn px-2 py-2 text-base font-medium whitespace-nowrap transition-colors 2xl:px-2.5",
     emphasis
       ? "text-primary hover:bg-light-green hover:text-primary"
       : "text-text-secondary hover:bg-muted hover:text-foreground",
@@ -89,8 +89,7 @@ function Navbar() {
               <Button
                 type="button"
                 variant="ghost"
-                size="sm"
-                className={navLinkClassName(resourcesActive)}
+                className={cn(navLinkClassName(resourcesActive), "h-auto")}
               >
                 {navText.resources.trigger}
                 <ChevronDownIcon className="size-4" />
@@ -98,7 +97,7 @@ function Navbar() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="min-w-48">
               {resourceLinks.map((link) => (
-                <DropdownMenuItem key={link.href} asChild>
+                <DropdownMenuItem key={link.href} asChild className="text-base">
                   <Link
                     href={link.href}
                     aria-current={
@@ -124,14 +123,13 @@ function Navbar() {
         <div className="ml-auto flex shrink-0 items-center gap-1.5 xl:gap-2">
           <NavbarSearch />
           <div className="hidden xl:block">
-            <LanguageSwitcher />
+            <LanguageSwitcher className="h-9 px-3 text-base" />
           </div>
           <Button
             asChild
             variant="outline"
-            size="sm"
             className={cn(
-              "hidden xl:inline-flex",
+              "hidden h-9 px-3 text-base xl:inline-flex",
               isLearnerArea(pathname) &&
                 "border-primary/30 bg-light-green text-primary",
             )}
@@ -140,8 +138,7 @@ function Navbar() {
           </Button>
           <Button
             asChild
-            size="sm"
-            className="hidden whitespace-nowrap text-primary-foreground sm:inline-flex"
+            className="hidden h-9 whitespace-nowrap px-3 text-base text-primary-foreground sm:inline-flex"
           >
             <Link href={ROUTES.governmentServices}>{navText.primaryCta}</Link>
           </Button>
