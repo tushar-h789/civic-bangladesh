@@ -15,13 +15,6 @@ import { useTranslation } from "@/hooks/use-translation";
 import { getCourseCopy } from "@/lib/get-course-copy";
 import { Container } from "@/components/common/container";
 import { SectionHeader } from "@/components/common/section-header";
-import {
-  Card,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/common/card";
 import { CourseCard } from "@/components/learning/course-card";
 
 const COURSE_PATHS = [
@@ -80,59 +73,74 @@ function HomeFeaturedCourses() {
           }
         />
 
-        <ul className="mt-10 grid list-none gap-4 p-0 sm:mt-12 lg:mt-14 lg:grid-cols-2 lg:gap-5">
-          {COURSE_PATHS.map((path) => {
+        <ul className="mt-10 grid list-none gap-5 p-0 sm:mt-12 lg:mt-14 lg:grid-cols-2 lg:gap-6">
+          {COURSE_PATHS.map((path, index) => {
             const item = section.paths[path.key];
             const Icon: ComponentType<{
               className?: string;
               "aria-hidden"?: boolean;
             }> = path.icon;
+            const accessLabel =
+              path.key === "civic"
+                ? learning.access.free
+                : learning.access.premium;
+            const indexLabel = String(index + 1).padStart(2, "0");
 
             return (
               <li key={path.key}>
-                <Card
-                  hoverable
-                  className="group h-full gap-0 rounded-card py-0 ring-border"
+                <Link
+                  href={path.href}
+                  className="group relative flex h-full cursor-pointer flex-col overflow-hidden rounded-card bg-surface shadow-card ring-1 ring-border outline-none transition-shadow duration-200 ease-standard hover:shadow-card-hover focus-visible:ring-3 focus-visible:ring-ring/50"
                 >
-                  <Link
-                    href={path.href}
-                    className="flex h-full flex-col rounded-card outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
-                  >
-                    <div className="relative aspect-video overflow-hidden">
-                      <Image
-                        src={path.image}
-                        alt={item.imageAlt}
-                        fill
-                        sizes="(min-width: 1024px) 50vw, 100vw"
-                        className="object-cover transition-transform duration-700 ease-standard group-hover:scale-105"
-                      />
-                    </div>
+                  <div className="relative aspect-16/10 overflow-hidden sm:aspect-5/3">
+                    <Image
+                      src={path.image}
+                      alt={item.imageAlt}
+                      fill
+                      sizes="(min-width: 1024px) 50vw, 100vw"
+                      className="object-cover transition-transform duration-700 ease-standard group-hover:scale-[1.04]"
+                    />
+                    <div
+                      aria-hidden
+                      className="absolute inset-0 bg-linear-to-t from-text/70 via-text/20 to-transparent"
+                    />
+                    <span className="absolute top-4 left-4 inline-flex h-8 items-center rounded-btn bg-surface px-3 text-sm font-semibold text-primary ring-1 ring-border">
+                      {accessLabel}
+                    </span>
+                    <span
+                      aria-hidden
+                      className="absolute right-4 bottom-10 text-4xl font-semibold tracking-tight text-white/35 sm:bottom-12 sm:text-5xl"
+                    >
+                      {indexLabel}
+                    </span>
+                  </div>
 
-                    <CardHeader className="gap-3 pt-6">
-                      <span className="flex size-11 items-center justify-center rounded-btn bg-light-green text-primary">
+                  <div className="relative z-10 -mt-10 mx-4 mb-4 flex flex-1 flex-col rounded-card bg-surface p-5 ring-1 ring-border sm:mx-5 sm:mb-5 sm:p-6">
+                    <div className="flex items-center gap-3">
+                      <span className="flex size-11 shrink-0 items-center justify-center rounded-btn bg-light-green text-primary">
                         <Icon className="size-5" aria-hidden />
                       </span>
-                      <CardTitle className="text-xl font-semibold text-balance text-foreground sm:text-2xl">
+                      <h3 className="text-xl font-semibold text-balance text-foreground sm:text-2xl">
                         {item.title}
-                      </CardTitle>
-                      <CardDescription
-                        className={cn(
-                          "text-body text-text-secondary",
-                          isBangla && "leading-[1.7]",
-                        )}
-                      >
-                        {item.description}
-                      </CardDescription>
-                    </CardHeader>
-
-                    <CardFooter className="mt-auto border-border">
-                      <span className="inline-flex h-10 items-center gap-1.5 rounded-btn bg-primary px-4 text-button font-medium text-primary-foreground">
-                        {item.cta}
-                        <ArrowRight className="size-4" aria-hidden />
-                      </span>
-                    </CardFooter>
-                  </Link>
-                </Card>
+                      </h3>
+                    </div>
+                    <p
+                      className={cn(
+                        "mt-3 text-body text-text-secondary",
+                        isBangla && "leading-[1.7]",
+                      )}
+                    >
+                      {item.description}
+                    </p>
+                    <span className="mt-5 inline-flex h-11 w-fit items-center gap-1.5 rounded-btn bg-primary px-5 text-button font-medium text-primary-foreground">
+                      {item.cta}
+                      <ArrowRight
+                        className="size-4 transition-transform duration-200 ease-standard group-hover:translate-x-0.5"
+                        aria-hidden
+                      />
+                    </span>
+                  </div>
+                </Link>
               </li>
             );
           })}

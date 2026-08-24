@@ -17,11 +17,11 @@ export default function Home() {
       <HomeHero />
       <HomePurpose />
       <HomeIntroduction />
+      <HomeFeaturedCourses />
       <HomeTopics />
       <HomeScenarios />
       <HomeChallenge />
       <HomeCivicScore />
-      <HomeFeaturedCourses />
       <HomeFeaturedCampaigns />
       <HomeStories />
       <HomeCivicPromise />
