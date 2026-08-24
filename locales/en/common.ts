@@ -11,6 +11,7 @@ export const common = {
     save: "Save",
     cancel: "Cancel",
   },
+  scrollToTop: "Back to top",
 } as const;
 
 export type CommonTranslations = TranslationShape<typeof common>;

@@ -7,6 +7,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { AccessibilityToolbar } from "@/components/layout/accessibility-toolbar";
 import { Footer } from "@/components/layout/footer";
 import { Navbar } from "@/components/layout/navbar";
+import { ScrollToTop } from "@/components/layout/scroll-to-top";
 import { PageWatermark } from "@/components/layout/page-watermark";
 import { ReduxProvider } from "@/redux/provider";
 
@@ -69,6 +70,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             <Footer />
           </TooltipProvider>
           <AccessibilityToolbar />
+          <ScrollToTop />
           <Toaster />
         </ReduxProvider>
       </body>
