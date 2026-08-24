@@ -49,7 +49,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
-const HERO_IMAGE = "/images/home/intro-safer.png";
+const HERO_IMAGE = "/images/home/civic-learning-hero-livable.png";
 
 const TOPIC_ICONS: Record<
   CivicTopicKey,
@@ -143,16 +143,16 @@ function CivicLearningHub() {
             fill
             priority
             sizes="100vw"
-            className="object-cover object-[55%_center]"
+            className="object-cover object-[68%_center]"
           />
         </div>
         <div
           aria-hidden="true"
-          className="absolute inset-0 bg-linear-to-r from-text/90 via-text/70 to-text/25"
+          className="absolute inset-0 bg-linear-to-r from-text/82 via-text/45 to-text/15"
         />
         <div
           aria-hidden="true"
-          className="absolute inset-0 bg-linear-to-t from-text/55 via-transparent to-text/20"
+          className="absolute inset-0 bg-linear-to-t from-text/50 via-transparent to-text/20"
         />
 
         <Container className="relative flex flex-col gap-5 pt-10 pb-12 sm:pt-12 sm:pb-14 lg:pt-14 lg:pb-16">
