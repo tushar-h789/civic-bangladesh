@@ -26,6 +26,7 @@ import {
   type CivicTopicKey,
 } from "@/data/civic-topics";
 import { THIRTY_DAY_CHALLENGE } from "@/data/civic-challenge";
+import type { CivicRecommendedPathKey } from "@/data/civic-learning";
 import { ChallengeTypeLabel } from "@/components/challenge/challenge-type-label";
 import { CIVIC_PROMISES, type CivicPromiseKey } from "@/data/civic-promises";
 import { useTranslation } from "@/hooks/use-translation";
@@ -63,6 +64,15 @@ const TOPIC_ICONS: Record<
   socialResponsibility: HeartHandshake,
   digitalCitizenship: Smartphone,
   communityResponsibility: UsersRound,
+};
+
+const RECOMMENDED_ICONS: Record<
+  CivicRecommendedPathKey,
+  ComponentType<{ className?: string; "aria-hidden"?: boolean }>
+> = {
+  startHere: Sparkles,
+  practiceStreets: CarFront,
+  leadAGroup: UsersRound,
 };
 
 const TOPIC_ROWS: {
@@ -412,7 +422,7 @@ function CivicLearningHub() {
       <section
         id="civic-quizzes"
         aria-labelledby="civic-quizzes-heading"
-        className="scroll-mt-28 bg-light-green py-10 md:py-12 lg:py-14"
+        className="scroll-mt-28 relative z-10 isolate overflow-hidden bg-light-green py-10 md:py-12 lg:py-14"
       >
         <Container>
           <SectionHeader
@@ -631,7 +641,7 @@ function CivicLearningHub() {
       <section
         id="recommended-learning"
         aria-labelledby="recommended-learning-heading"
-        className="scroll-mt-28 bg-light-green py-10 md:py-12 lg:py-14"
+        className="scroll-mt-28 border-t border-border bg-transparent py-10 md:py-12 lg:py-14"
       >
         <Container>
           <SectionHeader
@@ -651,54 +661,75 @@ function CivicLearningHub() {
           >
             {copy.recommended.sampleNote}
           </p>
-          <ul className="mt-5 grid list-none gap-3 p-0 lg:grid-cols-3">
-            {recommended.map((path) => (
-              <li key={path.key}>
-                <article className="group relative min-h-80 overflow-hidden rounded-card shadow-card ring-1 ring-border">
+          <ul className="mt-5 grid list-none gap-4 p-0 lg:grid-cols-3">
+            {recommended.map((path, index) => {
+              const Icon = RECOMMENDED_ICONS[path.key];
+
+              return (
+                <li key={path.key}>
                   <Link
                     href={path.href}
-                    className="absolute inset-0 outline-none"
+                    className="group relative flex h-full cursor-pointer flex-col overflow-hidden rounded-card bg-surface shadow-card ring-1 ring-border outline-none transition-shadow duration-200 ease-standard hover:shadow-card-hover focus-visible:ring-3 focus-visible:ring-ring/50"
                   >
-                    <Image
-                      src={path.image}
-                      alt={path.imageAlt}
-                      fill
-                      sizes="(min-width: 1024px) 33vw, 100vw"
-                      className="object-cover transition-transform duration-700 ease-standard group-hover:scale-105"
-                    />
-                    <div
-                      aria-hidden="true"
-                      className="absolute inset-0 bg-linear-to-t from-text via-text/55 to-text/15"
-                    />
-                    <div className="absolute inset-0 flex flex-col justify-end gap-2 p-5">
-                      <p className="text-sm font-semibold text-white/75">
+                    <div className="relative aspect-16/10 overflow-hidden">
+                      <Image
+                        src={path.image}
+                        alt={path.imageAlt}
+                        fill
+                        sizes="(min-width: 1024px) 33vw, 100vw"
+                        className="object-cover transition-transform duration-700 ease-standard group-hover:scale-[1.04]"
+                      />
+                      <div
+                        aria-hidden
+                        className="absolute inset-0 bg-linear-to-t from-text/70 via-text/20 to-transparent"
+                      />
+                      <span className="absolute top-3 left-3 inline-flex h-8 items-center rounded-btn bg-surface px-3 text-sm font-semibold text-primary ring-1 ring-border">
+                        {t.learning.access[path.access]}
+                      </span>
+                      <span
+                        aria-hidden
+                        className="absolute right-3 bottom-8 text-4xl font-semibold tracking-tight text-white/35"
+                      >
+                        {formatIndex(index)}
+                      </span>
+                    </div>
+                    <div className="relative z-10 -mt-8 mx-3 mb-3 flex flex-1 flex-col rounded-card bg-surface p-4 ring-1 ring-border sm:mx-4 sm:mb-4 sm:p-5">
+                      <p className="text-xs font-semibold text-primary">
                         {path.kicker}
                       </p>
-                      <h3
-                        className={cn(
-                          "text-2xl font-semibold text-balance text-white",
-                          isBangla && "leading-[1.35]",
-                        )}
-                      >
-                        {path.title}
-                      </h3>
+                      <div className="mt-2 flex items-start gap-3">
+                        <span className="flex size-10 shrink-0 items-center justify-center rounded-btn bg-light-green text-primary">
+                          <Icon className="size-5" aria-hidden />
+                        </span>
+                        <h3
+                          className={cn(
+                            "text-xl font-semibold text-balance text-foreground",
+                            isBangla && "leading-[1.35]",
+                          )}
+                        >
+                          {path.title}
+                        </h3>
+                      </div>
                       <p
                         className={cn(
-                          "max-w-md text-body text-white/80",
+                          "mt-2 flex-1 text-body text-text-secondary",
                           isBangla && "leading-[1.75]",
                         )}
                       >
                         {path.description}
                       </p>
-                      <span className="mt-1 inline-flex h-10 w-fit items-center gap-1.5 rounded-btn bg-white px-4 text-button font-medium text-primary">
+                      <span className="mt-3 inline-flex h-10 w-fit items-center gap-1.5 rounded-btn bg-primary px-4 text-button font-medium text-primary-foreground">
                         {copy.recommended.cta}
-                        <ArrowRight className="size-4" aria-hidden />
+                        <ArrowRight
+                          className="size-4 transition-transform duration-200 ease-standard group-hover:translate-x-0.5"
+                          aria-hidden
+                        />
                       </span>
                     </div>
                   </Link>
-                </article>
-              </li>
-            ))}
+                </li>
+              );
+            })}
           </ul>
         </Container>
       </section>
