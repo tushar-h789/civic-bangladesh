@@ -32,12 +32,13 @@ function HomeFeaturedCampaigns() {
     <section
       aria-labelledby="featured-campaigns-heading"
       className={cn(
-        "bg-background py-section-mobile md:py-section-tablet lg:py-section-desktop",
+        "bg-background py-10 md:py-12 lg:py-14",
         isBangla && "font-bengali",
       )}
     >
       <Container>
         <SectionHeader
+          className="gap-3"
           title={<span id="featured-campaigns-heading">{section.title}</span>}
           description={section.description}
           actions={
@@ -51,7 +52,7 @@ function HomeFeaturedCampaigns() {
           }
         />
 
-        <ul className="mt-10 grid list-none gap-5 p-0 sm:mt-12 sm:grid-cols-2 lg:mt-14 lg:grid-cols-3 lg:gap-6">
+        <ul className="mt-5 grid list-none gap-3 p-0 sm:grid-cols-2 lg:grid-cols-3">
           {FEATURED_CAMPAIGNS.map((campaign) => {
             const item = copy.items[campaign.key];
 

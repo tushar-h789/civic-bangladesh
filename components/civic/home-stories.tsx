@@ -31,12 +31,13 @@ function HomeStories() {
     <section
       aria-labelledby="stories-heading"
       className={cn(
-        "border-y border-border bg-surface py-section-mobile md:py-section-tablet lg:py-section-desktop",
+        "border-y border-border bg-surface py-10 md:py-12 lg:py-14",
         isBangla && "font-bengali",
       )}
     >
       <Container>
         <SectionHeader
+          className="gap-3"
           title={<span id="stories-heading">{section.title}</span>}
           description={section.description}
           actions={
@@ -50,7 +51,7 @@ function HomeStories() {
           }
         />
 
-        <ul className="mt-10 grid list-none gap-5 p-0 sm:mt-12 sm:grid-cols-2 lg:mt-14 lg:grid-cols-3 lg:gap-6">
+        <ul className="mt-5 grid list-none gap-3 p-0 sm:grid-cols-2 lg:grid-cols-3">
           {FEATURED_STORIES.map((story) => {
             const item = copy.items[story.key];
 

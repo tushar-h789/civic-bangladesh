@@ -53,12 +53,13 @@ function HomeFeaturedCourses() {
     <section
       aria-labelledby="featured-courses-heading"
       className={cn(
-        "bg-light-green py-section-mobile md:py-section-tablet lg:py-section-desktop",
+        "bg-light-green py-10 md:py-12 lg:py-14",
         isBangla && "font-bengali",
       )}
     >
       <Container>
         <SectionHeader
+          className="gap-3"
           title={<span id="featured-courses-heading">{section.title}</span>}
           titleClassName="text-[1.375rem] leading-snug sm:text-2xl md:text-section-heading md:leading-[var(--text-section-heading--line-height)]"
           description={section.description}
@@ -73,7 +74,7 @@ function HomeFeaturedCourses() {
           }
         />
 
-        <ul className="mt-10 grid list-none gap-5 p-0 sm:mt-12 lg:mt-14 lg:grid-cols-2 lg:gap-6">
+        <ul className="mt-5 grid list-none gap-3 p-0 lg:grid-cols-2">
           {COURSE_PATHS.map((path, index) => {
             const item = section.paths[path.key];
             const Icon: ComponentType<{
@@ -104,20 +105,20 @@ function HomeFeaturedCourses() {
                       aria-hidden
                       className="absolute inset-0 bg-linear-to-t from-text/70 via-text/20 to-transparent"
                     />
-                    <span className="absolute top-4 left-4 inline-flex h-8 items-center rounded-btn bg-surface px-3 text-sm font-semibold text-primary ring-1 ring-border">
+                    <span className="absolute top-3 left-3 inline-flex h-8 items-center rounded-btn bg-surface px-3 text-sm font-semibold text-primary ring-1 ring-border">
                       {accessLabel}
                     </span>
                     <span
                       aria-hidden
-                      className="absolute right-4 bottom-10 text-4xl font-semibold tracking-tight text-white/35 sm:bottom-12 sm:text-5xl"
+                      className="absolute right-3 bottom-8 text-4xl font-semibold tracking-tight text-white/35 sm:bottom-10 sm:text-5xl"
                     >
                       {indexLabel}
                     </span>
                   </div>
 
-                  <div className="relative z-10 -mt-10 mx-4 mb-4 flex flex-1 flex-col rounded-card bg-surface p-5 ring-1 ring-border sm:mx-5 sm:mb-5 sm:p-6">
+                  <div className="relative z-10 -mt-8 mx-3 mb-3 flex flex-1 flex-col rounded-card bg-surface p-4 ring-1 ring-border sm:mx-4 sm:mb-4 sm:p-5">
                     <div className="flex items-center gap-3">
-                      <span className="flex size-11 shrink-0 items-center justify-center rounded-btn bg-light-green text-primary">
+                      <span className="flex size-10 shrink-0 items-center justify-center rounded-btn bg-light-green text-primary">
                         <Icon className="size-5" aria-hidden />
                       </span>
                       <h3 className="text-xl font-semibold text-balance text-foreground sm:text-2xl">
@@ -126,13 +127,13 @@ function HomeFeaturedCourses() {
                     </div>
                     <p
                       className={cn(
-                        "mt-3 text-body text-text-secondary",
+                        "mt-2 text-body text-text-secondary",
                         isBangla && "leading-[1.7]",
                       )}
                     >
                       {item.description}
                     </p>
-                    <span className="mt-5 inline-flex h-11 w-fit items-center gap-1.5 rounded-btn bg-primary px-5 text-button font-medium text-primary-foreground">
+                    <span className="mt-3 inline-flex h-10 w-fit items-center gap-1.5 rounded-btn bg-primary px-4 text-button font-medium text-primary-foreground">
                       {item.cta}
                       <ArrowRight
                         className="size-4 transition-transform duration-200 ease-standard group-hover:translate-x-0.5"
@@ -146,12 +147,12 @@ function HomeFeaturedCourses() {
           })}
         </ul>
 
-        <div className="mt-12 sm:mt-14 lg:mt-16">
+        <div className="mt-8">
           <h3 className="text-xl font-semibold text-balance text-foreground sm:text-2xl">
             {section.featuredTitle}
           </h3>
 
-          <ul className="mt-6 grid list-none gap-5 p-0 sm:mt-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+          <ul className="mt-4 grid list-none gap-3 p-0 sm:grid-cols-2 lg:grid-cols-3">
             {courses.map((course) => {
               const copy = getCourseCopy(course, t);
               const typeCopy = t.courseTypes[course.type];
@@ -197,7 +198,7 @@ function HomeFeaturedCourses() {
 
           <p
             className={cn(
-              "mt-6 max-w-3xl text-base text-text-secondary",
+              "mt-4 max-w-3xl text-base text-text-secondary",
               isBangla && "leading-[1.7]",
             )}
           >

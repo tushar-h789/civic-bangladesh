@@ -31,7 +31,7 @@ function HomeCivicPromise() {
     <section
       aria-labelledby="civic-promise-heading"
       className={cn(
-        "bg-text py-section-mobile md:py-section-tablet lg:py-section-desktop",
+        "bg-text py-10 md:py-12 lg:py-14",
         isBangla && "font-bengali",
       )}
     >
@@ -45,7 +45,7 @@ function HomeCivicPromise() {
           </h2>
           <p
             className={cn(
-              "mt-5 text-body text-white/75",
+              "mt-3 text-body text-white/75",
               isBangla && "leading-[1.75]",
             )}
           >
@@ -53,9 +53,9 @@ function HomeCivicPromise() {
           </p>
         </div>
 
-        <article className="mx-auto mt-10 max-w-3xl overflow-hidden rounded-card bg-surface shadow-card sm:mt-12">
+        <article className="mx-auto mt-5 max-w-3xl overflow-hidden rounded-card bg-surface shadow-card">
           {confirmed ? (
-            <div className="flex flex-col items-center gap-5 px-6 py-10 text-center sm:px-10 sm:py-12">
+            <div className="flex flex-col items-center gap-3 px-5 py-8 text-center sm:px-8 sm:py-10">
               <p className="text-sm font-semibold text-primary">
                 {copy.confirmed}
               </p>
@@ -89,7 +89,7 @@ function HomeCivicPromise() {
             </div>
           ) : (
             <form
-              className="flex flex-col gap-6 p-6 sm:p-8 lg:p-10"
+              className="flex flex-col gap-4 p-5 sm:p-6 lg:p-7"
               onSubmit={(event) => {
                 event.preventDefault();
                 handleConfirm();
@@ -98,7 +98,7 @@ function HomeCivicPromise() {
               <RadioGroup
                 value={selected}
                 onValueChange={(value) => setSelected(value as CivicPromiseKey)}
-                className="gap-3"
+                className="gap-2"
                 aria-label={section.title}
               >
                 {CIVIC_PROMISES.map((item) => {
@@ -110,7 +110,7 @@ function HomeCivicPromise() {
                       key={item.key}
                       htmlFor={inputId}
                       className={cn(
-                        "flex cursor-pointer items-start gap-4 rounded-card p-4 ring-1 ring-border transition-colors duration-200 ease-standard",
+                        "flex cursor-pointer items-start gap-3 rounded-card p-3 ring-1 ring-border transition-colors duration-200 ease-standard",
                         selected === item.key
                           ? "bg-light-green ring-primary"
                           : "bg-background hover:bg-light-green/60",

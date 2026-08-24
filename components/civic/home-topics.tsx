@@ -72,12 +72,13 @@ function HomeTopics() {
     <section
       aria-labelledby="civic-topics-heading"
       className={cn(
-        "bg-light-green py-section-mobile md:py-section-tablet lg:py-section-desktop",
+        "bg-light-green py-10 md:py-12 lg:py-14",
         isBangla && "font-bengali",
       )}
     >
       <Container>
         <SectionHeader
+          className="gap-3"
           title={<span id="civic-topics-heading">{copy.title}</span>}
           description={copy.description}
           actions={
@@ -87,11 +88,11 @@ function HomeTopics() {
           }
         />
 
-        <div className="mt-10 flex flex-col gap-4 sm:mt-12 lg:mt-14 lg:gap-5">
+        <div className="mt-5 flex flex-col gap-3">
           {TOPIC_ROWS.map((row) => (
             <ul
               key={row.variant}
-              className={cn("grid list-none gap-4 p-0 lg:gap-5", row.columns)}
+              className={cn("grid list-none gap-3 p-0", row.columns)}
             >
               {row.keys.map((key) => {
                 const topic = CIVIC_TOPICS.find((entry) => entry.key === key);

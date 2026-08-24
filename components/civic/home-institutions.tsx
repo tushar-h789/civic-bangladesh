@@ -35,17 +35,18 @@ function HomeInstitutions() {
     <section
       aria-labelledby="institutions-heading"
       className={cn(
-        "bg-background py-section-mobile md:py-section-tablet lg:py-section-desktop",
+        "bg-background py-10 md:py-12 lg:py-14",
         isBangla && "font-bengali",
       )}
     >
       <Container>
         <SectionHeader
+          className="gap-3"
           title={<span id="institutions-heading">{section.title}</span>}
           description={section.description}
         />
 
-        <ul className="mt-10 grid list-none gap-5 p-0 sm:mt-12 lg:mt-14 lg:grid-cols-2 lg:gap-6">
+        <ul className="mt-5 grid list-none gap-3 p-0 lg:grid-cols-2">
           {PROGRAMS.map((program, index) => {
             const item = section[program.key];
             const Icon: ComponentType<{
@@ -72,30 +73,30 @@ function HomeInstitutions() {
                       aria-hidden
                       className="absolute inset-0 bg-linear-to-t from-text/75 via-text/25 to-transparent"
                     />
-                    <span className="absolute top-4 left-4 flex size-11 items-center justify-center rounded-btn bg-surface text-primary shadow-card ring-1 ring-border">
+                    <span className="absolute top-3 left-3 flex size-10 items-center justify-center rounded-btn bg-surface text-primary shadow-card ring-1 ring-border">
                       <Icon className="size-5" aria-hidden />
                     </span>
                     <span
                       aria-hidden
-                      className="absolute right-4 bottom-10 text-4xl font-semibold tracking-tight text-white/35 sm:bottom-12 sm:text-5xl"
+                      className="absolute right-3 bottom-8 text-4xl font-semibold tracking-tight text-white/35 sm:bottom-10 sm:text-5xl"
                     >
                       {indexLabel}
                     </span>
                   </div>
 
-                  <div className="relative z-10 -mt-10 mx-4 mb-4 flex flex-1 flex-col rounded-card bg-surface p-5 ring-1 ring-border sm:mx-5 sm:mb-5 sm:p-6">
+                  <div className="relative z-10 -mt-8 mx-3 mb-3 flex flex-1 flex-col rounded-card bg-surface p-4 ring-1 ring-border sm:mx-4 sm:mb-4 sm:p-5">
                     <h3 className="text-xl font-semibold text-balance text-foreground sm:text-2xl">
                       {item.title}
                     </h3>
                     <p
                       className={cn(
-                        "mt-3 text-body text-text-secondary",
+                        "mt-2 text-body text-text-secondary",
                         isBangla && "leading-[1.7]",
                       )}
                     >
                       {item.description}
                     </p>
-                    <span className="mt-5 inline-flex h-11 w-full items-center justify-center gap-1.5 rounded-btn bg-primary px-5 text-button font-medium text-primary-foreground sm:w-fit">
+                    <span className="mt-3 inline-flex h-10 w-full items-center justify-center gap-1.5 rounded-btn bg-primary px-4 text-button font-medium text-primary-foreground sm:w-fit">
                       {item.cta}
                       <ArrowRight
                         className="size-4 transition-transform duration-200 ease-standard group-hover:translate-x-0.5"

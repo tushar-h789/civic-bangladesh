@@ -214,23 +214,11 @@ function PurposeVisual({
           />
         </div>
 
-        <ol className="relative flex flex-col gap-0">
-          <svg
+        <ol className="relative m-0 flex list-none flex-col gap-0 p-0">
+          <span
             aria-hidden="true"
-            className="pointer-events-none absolute top-6 bottom-6 left-[1.15rem] w-px overflow-visible sm:left-[1.4rem]"
-            preserveAspectRatio="none"
-          >
-            <line
-              x1="0.5"
-              y1="0"
-              x2="0.5"
-              y2="100%"
-              className="purpose-line stroke-primary/35"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeDasharray="4 6"
-            />
-          </svg>
+            className="pointer-events-none absolute top-7 bottom-7 left-[1.125rem] z-0 w-0 -translate-x-px border-l-2 border-dashed border-primary/40 sm:top-8 sm:bottom-8 sm:left-[1.375rem]"
+          />
 
           {STAGES.map((stage, index) => {
             const Icon = stage.icon;
