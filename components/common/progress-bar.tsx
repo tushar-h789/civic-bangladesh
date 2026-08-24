@@ -8,6 +8,7 @@ interface ProgressBarProps extends React.ComponentProps<"div"> {
   max?: number;
   label?: React.ReactNode;
   showValue?: boolean;
+  barClassName?: string;
 }
 
 function ProgressBar({
@@ -16,6 +17,7 @@ function ProgressBar({
   label,
   showValue = true,
   className,
+  barClassName,
   ...props
 }: ProgressBarProps) {
   const percentage = Math.min(100, Math.max(0, (value / max) * 100));
@@ -23,12 +25,12 @@ function ProgressBar({
   return (
     <div data-slot="progress-bar" className={cn("flex flex-col gap-2", className)} {...props}>
       {(label || showValue) && (
-        <div className="flex items-center justify-between text-sm">
+        <div className="flex items-center justify-between text-base">
           {label && <span className="font-medium text-foreground">{label}</span>}
           {showValue && <span className="text-text-secondary">{Math.round(percentage)}%</span>}
         </div>
       )}
-      <Progress value={percentage} />
+      <Progress value={percentage} className={cn("h-2 bg-light-green", barClassName)} />
     </div>
   );
 }

@@ -31,7 +31,7 @@ function HomeStories() {
     <section
       aria-labelledby="stories-heading"
       className={cn(
-        "bg-light-green py-section-mobile md:py-section-tablet lg:py-section-desktop",
+        "border-y border-border bg-surface py-section-mobile md:py-section-tablet lg:py-section-desktop",
         isBangla && "font-bengali",
       )}
     >
@@ -42,7 +42,7 @@ function HomeStories() {
           actions={
             <Link
               href={ROUTES.stories}
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
+              className="inline-flex items-center gap-1.5 text-base font-semibold text-primary outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
             >
               {section.viewAll}
               <ArrowRight className="size-4" aria-hidden />
@@ -50,7 +50,7 @@ function HomeStories() {
           }
         />
 
-        <ul className="mt-10 grid list-none gap-4 p-0 sm:mt-12 sm:grid-cols-2 lg:mt-14 lg:grid-cols-3 lg:gap-5">
+        <ul className="mt-10 grid list-none gap-5 p-0 sm:mt-12 sm:grid-cols-2 lg:mt-14 lg:grid-cols-3 lg:gap-6">
           {FEATURED_STORIES.map((story) => {
             const item = copy.items[story.key];
 

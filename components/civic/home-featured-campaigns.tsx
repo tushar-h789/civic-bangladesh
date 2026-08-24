@@ -38,14 +38,12 @@ function HomeFeaturedCampaigns() {
     >
       <Container>
         <SectionHeader
-          title={
-            <span id="featured-campaigns-heading">{section.title}</span>
-          }
+          title={<span id="featured-campaigns-heading">{section.title}</span>}
           description={section.description}
           actions={
             <Link
               href={ROUTES.campaigns}
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
+              className="inline-flex items-center gap-1.5 text-base font-semibold text-primary outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
             >
               {section.viewAll}
               <ArrowRight className="size-4" aria-hidden />
@@ -53,7 +51,7 @@ function HomeFeaturedCampaigns() {
           }
         />
 
-        <ul className="mt-10 grid list-none gap-4 p-0 sm:mt-12 sm:grid-cols-2 lg:mt-14 lg:grid-cols-3 lg:gap-5">
+        <ul className="mt-10 grid list-none gap-5 p-0 sm:mt-12 sm:grid-cols-2 lg:mt-14 lg:grid-cols-3 lg:gap-6">
           {FEATURED_CAMPAIGNS.map((campaign) => {
             const item = copy.items[campaign.key];
 
