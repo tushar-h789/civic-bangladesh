@@ -75,6 +75,15 @@ export const challenge: ChallengeTranslations = {
         "প্রতিদিনের অভ্যাসের পাঁচটি ধরন। হোমপেজের ৩০ দিনের যাত্রাও এই ধরনগুলো ব্যবহার করে।",
       openDay: "৩০ দিনের যাত্রা খুলুন",
       days: "{count}টি অভ্যাস",
+      filterLabel: "অভ্যাসের ধরন",
+      all: "সব ধরন",
+      calendarHint:
+        "দিন বেছে অভ্যাস পড়ুন। রাখা হয়েছে বলে চিহ্ন শুধু এই ভিজিটে থাকে—অ্যাকাউন্টে সেভ হয় না।",
+      markKept: "এই ভিজিটে রাখা হয়েছে",
+      markedNote: "এই ভিজিটে রাখা চিহ্ন—লাইভ হিসাব নয়।",
+      keptInCategory: "{total}টির মধ্যে {kept}টি রাখা",
+      jumpToday: "আজকের অভ্যাস",
+      lockedUpcoming: "নমুনা যাত্রায় এই দিন পরে আসবে।",
     },
     learning: {
       title: "শেখার চ্যালেঞ্জ",
@@ -83,6 +92,13 @@ export const challenge: ChallengeTranslations = {
       sampleNote: "একজন শিক্ষার্থীর নমুনা অগ্রগতি। লাইভ অ্যাকাউন্ট নয়।",
       related: "সম্পর্কিত কোর্স",
       progress: "{total}টির মধ্যে {completed}টি",
+      filterLabel: "কাজের অবস্থা",
+      all: "সব কাজ",
+      pathLabel: "প্রস্তুতির পথ",
+      selectHint:
+        "কাজ বেছে সম্পর্কিত কোর্স খুলুন। এটি নমুনা পড়াশোনার অগ্রগতি—খেলা নয়, সরকারি ফলও নয়।",
+      doneOf: "{total}টি নমুনা কাজের মধ্যে {completed}টি শেষ",
+      step: "ধাপ {index}",
     },
   },
   learningItems: {
