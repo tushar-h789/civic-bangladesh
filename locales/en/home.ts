@@ -3,27 +3,39 @@ import type { TranslationShape } from "@/locales/types";
 export const home = {
   hero: {
     headline: "Better Citizens. Better Bangladesh.",
-    headlineSecondary: "সচেতন নাগরিক, সুন্দর বাংলাদেশ।",
     description:
       "Small, responsible choices every day are what build a cleaner, safer, and more beautiful society.",
-    support:
-      "Civic education and government-service learning, in one place. Independent — not the official application portal.",
     pillars: {
       civic: {
-        hint: "Everyday habits. Core learning stays free.",
+        hint: "Everyday habits. Learn for free.",
       },
       service: {
         hint: "Prepare here. Apply on the official portal.",
       },
     },
     primaryCta: "Explore Civic Sense",
-    secondaryCta: "Take the Civic Challenge",
+    secondaryCta: "Join the Civic Challenge",
     videoAlt:
       "A slow cinematic film of Bangladesh civic landmarks: Shaheed Minar, Jatiyo Smriti Soudho, Ahsan Manzil, the Sixty Dome Mosque, and the countryside.",
+    slides: {
+      label: "Headlines",
+      goTo: "Show headline {n}",
+      slogan: {
+        lines: ["Better Citizens.", "Better Bangladesh."],
+      },
+      oneStop: {
+        lines: [
+          "One Stop",
+          "Learning Solution",
+          "Civic Education to",
+          "Govt. service learning",
+        ],
+      },
+    },
   },
   purpose: {
     eyebrow: "Our purpose",
-    heading: "Building a More Informed, Responsible & Empowered Bangladesh",
+    heading: "Building a More Responsible Bangladesh",
     description:
       "Civic Bangladesh exists to make civic knowledge and government-service information easier to understand, easier to access and easier to act upon.",
     mission: {
@@ -220,7 +232,7 @@ export const home = {
           "Neighbors sitting together around a table in a community room",
       },
       servicePrep: {
-        title: "Service Learning",
+        title: "Government service learning",
         description:
           "Prepare papers and steps for a sample government service, then apply on the official portal — not here.",
         cta: "View service courses",

@@ -10,7 +10,7 @@ export const civicLearning: CivicLearningTranslations = {
     imageAlt:
       "বাংলাদেশের শহরে গাছঘেরা পরিষ্কার হাঁটার পথ—বাসযোগ্য রাখার প্রতিদিনের অভ্যাস",
     primaryCta: "বিষয় দেখুন",
-    secondaryCta: "সিভিক চ্যালেঞ্জ নিন",
+    secondaryCta: "সিভিক চ্যালেঞ্জে যোগ দিন",
     freeNote: "মূল সিভিক শিক্ষা ফ্রি থাকবে।",
   },
   stats: {

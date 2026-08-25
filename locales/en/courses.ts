@@ -62,7 +62,7 @@ export const courses = {
     apply: "Show results",
   },
   types: {
-    servicePrep: "Service Learning",
+    servicePrep: "Government service learning",
     civic: "Civic Learning",
   },
   access: {

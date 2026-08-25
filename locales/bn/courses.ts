@@ -62,7 +62,7 @@ export const courses: CoursesTranslations = {
     apply: "ফলাফল দেখুন",
   },
   types: {
-    servicePrep: "সেবা শিক্ষা",
+    servicePrep: "সরকারি সেবা শিক্ষা",
     civic: "সিভিক শিক্ষা",
   },
   access: {

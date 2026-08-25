@@ -325,6 +325,15 @@ html.a11y-highlight-headings h6 {
   animation: hero-rise 0.8s var(--ease-standard) both;
 }
 
+@keyframes hero-headline-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
 .hero-copy-motion-delay-1 {
   animation-delay: 0.12s;
 }
