@@ -92,13 +92,11 @@ function ServiceLearningPath({
     return (
       <article
         className={cn(
-          "flex h-full flex-col gap-4 rounded-card bg-surface p-5 shadow-card ring-1 ring-border",
+          "flex h-full flex-col gap-3 rounded-card bg-surface p-4 ring-1 ring-border sm:p-5",
           className,
         )}
       >
-        <p className="text-xs font-semibold tracking-wide text-primary uppercase">
-          {copy.eyebrow}
-        </p>
+        <p className="text-xs font-semibold text-primary">{copy.eyebrow}</p>
         <PairHeadline
           serviceLabel={copy.pair.service}
           courseLabel={copy.pair.course}
@@ -109,40 +107,29 @@ function ServiceLearningPath({
           current={current}
           isBangla={isBangla}
         />
-        <ol className="m-0 flex list-none items-center gap-1 p-0">
-          {SERVICE_LEARNING_STEP_KEYS.map((key, index) => {
-            const Icon = STEP_ICONS[key];
-            const isAnchor = key === "service" || key === "course";
-
-            return (
-              <li key={key} className="flex items-center gap-1">
-                {index > 0 ? (
-                  <ArrowRight className="size-3 text-primary/50" aria-hidden />
-                ) : null}
-                <span
-                  className={cn(
-                    "flex size-8 items-center justify-center rounded-btn",
-                    isAnchor
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-light-green text-primary",
-                  )}
-                  title={copy.steps[key].title}
-                >
-                  <Icon className="size-3.5" aria-hidden />
-                  <span className="sr-only">{copy.steps[key].title}</span>
-                </span>
-              </li>
-            );
-          })}
-        </ol>
         <p
           className={cn(
-            "text-sm text-text-secondary",
+            "mt-auto text-sm text-text-secondary",
             isBangla && "leading-[1.7]",
           )}
         >
           {copy.promise}
         </p>
+        <div className="flex flex-wrap gap-2">
+          <Link
+            href={serviceHref}
+            className="inline-flex h-9 items-center rounded-btn bg-light-green px-3 text-sm font-semibold text-primary outline-none hover:bg-light-green/80 focus-visible:ring-3 focus-visible:ring-ring/50"
+          >
+            {copy.cta.viewService}
+          </Link>
+          <Link
+            href={courseHref}
+            className="inline-flex h-9 items-center rounded-btn bg-primary px-3 text-sm font-semibold text-primary-foreground outline-none hover:opacity-95 focus-visible:ring-3 focus-visible:ring-ring/50"
+          >
+            {copy.cta.startCourse}
+            <ArrowRight className="ml-1 size-3.5" aria-hidden />
+          </Link>
+        </div>
       </article>
     );
   }
@@ -200,7 +187,7 @@ function ServiceLearningPath({
         />
       </div>
 
-      <ol className="mt-6 m-0 grid list-none gap-3 p-0 sm:grid-cols-5">
+      <ol className="mt-6 m-0 grid list-none gap-2 p-0 sm:grid-cols-5 sm:gap-3">
         {SERVICE_LEARNING_STEP_KEYS.map((key, index) => {
           const step = copy.steps[key];
           const Icon = STEP_ICONS[key];
@@ -214,15 +201,9 @@ function ServiceLearningPath({
             (key === "service" && current === "service") ||
             (key === "course" && current === "course");
 
-            return (
-              <li key={key} className="relative flex flex-col">
-                {index > 0 ? (
-                  <ArrowDown
-                    className="mx-auto mb-2 size-4 text-primary sm:hidden"
-                    aria-hidden
-                  />
-                ) : null}
-                <StepNode
+          return (
+            <li key={key}>
+              <StepNode
                 href={href}
                 number={String(index + 1).padStart(2, "0")}
                 icon={<Icon className="size-4" aria-hidden />}
