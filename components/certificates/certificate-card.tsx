@@ -3,14 +3,6 @@ import { ArrowRight, Award } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { certificateHref } from "@/data/certificates";
-import { Badge } from "@/components/common/badge";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/common/card";
 import type { CertificateView } from "@/lib/get-certificate-view";
 import type { Dictionary } from "@/locales";
 
@@ -38,13 +30,16 @@ function CertificateCard({
   const href = certificateHref(view.entry.id);
 
   return (
-    <Card hoverable className="h-full gap-0 rounded-card py-0 ring-border">
+    <article className="group flex h-full flex-col overflow-hidden rounded-card bg-background ring-1 ring-border">
       <Link
         href={href}
-        className="block overflow-hidden rounded-t-card bg-primary p-1 outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
+        className="flex h-full cursor-pointer flex-col outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
       >
-        <div className="flex aspect-16/10 flex-col items-center justify-center gap-2 bg-surface px-4 text-center">
-          <span className="flex size-10 items-center justify-center rounded-full bg-light-green text-primary">
+        <div className="relative flex aspect-16/10 flex-col items-center justify-center gap-2 overflow-hidden bg-light-green px-4 text-center">
+          <span className="absolute top-3 left-3 rounded-btn bg-white/90 px-2 py-0.5 text-xs font-semibold text-primary">
+            {copy.document.sampleBadge}
+          </span>
+          <span className="flex size-10 items-center justify-center rounded-full bg-surface text-primary ring-1 ring-border">
             <Award className="size-5" aria-hidden />
           </span>
           <p
@@ -64,42 +59,35 @@ function CertificateCard({
             {view.learnerName}
           </p>
         </div>
-      </Link>
-
-      <CardHeader className="gap-2 pt-5">
-        <Badge variant="info" className="h-6 w-fit px-2.5">
-          {copy.document.sampleBadge}
-        </Badge>
-        <CardTitle className="text-lg font-semibold text-balance text-foreground">
-          <Link
-            href={href}
-            className="outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
+        <div className="flex flex-1 flex-col gap-1.5 p-4">
+          <h3
+            className={cn(
+              "text-base font-semibold text-balance text-foreground",
+              isBangla && "leading-[1.45]",
+            )}
           >
             {view.courseTitle}
-          </Link>
-        </CardTitle>
-        <p className="text-xs text-text-secondary">
-          {view.relatedServiceTitle ?? copy.card.civicCourse}
-        </p>
-      </CardHeader>
-
-      <CardContent className="flex flex-1 flex-col gap-1.5 pt-1 text-sm text-text-secondary">
-        <p>
-          {formatTemplate(copy.list.earnedOn, { date: view.completedOnLabel })}
-        </p>
-        <p className="break-all text-xs tracking-wide">{view.entry.id}</p>
-      </CardContent>
-
-      <CardFooter className="mt-auto justify-end border-border">
-        <Link
-          href={href}
-          className="inline-flex h-10 items-center gap-1.5 rounded-btn bg-primary px-4 text-button font-medium text-primary-foreground outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
-        >
-          {copy.list.cta}
-          <ArrowRight className="size-4" aria-hidden />
-        </Link>
-      </CardFooter>
-    </Card>
+          </h3>
+          <p className="text-xs text-text-secondary">
+            {view.relatedServiceTitle ?? copy.card.civicCourse}
+          </p>
+          <p
+            className={cn(
+              "text-sm text-text-secondary",
+              isBangla && "leading-[1.7]",
+            )}
+          >
+            {formatTemplate(copy.list.earnedOn, {
+              date: view.completedOnLabel,
+            })}
+          </p>
+          <span className="mt-auto inline-flex items-center gap-1 pt-2 text-sm font-semibold text-primary">
+            {copy.list.cta}
+            <ArrowRight className="size-3.5" aria-hidden />
+          </span>
+        </div>
+      </Link>
+    </article>
   );
 }
 

@@ -1,12 +1,16 @@
 import type { TranslationShape } from "@/locales/types";
 
 export const community = {
-  title: "Community on Civic Bangladesh",
+  title: "Take part with others",
   description:
-    "Take part with other people through campaigns, stories, promises, and challenges. This is shared civic practice — not a live social network, and not a government ward portal.",
+    "Join in through campaigns, stories, promises, and challenges. This is shared civic practice — not a live social network, and not a government ward portal.",
   sampleNote:
-    "There is no member feed or chat on this site. Campaign counts and civic scores that mention community are sample figures.",
+    "There is no member feed or chat here. Campaign counts that mention community are sample figures.",
   heroImageAlt: "Neighbors painting a school wall together",
+  stats: {
+    ways: "4 ways to take part",
+    noFeed: "No live feed or chat",
+  },
   jump: {
     label: "On this page",
     ways: "Ways to take part",
@@ -20,7 +24,7 @@ export const community = {
     body: "Civic Bangladesh does not run a discussion board, member directory, or neighbourhood registry here. You take part through the pages already on this site.",
   },
   ways: {
-    title: "Four ways to show up",
+    title: "Ways to take part",
     description:
       "Each path is already on Civic Bangladesh. None of them files anything with a government office.",
     campaigns: {
@@ -45,15 +49,15 @@ export const community = {
     },
   },
   campaigns: {
-    title: "Sample campaigns people can join",
+    title: "Sample campaigns",
     description:
       "The same sample campaigns as the campaigns page. Participant counts are demo figures.",
     browseCta: "Browse all campaigns",
   },
   how: {
-    title: "Learn, then take part together",
+    title: "How community works here",
     description:
-      "Community here follows the civic journey: practice a habit, then share it with a class, a lane, or a workplace — without pretending it is official.",
+      "Practice a habit, then share it with a class, a lane, or a workplace — without pretending it is official.",
     join: {
       title: "Join a shared action",
       body: "Pick a campaign or a challenge. Joining on this site is learning and practice, not a government registration.",
@@ -72,9 +76,9 @@ export const community = {
     },
   },
   notThis: {
-    title: "What community is not",
+    title: "What this is not",
     description:
-      "Keep the line clear between Civic Bangladesh and a live public forum or a government office.",
+      "Civic Bangladesh is not a live public forum and not a government office.",
     notFeed: {
       title: "Not a live social feed",
       body: "You cannot post, comment, or message other people here. There is no member chat on this website.",

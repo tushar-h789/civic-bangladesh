@@ -16,6 +16,16 @@ export function getPricingValues(t: Dictionary) {
   }));
 }
 
+export function getPricingNeverItems(t: Dictionary) {
+  const keys = ["governmentFee", "officialResult", "coreCivic"] as const;
+
+  return keys.map((key) => ({
+    key,
+    title: t.pricing.never.items[key].title,
+    body: t.pricing.never.items[key].body,
+  }));
+}
+
 export function getPrimaryRevenueProduct(t: Dictionary) {
   const copy = t.pricing.products[PRIMARY_REVENUE_KEY];
   const fees = getSamplePaidCourseFeeRange();

@@ -55,6 +55,7 @@ const NOT_ICONS = {
 
 const MORE_ICONS = {
   civicLearning: BookOpen,
+
   challenges: ListChecks,
   stories: HeartHandshake,
 } as const satisfies Record<
