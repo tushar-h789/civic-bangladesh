@@ -60,6 +60,26 @@ export function getStoryKindFilters(t: Dictionary) {
   ];
 }
 
+export function getStoriesHowItems(t: Dictionary) {
+  const keys = ["read", "habit", "practice"] as const;
+
+  return keys.map((key) => ({
+    key,
+    title: t.stories.how[key].title,
+    body: t.stories.how[key].body,
+  }));
+}
+
+export function getStoriesNotItems(t: Dictionary) {
+  const keys = ["notNews", "notOfficial", "notVerified"] as const;
+
+  return keys.map((key) => ({
+    key,
+    title: t.stories.notThis[key].title,
+    body: t.stories.notThis[key].body,
+  }));
+}
+
 export function getStoriesPractice(t: Dictionary) {
   return [
     {
