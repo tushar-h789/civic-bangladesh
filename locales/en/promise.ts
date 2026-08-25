@@ -23,18 +23,22 @@ export const promise = {
     },
   },
   page: {
-    title: "Make your Civic Promise",
+    title: "Make a Civic Promise",
     description:
-      "Pick one small habit. Keep it this week, in real places. This is a personal reminder — not a government oath, and not a saved account.",
+      "Pick one small habit and keep it this week, in real places. This is a personal reminder — not a government oath, and not saved to an account.",
     sampleNote:
       "The promise stays on this visit. Civic Bangladesh does not store it, and it does not create a certificate.",
     heroImageAlt: "A person placing waste into a public bin on a clean lane",
+    stats: {
+      habits: "{count} sample habits",
+      visit: "This visit only",
+    },
     jump: {
       label: "On this page",
       choose: "Choose a habit",
       how: "How it works",
       notThis: "What this is not",
-      more: "Practice",
+      more: "Keep going",
     },
     notice: {
       title: "A reminder for this visit",
@@ -43,14 +47,14 @@ export const promise = {
     choose: {
       title: "Pick one habit",
       description:
-        "Three sample promises. Choose the one you can actually keep — on the street, in a queue, or online.",
+        "Three sample promises. Choose the one you can keep — on the street, in a queue, or online.",
       chooseAnother: "Choose a different promise",
-      topicCta: "Practice this in civic learning",
+      topicCta: "Open this civic topic",
     },
     how: {
-      title: "One habit. This week.",
+      title: "How a Civic Promise works",
       description:
-        "A Civic Promise is a short reminder you give yourself. It is not a campaign you join, and it is not tracked as a score.",
+        "It is a short reminder you give yourself. It is not a campaign you join, and it is not tracked as a score.",
       pick: {
         title: "Pick one",
         body: "Three everyday habits. One is enough. You can change it on this visit.",
@@ -69,9 +73,9 @@ export const promise = {
       },
     },
     notThis: {
-      title: "What a Civic Promise is not",
+      title: "What this is not",
       description:
-        "Keep the line clear. This pledge is for you — not for an office or a certificate.",
+        "This pledge is for you. It is not for an office, a login, or a certificate.",
       notOath: {
         title: "Not a government oath",
         body: "This is not a legal pledge, a ministry programme, or an official citizen registration.",
