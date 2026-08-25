@@ -14,6 +14,9 @@ export const courses = {
     note: "Core civic education stays free. One sample course is extra depth for teachers and organisers. Fees, if any, are Civic Bangladesh course fees — not government fees.",
     resultsTitle: "Civic courses",
     searchPlaceholder: "Search civic courses...",
+    filterTitle: "Filter civic courses",
+    filterDescription:
+      "Narrow by free or paid, duration, difficulty, and certificate — not by government service type.",
   },
   hero: {
     imageAlt:
@@ -77,7 +80,7 @@ export const courses = {
   },
   categories: {
     title: "Course categories",
-    description: "Groups for browsing this sample catalog.",
+    description: "Pick a group to browse this sample catalog.",
     all: "All courses",
     count: "{count}",
     items: {

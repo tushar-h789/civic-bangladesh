@@ -14,6 +14,9 @@ export const courses: CoursesTranslations = {
     note: "মূল সিভিক শিক্ষা ফ্রি থাকবে। একটি নমুনা কোর্স শিক্ষক ও সংগঠকদের অতিরিক্ত গভীরতা। ফি থাকলে তা সিভিক বাংলাদেশের কোর্স ফি—সরকারি ফি নয়।",
     resultsTitle: "সিভিক কোর্স",
     searchPlaceholder: "সিভিক কোর্স খুঁজুন...",
+    filterTitle: "সিভিক কোর্স ফিল্টার",
+    filterDescription:
+      "ফ্রি বা পেইড, সময়, কঠিনতা ও সনদ দিয়ে ছোট করুন—সরকারি সেবার ধরন নয়।",
   },
   hero: {
     imageAlt:
@@ -77,7 +80,7 @@ export const courses: CoursesTranslations = {
   },
   categories: {
     title: "কোর্সের ধরন",
-    description: "এই নমুনা তালিকা ঘোরার জন্য গ্রুপ।",
+    description: "গ্রুপ বেছে নিন, নমুনা তালিকা ঘুরুন।",
     all: "সব কোর্স",
     count: "{count}",
     items: {

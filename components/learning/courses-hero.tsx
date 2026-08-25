@@ -109,14 +109,14 @@ function CoursesHero({
         className="absolute inset-0 bg-linear-to-r from-text/55 via-text/20 to-transparent lg:from-text/40 lg:via-text/10"
       />
 
-      <Container className="relative flex flex-col gap-6 pt-12 pb-14 sm:gap-8 sm:pt-16 sm:pb-20 lg:min-h-112 lg:justify-center lg:pt-20 lg:pb-24">
+      <Container className="relative flex flex-col gap-4 pt-8 pb-10 sm:gap-5 sm:pt-10 sm:pb-12 lg:pt-12 lg:pb-14">
         <Breadcrumb
           tone="onPrimary"
           className="text-sm sm:text-base"
           items={breadcrumb}
         />
 
-        <div className="flex max-w-xl flex-col gap-4 rounded-2xl bg-text/50 p-5 ring-1 ring-white/15 backdrop-blur-md sm:gap-5 sm:p-7 lg:max-w-xl">
+        <div className="flex max-w-xl flex-col gap-3 rounded-2xl bg-text/50 p-4 ring-1 ring-white/15 backdrop-blur-md sm:p-5 lg:max-w-xl">
           <h1
             className={cn(
               "text-[1.75rem] leading-[1.28] font-semibold text-balance text-white sm:text-[2.125rem] sm:leading-snug lg:text-4xl lg:leading-[1.2]",
