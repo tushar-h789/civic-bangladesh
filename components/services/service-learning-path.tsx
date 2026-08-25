@@ -40,6 +40,7 @@ interface ServiceLearningPathProps {
    */
   variant?: ServiceLearningVariant;
   current?: ServiceLearningCurrent;
+  dense?: boolean;
   className?: string;
 }
 
@@ -63,6 +64,7 @@ function ServiceLearningPath({
   courseHref,
   variant = "full",
   current,
+  dense = false,
   className,
 }: ServiceLearningPathProps) {
   const { t, locale } = useTranslation();
@@ -134,11 +136,12 @@ function ServiceLearningPath({
   return (
     <article
       className={cn(
-        "rounded-card bg-surface p-5 shadow-card ring-1 ring-border sm:p-6",
+        "rounded-card bg-surface shadow-card ring-1 ring-border",
+        dense ? "p-4 sm:p-5" : "p-5 sm:p-6",
         className,
       )}
     >
-      <div className="flex flex-col gap-3">
+      <div className={cn("flex flex-col", dense ? "gap-2" : "gap-3")}>
         <h2
           className={cn(
             "text-xl font-semibold text-foreground sm:text-2xl",
@@ -157,7 +160,7 @@ function ServiceLearningPath({
         </p>
       </div>
 
-      <div className="mt-5 grid gap-3 sm:grid-cols-2">
+      <div className={cn(dense ? "mt-4" : "mt-5", "grid gap-3 sm:grid-cols-2")}>
         <PairCard
           href={serviceHref}
           eyebrow={copy.pair.service}
@@ -178,7 +181,7 @@ function ServiceLearningPath({
         />
       </div>
 
-      <ol className="mt-6 m-0 grid list-none gap-0 p-0 sm:grid-cols-5">
+      <ol className={cn(dense ? "mt-4" : "mt-6", "m-0 grid list-none gap-0 p-0 sm:grid-cols-5")}>
         {SERVICE_LEARNING_STEP_KEYS.map((key, index) => {
           const step = copy.steps[key];
           const Icon = STEP_ICONS[key];
@@ -215,7 +218,7 @@ function ServiceLearningPath({
                   />
                 )}
               </div>
-              <div className={cn("min-w-0 pb-5 sm:pt-3 sm:pb-0")}>
+              <div className={cn("min-w-0 sm:pt-2.5 sm:pb-0", dense ? "pb-3" : "pb-5")}>
                 <p className="text-sm font-semibold text-foreground">
                   {step.title}
                 </p>
@@ -235,7 +238,8 @@ function ServiceLearningPath({
 
       <div
         className={cn(
-          "mt-5 border-t border-border pt-4 text-sm text-text-secondary",
+          dense ? "mt-4 pt-3" : "mt-5 pt-4",
+          "border-t border-border text-sm text-text-secondary",
           isBangla && "leading-[1.75]",
         )}
       >

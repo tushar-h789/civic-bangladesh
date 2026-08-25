@@ -29,8 +29,8 @@ function CourseCertificatePreview({
       <span className="absolute top-3 right-3 rounded-btn bg-primary px-2 py-0.5 text-xs font-medium text-primary-foreground">
         {copy.sampleBadge}
       </span>
-      <div className="border-b-4 border-primary px-5 py-8 sm:px-8 sm:py-10">
-        <div className="flex flex-col items-center gap-4 text-center">
+      <div className="border-b-4 border-primary px-5 py-5 sm:px-6 sm:py-6">
+        <div className="flex flex-col items-center gap-3 text-center">
           <BrandLogo alt={logoAlt} height={24} />
           <p className="text-xs font-semibold text-primary">
             {copy.previewEyebrow}

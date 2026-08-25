@@ -128,7 +128,7 @@ function CourseDetail({ slug }: { slug: string }) {
           className="absolute inset-0 bg-linear-to-t from-text/70 via-transparent to-text/25"
         />
 
-        <Container className="relative flex flex-col gap-6 pt-8 pb-10 sm:pt-10 sm:pb-12 lg:pt-12 lg:pb-14">
+        <Container className="relative flex flex-col gap-4 pt-6 pb-7 sm:pt-7 sm:pb-8 lg:pt-8 lg:pb-8">
           <Breadcrumb
             tone="onPrimary"
             className="text-sm sm:text-base"
@@ -139,8 +139,8 @@ function CourseDetail({ slug }: { slug: string }) {
             ]}
           />
 
-          <div className="grid items-start gap-5 lg:grid-cols-[minmax(0,1fr)_22rem] xl:grid-cols-[minmax(0,1fr)_24rem] xl:gap-8">
-            <div className="flex max-w-3xl flex-col gap-4 rounded-2xl bg-text/50 p-4 ring-1 ring-white/15 backdrop-blur-md sm:gap-5 sm:p-6">
+          <div className="grid items-start gap-4 lg:grid-cols-[minmax(0,1fr)_22rem] xl:grid-cols-[minmax(0,1fr)_24rem] xl:gap-5">
+            <div className="flex max-w-3xl flex-col gap-3 rounded-2xl bg-text/50 p-4 ring-1 ring-white/15 backdrop-blur-md sm:gap-3.5 sm:p-5">
               <div className="flex flex-wrap items-center gap-2">
                 <CourseTypeLabel
                   type={course.type}
@@ -223,7 +223,7 @@ function CourseDetail({ slug }: { slug: string }) {
             </div>
 
             <aside className="overflow-hidden rounded-card bg-surface/95 shadow-card ring-1 ring-white/20 backdrop-blur-md lg:sticky lg:top-24">
-              <div className="flex flex-col gap-4 p-5 sm:p-6">
+              <div className="flex flex-col gap-3 p-4 sm:p-5">
                 <div>
                   <p className="text-sm text-text-secondary">
                     {copy.meta.price}
@@ -294,11 +294,11 @@ function CourseDetail({ slug }: { slug: string }) {
             </aside>
           </div>
 
-          <nav aria-label={copy.onThisPage} className="pt-1">
+          <nav aria-label={copy.onThisPage}>
             <p className="text-sm font-semibold text-white">
               {copy.onThisPage}
             </p>
-            <ol className="mt-2.5 flex list-none flex-wrap gap-2 p-0">
+            <ol className="mt-2 flex list-none flex-wrap gap-1.5 p-0">
               {jumpLinks.map((link) => (
                 <li key={link.href}>
                   <a
@@ -315,8 +315,8 @@ function CourseDetail({ slug }: { slug: string }) {
         <span className="sr-only">{item.imageAlt}</span>
       </section>
 
-      <div className="bg-background py-10 md:py-12 lg:py-14">
-        <Container className="flex flex-col gap-5 sm:gap-6">
+      <div className="bg-background py-6 md:py-7 lg:py-8">
+        <Container className="flex flex-col gap-3 sm:gap-4">
           {relatedService && relatedItem ? (
             <section aria-labelledby="course-learning-heading">
               <h2 id="course-learning-heading" className="sr-only">
@@ -325,6 +325,7 @@ function CourseDetail({ slug }: { slug: string }) {
               <ServiceLearningPath
                 variant="full"
                 current="course"
+                dense
                 serviceTitle={relatedItem.title}
                 serviceHref={serviceHref(relatedService.slug)}
                 courseTitle={item.title}
@@ -340,7 +341,7 @@ function CourseDetail({ slug }: { slug: string }) {
             description={copy.outcomes.description}
             isBangla={isBangla}
           >
-            <ol className="m-0 grid list-none gap-x-8 gap-y-3 p-0 sm:grid-cols-2">
+            <ol className="m-0 grid list-none gap-x-6 gap-y-2.5 p-0 sm:grid-cols-2">
               {outcomes.map((outcome, index) => (
                 <li key={outcome} className="flex items-start gap-3">
                   <span className="mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-btn bg-light-green text-xs font-semibold text-primary">
@@ -381,7 +382,7 @@ function CourseDetail({ slug }: { slug: string }) {
             />
             <p
               className={cn(
-                "mt-3 text-xs text-text-secondary",
+                "mt-2 text-xs text-text-secondary",
                 isBangla && "leading-[1.7]",
               )}
             >
@@ -405,7 +406,7 @@ function CourseDetail({ slug }: { slug: string }) {
                 return (
                   <li
                     key={key}
-                    className="flex items-start gap-3 px-4 py-3.5 sm:items-center"
+                    className="flex items-start gap-3 px-3.5 py-2.5 sm:items-center"
                   >
                     <span
                       className={cn(
@@ -487,9 +488,9 @@ function CourseDetail({ slug }: { slug: string }) {
             aria-labelledby="certificate-heading"
             className="scroll-mt-28"
           >
-            <article className="rounded-card bg-surface p-5 shadow-card ring-1 ring-border sm:p-6">
+            <article className="rounded-card bg-surface p-4 shadow-card ring-1 ring-border sm:p-5">
               {course.hasCertificate ? (
-                <div className="grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:items-start">
+                <div className="grid gap-4 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:items-start">
                   <div>
                     <h2
                       id="certificate-heading"
@@ -508,7 +509,7 @@ function CourseDetail({ slug }: { slug: string }) {
                     >
                       {copy.certificate.description}
                     </p>
-                    <div className="mt-5 space-y-3">
+                    <div className="mt-4 space-y-2.5">
                       <p className="text-sm font-semibold text-foreground">
                         {copy.certificate.meaningTitle}
                       </p>
@@ -612,8 +613,8 @@ function CourseBodySection({
 }) {
   return (
     <section id={id} aria-labelledby={headingId} className="scroll-mt-28">
-      <article className="rounded-card bg-surface p-5 shadow-card ring-1 ring-border sm:p-6">
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+      <article className="rounded-card bg-surface p-4 shadow-card ring-1 ring-border sm:p-5">
+        <div className="flex flex-col gap-1.5 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
           <h2
             id={headingId}
             className={cn(
@@ -631,13 +632,13 @@ function CourseBodySection({
         </div>
         <p
           className={cn(
-            "mt-2 max-w-2xl text-body text-text-secondary",
+            "mt-1.5 max-w-2xl text-body text-text-secondary",
             isBangla && "leading-[1.8]",
           )}
         >
           {description}
         </p>
-        <div className="mt-5">{children}</div>
+        <div className="mt-4">{children}</div>
       </article>
     </section>
   );
@@ -694,7 +695,7 @@ function RelatedServicePanel({
       aria-labelledby={headingId}
       className="scroll-mt-28"
     >
-      <article className="rounded-card bg-surface p-5 shadow-card ring-1 ring-border sm:p-6">
+      <article className="rounded-card bg-surface p-4 shadow-card ring-1 ring-border sm:p-5">
         <h2
           id={headingId}
           className={cn(
@@ -706,14 +707,14 @@ function RelatedServicePanel({
         </h2>
         <p
           className={cn(
-            "mt-2 max-w-2xl text-body text-text-secondary",
+            "mt-1.5 max-w-2xl text-body text-text-secondary",
             isBangla && "leading-[1.8]",
           )}
         >
           {copy.description}
         </p>
 
-        <div className="mt-5 rounded-card bg-background p-4 ring-1 ring-border sm:p-5">
+        <div className="mt-4 rounded-card bg-background p-3.5 ring-1 ring-border sm:p-4">
           <p className="text-xs font-semibold text-primary">
             {copy.prepareFor}
           </p>
@@ -725,7 +726,7 @@ function RelatedServicePanel({
           >
             {serviceTitle}
           </p>
-          <ul className="mt-4 m-0 grid list-none gap-3 p-0 sm:grid-cols-2">
+          <ul className="mt-3 m-0 grid list-none gap-2.5 p-0 sm:grid-cols-2">
             {facts.map((fact) => (
               <li key={fact.label} className="flex items-start gap-2.5">
                 <span className="flex size-8 shrink-0 items-center justify-center rounded-btn bg-light-green text-primary">
@@ -745,7 +746,7 @@ function RelatedServicePanel({
               </li>
             ))}
           </ul>
-          <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+          <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
             <Button asChild className="h-11 rounded-btn">
               <Link href={serviceHref}>{copy.viewGuide}</Link>
             </Button>
@@ -764,7 +765,7 @@ function RelatedServicePanel({
           <p
             id="course-related-official-note"
             className={cn(
-              "mt-3 text-xs text-text-secondary",
+              "mt-2 text-xs text-text-secondary",
               isBangla && "leading-[1.7]",
             )}
           >

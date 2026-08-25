@@ -47,7 +47,7 @@ function CourseCurriculum({
           value={module.key}
           className="border-border px-4 sm:px-5"
         >
-          <AccordionTrigger className="items-start py-4 text-left hover:no-underline">
+          <AccordionTrigger className="items-start py-3 text-left hover:no-underline">
             <span className="flex min-w-0 flex-1 items-start gap-3">
               <span className="flex size-9 shrink-0 items-center justify-center rounded-btn bg-light-green text-xs font-semibold text-primary">
                 {stepNumber(index)}
@@ -77,7 +77,7 @@ function CourseCurriculum({
               </span>
             </span>
           </AccordionTrigger>
-          <AccordionContent className="pb-4 pl-12 sm:pl-[3.25rem]">
+          <AccordionContent className="pb-3 pl-12 sm:pl-[3.25rem]">
             <ol className="m-0 flex list-none flex-col gap-0 border-l border-border p-0">
               {module.lessons.map((lesson, lessonIndex) => (
                 <li
