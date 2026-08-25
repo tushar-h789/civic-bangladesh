@@ -38,6 +38,8 @@ interface CatalogCourseCardProps {
   courseType?: CourseTypeKey;
   courseTypeLabel?: string;
   typePurpose?: ReactNode;
+  description?: ReactNode;
+  variant?: "default" | "editorial";
   className?: string;
 }
 
@@ -63,8 +65,66 @@ function CatalogCourseCard({
   courseType,
   courseTypeLabel,
   typePurpose,
+  description,
+  variant = "default",
   className,
 }: CatalogCourseCardProps) {
+  if (variant === "editorial") {
+    return (
+      <Link
+        href={href}
+        className={cn(
+          "group relative flex h-full cursor-pointer flex-col overflow-hidden rounded-card bg-surface shadow-card ring-1 ring-border outline-none transition-shadow duration-200 ease-standard hover:shadow-card-hover focus-visible:ring-3 focus-visible:ring-ring/50",
+          className,
+        )}
+      >
+        <div className="relative aspect-16/10 overflow-hidden">
+          <Image
+            src={image}
+            alt={imageAlt}
+            fill
+            sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+            className="object-cover transition-transform duration-700 ease-standard group-hover:scale-[1.04]"
+          />
+          <div
+            aria-hidden
+            className="absolute inset-0 bg-linear-to-t from-text/70 via-text/20 to-transparent"
+          />
+          <span className="absolute top-3 left-3 inline-flex h-8 items-center rounded-btn bg-surface px-3 text-sm font-semibold text-primary ring-1 ring-border">
+            {accessLabel}
+          </span>
+        </div>
+        <div className="relative z-10 -mt-8 mx-3 mb-3 flex flex-1 flex-col rounded-card bg-surface p-4 ring-1 ring-border sm:mx-4 sm:mb-4 sm:p-5">
+          {courseType && courseTypeLabel ? (
+            <CourseTypeLabel type={courseType} label={courseTypeLabel} />
+          ) : null}
+          <h3 className="mt-2 text-xl font-semibold text-balance text-foreground">
+            {title}
+          </h3>
+          {description ? (
+            <p className="mt-2 flex-1 text-body text-text-secondary">
+              {description}
+            </p>
+          ) : null}
+          <ul className="mt-3 m-0 flex list-none flex-wrap gap-x-4 gap-y-1 p-0 text-sm text-text-secondary">
+            <MetaItem icon={BookOpen}>{lessons}</MetaItem>
+            <MetaItem icon={Clock}>{duration}</MetaItem>
+          </ul>
+          <div className="mt-3 flex items-center justify-between gap-3">
+            <p className="text-sm font-semibold text-foreground">{price}</p>
+            <span className="inline-flex h-10 w-fit items-center gap-1.5 rounded-btn bg-primary px-4 text-button font-medium text-primary-foreground">
+              {cta}
+              <ArrowRight
+                className="size-4 transition-transform duration-200 ease-standard group-hover:translate-x-0.5"
+                aria-hidden
+              />
+            </span>
+          </div>
+        </div>
+      </Link>
+    );
+  }
+
   return (
     <Card
       hoverable

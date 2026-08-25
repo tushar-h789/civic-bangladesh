@@ -243,6 +243,8 @@ function CoursesCatalog({
     onSelect: setCategory,
   };
 
+  const isCivicCatalog = type === "civic";
+
   return (
     <div className={cn(isBangla && "font-bengali")}>
       <CoursesHero
@@ -250,9 +252,10 @@ function CoursesCatalog({
         homeLabel={nav.links.home}
         coursesLabel={nav.links.courses}
         isBangla={isBangla}
+        type={type === ALL ? "all" : type}
       />
 
-      <section className="bg-background pt-0 pb-8 md:pb-10 lg:pb-12">
+      <section className="bg-background pt-0 pb-10 md:pb-12 lg:pb-14">
         <Container className="-mt-6 lg:-mt-8 lg:grid lg:grid-cols-[18rem_minmax(0,1fr)] lg:items-start lg:gap-8 xl:grid-cols-[20rem_minmax(0,1fr)] xl:gap-10">
           <aside className="hidden lg:block">
             <div className="sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto rounded-card bg-surface p-4 shadow-card ring-1 ring-border">
@@ -260,14 +263,17 @@ function CoursesCatalog({
             </div>
           </aside>
 
-          <div className="flex min-w-0 flex-col gap-6">
+          <div className="flex min-w-0 flex-col gap-5">
             <p
               className={cn(
-                "rounded-card bg-light-green px-4 py-3 text-sm text-text-secondary ring-1 ring-border",
+                "rounded-card px-4 py-3 text-body text-text-secondary ring-1 ring-border",
+                isCivicCatalog
+                  ? "bg-surface"
+                  : "bg-light-green text-sm",
                 isBangla && "leading-[1.75]",
               )}
             >
-              {copy.pricingNote}{" "}
+              {isCivicCatalog ? copy.civicCatalog.note : copy.pricingNote}{" "}
               <Link
                 href={ROUTES.pricing}
                 className="font-semibold text-primary outline-none hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
@@ -275,12 +281,16 @@ function CoursesCatalog({
                 {copy.pricingCta}
               </Link>
             </p>
-            <div className="flex flex-col gap-4 rounded-card bg-surface p-4 shadow-card ring-1 ring-border">
+            <div className="flex flex-col gap-4 rounded-card bg-surface p-4 shadow-card ring-1 ring-border sm:p-5">
               <SearchInput
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
                 onClear={() => setQuery("")}
-                placeholder={copy.search.placeholder}
+                placeholder={
+                  isCivicCatalog
+                    ? copy.civicCatalog.searchPlaceholder
+                    : copy.search.placeholder
+                }
                 aria-label={copy.search.label}
                 containerClassName="w-full"
                 className="h-11 rounded-btn bg-background text-body"
@@ -323,9 +333,11 @@ function CoursesCatalog({
             <div className="flex flex-wrap items-center justify-between gap-3">
               <h2
                 id="course-results-heading"
-                className="text-xl font-semibold text-foreground"
+                className="text-xl font-semibold text-foreground sm:text-2xl"
               >
-                {copy.results.title}
+                {isCivicCatalog
+                  ? copy.civicCatalog.resultsTitle
+                  : copy.results.title}
               </h2>
               <p
                 aria-live="polite"
@@ -368,10 +380,16 @@ function CoursesCatalog({
                           image={course.image}
                           imageAlt={item.imageAlt}
                           title={item.title}
+                          description={
+                            isCivicCatalog ? item.description : undefined
+                          }
+                          variant={isCivicCatalog ? "editorial" : "default"}
                           relatedServiceHref={
-                            course.relatedServiceSlug
-                              ? serviceHref(course.relatedServiceSlug)
-                              : undefined
+                            isCivicCatalog
+                              ? undefined
+                              : course.relatedServiceSlug
+                                ? serviceHref(course.relatedServiceSlug)
+                                : undefined
                           }
                           relatedServiceLabel={copy.card.relatedService}
                           relatedServiceTitle={relatedTitle}
