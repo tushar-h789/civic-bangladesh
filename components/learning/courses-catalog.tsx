@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { SlidersHorizontal } from "lucide-react";
+import { SlidersHorizontal, X } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { ROUTES } from "@/constants/routes";
@@ -73,11 +73,7 @@ function formatTemplate(
   );
 }
 
-function CoursesCatalog({
-  initialType,
-}: {
-  initialType?: CourseTypeKey;
-}) {
+function CoursesCatalog({ initialType }: { initialType?: CourseTypeKey }) {
   const { t, locale } = useTranslation();
   const isBangla = locale === "bn";
   const copy = t.courses;
@@ -124,18 +120,21 @@ function CoursesCatalog({
     ) as Record<CourseCatalogCategoryKey, number>;
   }, []);
 
+  const typeLocked = Boolean(initialType);
+  const isCivicCatalog = type === "civic";
   const extraFilterCount = [
-    type !== ALL,
+    !typeLocked && type !== ALL,
     access !== ALL,
     duration !== ALL,
     difficulty !== ALL,
     certificate !== ALL,
   ].filter(Boolean).length;
 
-  const drawerFilterCount = extraFilterCount + (category !== ALL ? 1 : 0);
+  const drawerFilterCount =
+    extraFilterCount + (!isCivicCatalog && category !== ALL ? 1 : 0);
 
   function clearExtraFilters() {
-    setType(ALL);
+    if (!typeLocked) setType(ALL);
     setAccess(ALL);
     setDuration(ALL);
     setDifficulty(ALL);
@@ -228,6 +227,7 @@ function CoursesCatalog({
     duration,
     difficulty,
     certificate,
+    hideType: typeLocked,
     onTypeChange: setType,
     onAccessChange: setAccess,
     onDurationChange: setDuration,
@@ -250,24 +250,39 @@ function CoursesCatalog({
         homeLabel={nav.links.home}
         coursesLabel={nav.links.courses}
         isBangla={isBangla}
+        type={type === ALL ? "all" : type}
       />
 
-      <section className="bg-background pt-0 pb-8 md:pb-10 lg:pb-12">
-        <Container className="-mt-6 lg:-mt-8 lg:grid lg:grid-cols-[18rem_minmax(0,1fr)] lg:items-start lg:gap-8 xl:grid-cols-[20rem_minmax(0,1fr)] xl:gap-10">
+      <section className="bg-background pt-0 pb-8 md:pb-10">
+        <Container className="-mt-5 lg:-mt-6 lg:grid lg:grid-cols-[17rem_minmax(0,1fr)] lg:items-start lg:gap-5 xl:grid-cols-[18.5rem_minmax(0,1fr)] xl:gap-6">
           <aside className="hidden lg:block">
             <div className="sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto rounded-card bg-surface p-4 shadow-card ring-1 ring-border">
-              <CourseCategoryNav {...categoryNavProps} />
+              {isCivicCatalog ? (
+                <div className="flex flex-col gap-4">
+                  <div className="border-b border-border pb-3">
+                    <p className="text-sm font-semibold text-foreground">
+                      {copy.civicCatalog.filterTitle}
+                    </p>
+                    <p className="mt-1 text-xs leading-relaxed text-text-secondary">
+                      {copy.civicCatalog.filterDescription}
+                    </p>
+                  </div>
+                  <CourseExtraFilters layout="stack" {...extraFilterProps} />
+                </div>
+              ) : (
+                <CourseCategoryNav {...categoryNavProps} />
+              )}
             </div>
           </aside>
 
-          <div className="flex min-w-0 flex-col gap-6">
+          <div className="flex min-w-0 flex-col gap-4">
             <p
               className={cn(
-                "rounded-card bg-light-green px-4 py-3 text-sm text-text-secondary ring-1 ring-border",
-                isBangla && "leading-[1.75]",
+                "rounded-card bg-light-green px-4 py-2.5 text-sm text-text-secondary ring-1 ring-border sm:text-body",
+                isBangla && "leading-[1.7]",
               )}
             >
-              {copy.pricingNote}{" "}
+              {isCivicCatalog ? copy.civicCatalog.note : copy.pricingNote}{" "}
               <Link
                 href={ROUTES.pricing}
                 className="font-semibold text-primary outline-none hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
@@ -275,22 +290,25 @@ function CoursesCatalog({
                 {copy.pricingCta}
               </Link>
             </p>
-            <div className="flex flex-col gap-4 rounded-card bg-surface p-4 shadow-card ring-1 ring-border">
-              <SearchInput
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-                onClear={() => setQuery("")}
-                placeholder={copy.search.placeholder}
-                aria-label={copy.search.label}
-                containerClassName="w-full"
-                className="h-11 rounded-btn bg-background text-body"
-              />
-
-              <div className="flex flex-wrap items-end gap-3">
+            <div className="flex flex-col gap-3 rounded-card bg-surface p-3 shadow-card ring-1 ring-border sm:p-4">
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+                <SearchInput
+                  value={query}
+                  onChange={(event) => setQuery(event.target.value)}
+                  onClear={() => setQuery("")}
+                  placeholder={
+                    isCivicCatalog
+                      ? copy.civicCatalog.searchPlaceholder
+                      : copy.search.placeholder
+                  }
+                  aria-label={copy.search.label}
+                  containerClassName="w-full min-w-0 flex-1"
+                  className="h-10 rounded-btn bg-background pl-10 text-body"
+                />
                 <Button
                   type="button"
                   variant="outline"
-                  className="h-9 rounded-btn lg:hidden"
+                  className="h-10 shrink-0 rounded-btn lg:hidden"
                   onClick={() => setFiltersOpen(true)}
                 >
                   <SlidersHorizontal className="size-4" aria-hidden />
@@ -301,41 +319,64 @@ function CoursesCatalog({
                     </span>
                   ) : null}
                 </Button>
-
-                <FilterSelect
-                  label={copy.sort.label}
-                  value={sort}
-                  onValueChange={(value) => setSort(value as SortKey)}
-                  className="w-full sm:w-48"
-                >
-                  <SelectItem value="featured">{copy.sort.featured}</SelectItem>
-                  <SelectItem value="title">{copy.sort.title}</SelectItem>
-                  <SelectItem value="price">{copy.sort.price}</SelectItem>
-                  <SelectItem value="duration">{copy.sort.duration}</SelectItem>
-                </FilterSelect>
               </div>
 
-              <div className="hidden lg:block">
+              <div
+                className={cn("hidden lg:block", isCivicCatalog && "lg:hidden")}
+              >
                 <CourseExtraFilters {...extraFilterProps} />
               </div>
+
+              <ActiveFilterChips
+                copy={copy}
+                learning={learning}
+                category={isCivicCatalog ? ALL : category}
+                type={typeLocked ? ALL : type}
+                access={access}
+                duration={duration}
+                difficulty={difficulty}
+                certificate={certificate}
+                onClearCategory={() => setCategory(ALL)}
+                onClearType={() => setType(ALL)}
+                onClearAccess={() => setAccess(ALL)}
+                onClearDuration={() => setDuration(ALL)}
+                onClearDifficulty={() => setDifficulty(ALL)}
+                onClearCertificate={() => setCertificate(ALL)}
+                onClearAll={clearAllFilters}
+              />
             </div>
 
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <h2
-                id="course-results-heading"
-                className="text-xl font-semibold text-foreground"
+            <div className="flex flex-wrap items-end justify-between gap-2">
+              <div className="min-w-0">
+                <h2
+                  id="course-results-heading"
+                  className="text-lg font-semibold text-foreground sm:text-xl"
+                >
+                  {isCivicCatalog
+                    ? copy.civicCatalog.resultsTitle
+                    : copy.results.title}
+                </h2>
+                <p
+                  aria-live="polite"
+                  className="mt-0.5 text-sm text-text-secondary"
+                >
+                  {formatTemplate(copy.results.showing, {
+                    shown: visibleResults.length,
+                    total: results.length,
+                  })}
+                </p>
+              </div>
+              <FilterSelect
+                label={copy.sort.label}
+                value={sort}
+                onValueChange={(value) => setSort(value as SortKey)}
+                className="w-full sm:w-52"
               >
-                {copy.results.title}
-              </h2>
-              <p
-                aria-live="polite"
-                className="text-sm font-semibold text-primary"
-              >
-                {formatTemplate(copy.results.showing, {
-                  shown: visibleResults.length,
-                  total: results.length,
-                })}
-              </p>
+                <SelectItem value="featured">{copy.sort.featured}</SelectItem>
+                <SelectItem value="title">{copy.sort.title}</SelectItem>
+                <SelectItem value="price">{copy.sort.price}</SelectItem>
+                <SelectItem value="duration">{copy.sort.duration}</SelectItem>
+              </FilterSelect>
             </div>
 
             {results.length === 0 ? (
@@ -368,10 +409,16 @@ function CoursesCatalog({
                           image={course.image}
                           imageAlt={item.imageAlt}
                           title={item.title}
+                          description={
+                            isCivicCatalog ? item.description : undefined
+                          }
+                          variant={isCivicCatalog ? "editorial" : "default"}
                           relatedServiceHref={
-                            course.relatedServiceSlug
-                              ? serviceHref(course.relatedServiceSlug)
-                              : undefined
+                            isCivicCatalog
+                              ? undefined
+                              : course.relatedServiceSlug
+                                ? serviceHref(course.relatedServiceSlug)
+                                : undefined
                           }
                           relatedServiceLabel={copy.card.relatedService}
                           relatedServiceTitle={relatedTitle}
@@ -422,7 +469,7 @@ function CoursesCatalog({
                       type="button"
                       variant="outline"
                       size="lg"
-                      className="h-11 rounded-btn px-5 text-button"
+                      className="h-10 rounded-btn px-5 text-button"
                       onClick={() =>
                         setPagination({
                           key: resultSetKey,
@@ -456,11 +503,22 @@ function CoursesCatalog({
               {copy.filters.drawerDescription}
             </SheetDescription>
           </SheetHeader>
-          <div className="flex flex-1 flex-col gap-6 overflow-y-auto p-4">
-            <CourseCategoryNav {...categoryNavProps} />
-            <div className="border-t border-border pt-4">
-              <CourseExtraFilters {...extraFilterProps} />
-            </div>
+          <div className="flex flex-1 flex-col gap-6 overflow-y-auto p-4 sm:p-5">
+            {isCivicCatalog ? (
+              <div className="flex flex-col gap-4">
+                <p className="text-sm font-semibold text-foreground">
+                  {copy.civicCatalog.filterTitle}
+                </p>
+                <CourseExtraFilters layout="stack" {...extraFilterProps} />
+              </div>
+            ) : (
+              <>
+                <CourseCategoryNav {...categoryNavProps} />
+                <div className="border-t border-border pt-4">
+                  <CourseExtraFilters {...extraFilterProps} />
+                </div>
+              </>
+            )}
           </div>
           <SheetFooter className="border-t border-border">
             {drawerFilterCount > 0 ? (
@@ -490,6 +548,8 @@ function CourseExtraFilters({
   duration,
   difficulty,
   certificate,
+  hideType,
+  layout = "grid",
   onTypeChange,
   onAccessChange,
   onDurationChange,
@@ -503,6 +563,8 @@ function CourseExtraFilters({
   duration: DurationFilter;
   difficulty: DifficultyFilter;
   certificate: CertificateFilter;
+  hideType?: boolean;
+  layout?: "grid" | "stack";
   onTypeChange: (value: TypeFilter) => void;
   onAccessChange: (value: AccessFilter) => void;
   onDurationChange: (value: DurationFilter) => void;
@@ -510,19 +572,30 @@ function CourseExtraFilters({
   onCertificateChange: (value: CertificateFilter) => void;
 }) {
   return (
-    <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-      <FilterSelect
-        label={copy.filters.type}
-        value={type}
-        onValueChange={(value) => onTypeChange(value as TypeFilter)}
-      >
-        <SelectItem value={ALL}>{copy.filters.all}</SelectItem>
-        {COURSE_TYPE_KEYS.map((key) => (
-          <SelectItem key={key} value={key}>
-            {copy.types[key]}
-          </SelectItem>
-        ))}
-      </FilterSelect>
+    <div
+      className={cn(
+        layout === "stack"
+          ? "flex flex-col gap-3"
+          : cn(
+              "grid grid-cols-1 gap-2 sm:grid-cols-2",
+              hideType ? "xl:grid-cols-4" : "xl:grid-cols-5",
+            ),
+      )}
+    >
+      {hideType ? null : (
+        <FilterSelect
+          label={copy.filters.type}
+          value={type}
+          onValueChange={(value) => onTypeChange(value as TypeFilter)}
+        >
+          <SelectItem value={ALL}>{copy.filters.all}</SelectItem>
+          {COURSE_TYPE_KEYS.map((key) => (
+            <SelectItem key={key} value={key}>
+              {copy.types[key]}
+            </SelectItem>
+          ))}
+        </FilterSelect>
+      )}
       <FilterSelect
         label={copy.filters.access}
         value={access}
@@ -571,6 +644,111 @@ function CourseExtraFilters({
   );
 }
 
+function ActiveFilterChips({
+  copy,
+  learning,
+  category,
+  type,
+  access,
+  duration,
+  difficulty,
+  certificate,
+  onClearCategory,
+  onClearType,
+  onClearAccess,
+  onClearDuration,
+  onClearDifficulty,
+  onClearCertificate,
+  onClearAll,
+}: {
+  copy: CoursesCatalogCopy;
+  learning: ReturnType<typeof useTranslation>["t"]["learning"];
+  category: CategoryFilter;
+  type: TypeFilter;
+  access: AccessFilter;
+  duration: DurationFilter;
+  difficulty: DifficultyFilter;
+  certificate: CertificateFilter;
+  onClearCategory: () => void;
+  onClearType: () => void;
+  onClearAccess: () => void;
+  onClearDuration: () => void;
+  onClearDifficulty: () => void;
+  onClearCertificate: () => void;
+  onClearAll: () => void;
+}) {
+  const chips: { key: string; label: string; onClear: () => void }[] = [];
+
+  if (category !== ALL) {
+    chips.push({
+      key: "category",
+      label: copy.categories.items[category],
+      onClear: onClearCategory,
+    });
+  }
+  if (type !== ALL) {
+    chips.push({
+      key: "type",
+      label: copy.types[type],
+      onClear: onClearType,
+    });
+  }
+  if (access !== ALL) {
+    chips.push({
+      key: "access",
+      label: copy.access[access],
+      onClear: onClearAccess,
+    });
+  }
+  if (duration !== ALL) {
+    chips.push({
+      key: "duration",
+      label: copy.duration[duration],
+      onClear: onClearDuration,
+    });
+  }
+  if (difficulty !== ALL) {
+    chips.push({
+      key: "difficulty",
+      label: learning.difficulty[difficulty],
+      onClear: onClearDifficulty,
+    });
+  }
+  if (certificate !== ALL) {
+    chips.push({
+      key: "certificate",
+      label: copy.certificateFilter[certificate],
+      onClear: onClearCertificate,
+    });
+  }
+
+  if (chips.length === 0) return null;
+
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      {chips.map((chip) => (
+        <button
+          key={chip.key}
+          type="button"
+          onClick={chip.onClear}
+          className="inline-flex h-8 items-center gap-1.5 rounded-btn bg-light-green px-2.5 text-sm font-medium text-primary outline-none ring-1 ring-border transition-colors hover:bg-muted focus-visible:ring-3 focus-visible:ring-ring/50"
+        >
+          {chip.label}
+          <X className="size-3.5" aria-hidden />
+          <span className="sr-only">{copy.filters.clear}</span>
+        </button>
+      ))}
+      <button
+        type="button"
+        onClick={onClearAll}
+        className="text-sm font-medium text-text-secondary underline-offset-2 outline-none hover:text-foreground hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
+      >
+        {copy.filters.clear}
+      </button>
+    </div>
+  );
+}
+
 type CoursesCatalogCopy = ReturnType<typeof useTranslation>["t"]["courses"];
 
 function FilterSelect({
@@ -589,12 +767,7 @@ function FilterSelect({
   const id = React.useId();
 
   return (
-    <div
-      className={cn(
-        "flex min-w-0 flex-1 flex-col gap-1.5 sm:flex-none sm:w-44",
-        className,
-      )}
-    >
+    <div className={cn("flex min-w-0 w-full flex-col gap-1", className)}>
       <label htmlFor={id} className="text-xs font-medium text-text-secondary">
         {label}
       </label>

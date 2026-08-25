@@ -4,6 +4,7 @@ export const dashboard: DashboardTranslations = {
   eyebrow: "ড্যাশবোর্ড",
   title: "আপনার শেখা",
   greeting: "হ্যালো, {name}",
+  heroImageAlt: "মানুষ একসঙ্গে সিভিক অভ্যাস ও সরকারি সেবার প্রস্তুতি শিখছেন",
   description:
     "সিভিক শেখা ও সরকারি সেবার প্রস্তুতি এক জায়গায়। সিভিক বাংলাদেশ শেখায়। সরকারি আবেদন নিষ্পত্তি করে না।",
   sampleNote:
@@ -84,6 +85,8 @@ export const dashboard: DashboardTranslations = {
     ctaPassed: "কোর্স দেখুন",
     emptyTitle: "এই নমুনায় মূল্যায়ন নেই",
     emptyDescription: "কোর্সে মূল্যায়ন থাকলে এখানে দেখা যাবে।",
+    nonePending: "এই নমুনায় এখন কিছু বাকি নেই।",
+    nonePassed: "এই নমুনায় এখনো পাস করা যাচাই নেই।",
   },
   certificates: {
     eyebrow: "সিভিক বাংলাদেশের সনদ",

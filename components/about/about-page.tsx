@@ -1,6 +1,6 @@
 "use client";
 
-import type { ComponentType } from "react";
+import type { ComponentType, ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -8,13 +8,15 @@ import {
   Ban,
   BookOpen,
   Building2,
+  ClipboardCheck,
   ExternalLink,
   GraduationCap,
   HeartHandshake,
   Landmark,
   ListChecks,
   ScrollText,
-  ShieldAlert,
+  Search,
+  Sparkles,
   Stamp,
   Users,
 } from "lucide-react";
@@ -23,11 +25,10 @@ import { cn } from "@/lib/utils";
 import { ROUTES } from "@/constants/routes";
 import type {
   AboutAudienceKey,
+  AboutJourneyKey,
   AboutNotKey,
-  AboutPillarKey,
-  AboutStartKey,
+  AboutServicePathKey,
 } from "@/data/about";
-import { OFFICIAL_GOVERNMENT_PORTAL_HREF } from "@/data/government-services";
 import { useTranslation } from "@/hooks/use-translation";
 import {
   getAboutAudience,
@@ -39,45 +40,67 @@ import {
 } from "@/lib/get-about-view";
 import { Breadcrumb } from "@/components/common/breadcrumb";
 import { Container } from "@/components/common/container";
-import { SectionHeader } from "@/components/common/section-header";
-import { Button } from "@/components/ui/button";
 
 const HERO_IMAGE = "/images/home/intro-environment.png";
 
-const PILLAR_IMAGES: Record<AboutPillarKey, string> = {
+const PILLAR_IMAGES = {
   civic: "/images/home/intro-responsibility.png",
   services: "/images/home/intro-rules.png",
-};
+} as const;
 
-const AUDIENCE_ICONS: Record<
-  AboutAudienceKey,
+const JOURNEY_ICONS = {
+  learn: BookOpen,
+  practice: ListChecks,
+  participate: Users,
+  inspire: Sparkles,
+  impact: HeartHandshake,
+} as const satisfies Record<
+  AboutJourneyKey,
   ComponentType<{ className?: string; "aria-hidden"?: boolean }>
-> = {
+>;
+
+const SERVICE_PATH_ICONS = {
+  find: Search,
+  learnProcess: ScrollText,
+  course: GraduationCap,
+  assess: ClipboardCheck,
+  credential: Stamp,
+  apply: Landmark,
+} as const satisfies Record<
+  AboutServicePathKey,
+  ComponentType<{ className?: string; "aria-hidden"?: boolean }>
+>;
+
+const AUDIENCE_ICONS = {
   citizens: Users,
   students: GraduationCap,
   teachers: BookOpen,
   schools: Building2,
   organizations: HeartHandshake,
-};
-
-const NOT_ICONS: Record<
-  AboutNotKey,
+} as const satisfies Record<
+  AboutAudienceKey,
   ComponentType<{ className?: string; "aria-hidden"?: boolean }>
-> = {
+>;
+
+const NOT_ICONS = {
   notPortal: Landmark,
   notPartnership: Ban,
   notOfficialCert: Stamp,
-};
-
-const START_ICONS: Record<
-  AboutStartKey,
+} as const satisfies Record<
+  AboutNotKey,
   ComponentType<{ className?: string; "aria-hidden"?: boolean }>
-> = {
+>;
+
+const START_ICONS = {
   civicLearning: HeartHandshake,
   services: ScrollText,
   courses: GraduationCap,
   challenges: ListChecks,
-};
+  official: ExternalLink,
+} as const satisfies Record<
+  string,
+  ComponentType<{ className?: string; "aria-hidden"?: boolean }>
+>;
 
 function AboutPage() {
   const { t, locale } = useTranslation();
@@ -90,9 +113,16 @@ function AboutPage() {
   const notItems = getAboutNotItems(t);
   const startItems = getAboutStartItems(t);
 
+  const jumpLinks = [
+    { href: "#about-pillars", label: copy.jump.pillars },
+    { href: "#about-journey", label: copy.jump.journey },
+    { href: "#about-not", label: copy.jump.notThis },
+    { href: "#about-start", label: copy.jump.start },
+  ];
+
   return (
     <div className={cn(isBangla && "font-bengali")}>
-      <section className="relative isolate overflow-hidden bg-primary">
+      <section className="relative isolate overflow-hidden bg-text">
         <div className="absolute inset-0" aria-hidden="true">
           <Image
             src={HERO_IMAGE}
@@ -105,39 +135,43 @@ function AboutPage() {
         </div>
         <div
           aria-hidden="true"
-          className="absolute inset-0 bg-linear-to-r from-text/90 via-text/72 to-text/30"
+          className="absolute inset-0 bg-linear-to-r from-text/80 via-text/50 to-text/20 lg:from-text/75 lg:via-text/40 lg:to-transparent"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-linear-to-t from-text/70 via-transparent to-text/25"
         />
 
-        <Container className="relative flex flex-col gap-8 pt-14 pb-16 sm:pt-16 sm:pb-20 lg:pt-20 lg:pb-24">
+        <Container className="relative flex flex-col gap-4 pt-6 pb-7 sm:pt-7 sm:pb-8 lg:pt-8 lg:pb-8">
           <Breadcrumb
             tone="onPrimary"
+            className="text-sm sm:text-base"
             items={[
               { label: t.nav.links.home, href: ROUTES.home },
               { label: t.nav.links.about },
             ]}
           />
-          <div className="flex max-w-2xl flex-col gap-5">
-            <div className="flex flex-col gap-3">
-              <h1
-                className={cn(
-                  "text-hero-mobile font-semibold text-balance text-white lg:text-5xl",
-                  isBangla && "leading-tight",
-                )}
-              >
-                {copy.title}
-              </h1>
-              <p
-                className={cn(
-                  "text-xl font-medium text-white/85 sm:text-2xl",
-                  !isBangla && "font-bengali",
-                )}
-              >
-                {copy.titleSecondary}
-              </p>
-            </div>
+
+          <div className="flex max-w-2xl flex-col gap-3 rounded-2xl bg-text/50 p-4 ring-1 ring-white/15 backdrop-blur-md sm:gap-3.5 sm:p-5">
+            <h1
+              className={cn(
+                "text-[1.75rem] leading-[1.28] font-semibold text-balance text-white sm:text-[2.125rem] sm:leading-snug lg:text-4xl lg:leading-[1.2]",
+                isBangla && "leading-[1.32] sm:leading-[1.3]",
+              )}
+            >
+              {copy.title}
+            </h1>
             <p
               className={cn(
-                "max-w-xl text-body text-white/85",
+                "text-base font-medium text-white/85 sm:text-lg",
+                !isBangla && "font-bengali",
+              )}
+            >
+              {copy.titleSecondary}
+            </p>
+            <p
+              className={cn(
+                "text-base text-white/85 sm:text-body",
                 isBangla && "leading-[1.8]",
               )}
             >
@@ -145,444 +179,384 @@ function AboutPage() {
             </p>
             <p
               className={cn(
-                "max-w-xl text-base text-white/70",
+                "text-sm text-white/70",
                 isBangla && "leading-[1.75]",
               )}
             >
               {copy.sampleNote}
             </p>
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-              <Button
-                asChild
-                className="inline-flex h-12 items-center gap-2 rounded-btn bg-white px-6 text-button text-primary hover:bg-light-green"
-              >
-                <Link href={ROUTES.learn}>
-                  {copy.pillars.civic.cta}
-                  <ArrowRight className="size-4" aria-hidden />
-                </Link>
-              </Button>
-              <Button
-                asChild
-                variant="outline"
-                className="inline-flex h-12 items-center gap-2 rounded-btn border-white/40 bg-transparent px-6 text-button text-white hover:bg-white/10 hover:text-white"
-              >
-                <Link href={ROUTES.governmentServices}>
-                  {copy.pillars.services.cta}
-                  <ArrowRight className="size-4" aria-hidden />
-                </Link>
-              </Button>
-            </div>
+            <ul className="m-0 flex list-none flex-wrap gap-2 p-0">
+              <HeroChip
+                icon={<HeartHandshake className="size-3.5" aria-hidden />}
+                label={copy.stats.independent}
+              />
+              <HeroChip
+                icon={<Landmark className="size-3.5" aria-hidden />}
+                label={copy.stats.notOffice}
+              />
+            </ul>
           </div>
+
           <nav aria-label={copy.jump.label}>
-            <ul className="m-0 flex list-none flex-wrap gap-x-4 gap-y-2 p-0 text-base">
-              {(
-                [
-                  ["about-pillars", copy.jump.pillars],
-                  ["about-journey", copy.jump.journey],
-                  ["about-who", copy.jump.who],
-                  ["about-not", copy.jump.notThis],
-                  ["about-start", copy.jump.start],
-                  ["about-official", copy.jump.official],
-                ] as const
-              ).map(([href, label]) => (
-                <li key={href}>
+            <p className="text-sm font-semibold text-white">
+              {copy.jump.label}
+            </p>
+            <ol className="mt-2 flex list-none flex-wrap gap-1.5 p-0">
+              {jumpLinks.map((link) => (
+                <li key={link.href}>
                   <a
-                    href={`#${href}`}
-                    className="font-medium text-white/85 outline-none hover:text-white hover:underline focus-visible:ring-3 focus-visible:ring-white/50"
+                    href={link.href}
+                    className="inline-flex h-8 items-center rounded-btn bg-white/10 px-3 text-sm font-medium text-white/90 ring-1 ring-white/15 transition-colors duration-200 ease-standard hover:bg-white/18 hover:text-white"
                   >
-                    {label}
+                    {link.label}
                   </a>
                 </li>
               ))}
-            </ul>
+            </ol>
           </nav>
         </Container>
         <span className="sr-only">{copy.heroImageAlt}</span>
       </section>
 
-      <section className="bg-background pt-8 pb-0 md:pt-10">
-        <Container>
-          <aside
-            className="flex gap-3 rounded-card bg-light-green p-5 ring-1 ring-border sm:p-6"
-            aria-labelledby="about-notice-heading"
-          >
-            <ShieldAlert
-              className="mt-0.5 size-5 shrink-0 text-primary"
-              aria-hidden
-            />
-            <div className="min-w-0">
-              <h2
-                id="about-notice-heading"
-                className="text-base font-semibold text-foreground"
-              >
-                {copy.notice.title}
-              </h2>
-              <p
-                className={cn(
-                  "mt-2 text-sm text-text-secondary",
-                  isBangla && "leading-[1.75]",
-                )}
-              >
-                {copy.notice.body}
-              </p>
-            </div>
-          </aside>
-        </Container>
-      </section>
-
-      <section
-        id="about-pillars"
-        aria-labelledby="about-pillars-heading"
-        className="scroll-mt-28 bg-background py-section-mobile md:py-section-tablet lg:py-section-desktop"
-      >
-        <Container>
-          <SectionHeader
-            title={<span id="about-pillars-heading">{copy.pillars.title}</span>}
+      <div className="bg-background py-6 md:py-7 lg:py-8">
+        <Container className="flex flex-col gap-3 sm:gap-4">
+          <AboutBodySection
+            id="about-pillars"
+            headingId="about-pillars-heading"
+            title={copy.pillars.title}
             description={copy.pillars.description}
-          />
-          <ul className="mt-10 grid list-none gap-4 p-0 sm:mt-12 lg:grid-cols-2 lg:gap-5">
-            {pillars.map((pillar) => (
-              <li key={pillar.key}>
-                <article className="flex h-full flex-col overflow-hidden rounded-card bg-surface ring-1 ring-border">
-                  <div className="relative min-h-52 overflow-hidden sm:min-h-64">
-                    <Image
-                      src={PILLAR_IMAGES[pillar.key]}
-                      alt={pillar.imageAlt}
-                      fill
-                      sizes="(min-width: 1024px) 50vw, 100vw"
-                      className="object-cover"
-                    />
-                  </div>
-                  <div className="flex flex-1 flex-col p-5 sm:p-6">
-                    <h3
-                      className={cn(
-                        "text-xl font-semibold text-foreground",
-                        isBangla && "leading-[1.45]",
-                      )}
-                    >
-                      {pillar.title}
-                    </h3>
-                    <p
-                      className={cn(
-                        "mt-2 text-sm text-text-secondary",
-                        isBangla && "leading-[1.75]",
-                      )}
-                    >
-                      {pillar.body}
-                    </p>
-                    <Link
-                      href={pillar.href}
-                      className="mt-auto inline-flex items-center gap-1.5 pt-4 text-sm font-semibold text-primary outline-none hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
-                    >
-                      {pillar.cta}
-                      <ArrowRight className="size-3.5" aria-hidden />
-                    </Link>
-                  </div>
-                </article>
-              </li>
-            ))}
-          </ul>
-        </Container>
-      </section>
-
-      <section
-        id="about-journey"
-        aria-labelledby="about-journey-heading"
-        className="scroll-mt-28 bg-light-green py-section-mobile md:py-section-tablet lg:py-section-desktop"
-      >
-        <Container>
-          <SectionHeader
-            title={<span id="about-journey-heading">{copy.journey.title}</span>}
-            description={copy.journey.description}
-          />
-          <ol className="mt-10 m-0 grid list-none gap-4 p-0 sm:mt-12 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
-            {journey.map((step, index) => (
-              <li key={step.key}>
-                <article className="flex h-full flex-col rounded-card bg-surface p-5 ring-1 ring-border sm:p-6">
-                  <p className="text-sm font-semibold tabular-nums text-primary">
-                    {String(index + 1).padStart(2, "0")}
-                  </p>
-                  <h3
-                    className={cn(
-                      "mt-3 text-lg font-semibold text-foreground",
-                      isBangla && "leading-[1.45]",
-                    )}
-                  >
-                    {step.title}
-                  </h3>
-                  <p
-                    className={cn(
-                      "mt-2 text-sm text-text-secondary",
-                      isBangla && "leading-[1.75]",
-                    )}
-                  >
-                    {step.body}
-                  </p>
-                </article>
-              </li>
-            ))}
-          </ol>
-
-          <div className="mt-12 sm:mt-16">
-            <SectionHeader
-              title={
-                <span id="about-service-path-heading">
-                  {copy.servicePath.title}
-                </span>
-              }
-              description={copy.servicePath.description}
-            />
-            <ol className="mt-10 m-0 grid list-none gap-4 p-0 sm:mt-12 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
-              {servicePath.map((step, index) => (
-                <li key={step.key}>
-                  <article className="flex h-full flex-col rounded-card bg-surface p-5 ring-1 ring-border sm:p-6">
-                    <p className="text-sm font-semibold tabular-nums text-primary">
-                      {String(index + 1).padStart(2, "0")}
-                    </p>
-                    <h3
-                      className={cn(
-                        "mt-3 text-lg font-semibold text-foreground",
-                        isBangla && "leading-[1.45]",
-                      )}
-                    >
-                      {step.title}
-                    </h3>
-                    <p
-                      className={cn(
-                        "mt-2 text-sm text-text-secondary",
-                        isBangla && "leading-[1.75]",
-                      )}
-                    >
-                      {step.body}
-                    </p>
+            isBangla={isBangla}
+          >
+            <ul className="m-0 grid list-none gap-3 p-0 lg:grid-cols-2">
+              {pillars.map((pillar) => (
+                <li key={pillar.key}>
+                  <article className="flex h-full flex-col overflow-hidden rounded-card bg-background ring-1 ring-border">
+                    <div className="relative min-h-40 overflow-hidden sm:min-h-48">
+                      <Image
+                        src={PILLAR_IMAGES[pillar.key]}
+                        alt={pillar.imageAlt}
+                        fill
+                        sizes="(min-width: 1024px) 50vw, 100vw"
+                        className="object-cover"
+                      />
+                    </div>
+                    <div className="flex flex-1 flex-col gap-1.5 p-4">
+                      <h3
+                        className={cn(
+                          "text-base font-semibold text-foreground sm:text-lg",
+                          isBangla && "leading-[1.45]",
+                        )}
+                      >
+                        {pillar.title}
+                      </h3>
+                      <p
+                        className={cn(
+                          "text-sm text-text-secondary",
+                          isBangla && "leading-[1.75]",
+                        )}
+                      >
+                        {pillar.body}
+                      </p>
+                      <Link
+                        href={pillar.href}
+                        className="mt-auto inline-flex items-center gap-1.5 pt-2 text-sm font-semibold text-primary outline-none hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
+                      >
+                        {pillar.cta}
+                        <ArrowRight className="size-3.5" aria-hidden />
+                      </Link>
+                    </div>
                   </article>
                 </li>
               ))}
-            </ol>
-          </div>
-        </Container>
-      </section>
+            </ul>
+          </AboutBodySection>
 
-      <section
-        id="about-who"
-        aria-labelledby="about-who-heading"
-        className="scroll-mt-28 bg-background py-section-mobile md:py-section-tablet lg:py-section-desktop"
-      >
-        <Container>
-          <SectionHeader
-            title={<span id="about-who-heading">{copy.who.title}</span>}
+          <AboutBodySection
+            id="about-journey"
+            headingId="about-journey-heading"
+            title={copy.journey.title}
+            description={copy.journey.description}
+            isBangla={isBangla}
+          >
+            <CircleStepper
+              items={journey.map((item) => ({
+                ...item,
+                Icon: JOURNEY_ICONS[item.key],
+              }))}
+              columnsClass="lg:grid-cols-5"
+              isBangla={isBangla}
+            />
+          </AboutBodySection>
+
+          <AboutBodySection
+            id="about-service-path"
+            headingId="about-service-path-heading"
+            title={copy.servicePath.title}
+            description={copy.servicePath.description}
+            isBangla={isBangla}
+          >
+            <CircleStepper
+              items={servicePath.map((item) => ({
+                ...item,
+                Icon: SERVICE_PATH_ICONS[item.key],
+              }))}
+              columnsClass="lg:grid-cols-6"
+              isBangla={isBangla}
+            />
+          </AboutBodySection>
+
+          <AboutBodySection
+            id="about-who"
+            headingId="about-who-heading"
+            title={copy.who.title}
             description={copy.who.description}
-          />
-          <ul className="mt-10 grid list-none gap-4 p-0 sm:mt-12 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
-            {audience.map((item) => {
-              const Icon = AUDIENCE_ICONS[item.key];
+            isBangla={isBangla}
+          >
+            <ul className="m-0 grid list-none gap-3 p-0 sm:grid-cols-2 lg:grid-cols-3">
+              {audience.map((item) => {
+                const Icon = AUDIENCE_ICONS[item.key];
 
-              return (
-                <li key={item.key}>
-                  <article className="flex h-full flex-col rounded-card bg-surface p-5 ring-1 ring-border sm:p-6">
-                    <span className="flex size-10 shrink-0 items-center justify-center rounded-btn bg-light-green text-primary">
-                      <Icon className="size-4" aria-hidden />
-                    </span>
-                    <h3
-                      className={cn(
-                        "mt-4 text-lg font-semibold text-foreground",
-                        isBangla && "leading-[1.45]",
-                      )}
-                    >
-                      {item.title}
-                    </h3>
-                    <p
-                      className={cn(
-                        "mt-2 text-sm text-text-secondary",
-                        isBangla && "leading-[1.75]",
-                      )}
-                    >
-                      {item.body}
-                    </p>
+                return (
+                  <li key={item.key}>
                     <Link
                       href={item.href}
-                      className="mt-auto inline-flex items-center gap-1.5 pt-4 text-sm font-semibold text-primary outline-none hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
+                      className="flex h-full cursor-pointer flex-col gap-3 rounded-card bg-background p-4 outline-none ring-1 ring-border transition-shadow duration-200 ease-standard hover:shadow-card focus-visible:ring-3 focus-visible:ring-ring/50"
                     >
-                      {item.cta}
-                      <ArrowRight className="size-3.5" aria-hidden />
+                      <span className="flex size-9 items-center justify-center rounded-btn bg-light-green text-primary">
+                        <Icon className="size-4" aria-hidden />
+                      </span>
+                      <p className="text-sm font-semibold text-foreground">
+                        {item.title}
+                      </p>
+                      <p
+                        className={cn(
+                          "text-sm text-text-secondary",
+                          isBangla && "leading-[1.7]",
+                        )}
+                      >
+                        {item.body}
+                      </p>
+                      <span className="mt-auto inline-flex items-center gap-1.5 text-sm font-semibold text-primary">
+                        {item.cta}
+                        <ArrowRight className="size-3.5" aria-hidden />
+                      </span>
                     </Link>
-                  </article>
-                </li>
-              );
-            })}
-          </ul>
-        </Container>
-      </section>
+                  </li>
+                );
+              })}
+            </ul>
+          </AboutBodySection>
 
-      <section
-        id="about-not"
-        aria-labelledby="about-not-heading"
-        className="scroll-mt-28 bg-light-green py-section-mobile md:py-section-tablet lg:py-section-desktop"
-      >
-        <Container>
-          <SectionHeader
-            title={<span id="about-not-heading">{copy.notThis.title}</span>}
+          <AboutBodySection
+            id="about-not"
+            headingId="about-not-heading"
+            title={copy.notThis.title}
             description={copy.notThis.description}
-          />
-          <ul className="mt-10 grid list-none gap-4 p-0 sm:mt-12 lg:grid-cols-3 lg:gap-5">
-            {notItems.map((item) => {
-              const Icon = NOT_ICONS[item.key];
+            isBangla={isBangla}
+          >
+            <ul className="m-0 divide-y divide-border overflow-hidden rounded-card bg-background ring-1 ring-border">
+              {notItems.map((item) => {
+                const Icon = NOT_ICONS[item.key];
 
-              return (
-                <li key={item.key}>
-                  <article className="flex h-full flex-col rounded-card bg-surface p-5 ring-1 ring-border sm:p-6">
-                    <span className="flex size-10 shrink-0 items-center justify-center rounded-btn bg-light-green text-primary">
+                return (
+                  <li
+                    key={item.key}
+                    className="flex items-start gap-3 px-3.5 py-3 sm:items-center"
+                  >
+                    <span className="flex size-9 shrink-0 items-center justify-center rounded-btn bg-light-green text-primary">
                       <Icon className="size-4" aria-hidden />
                     </span>
-                    <h3
-                      className={cn(
-                        "mt-4 text-lg font-semibold text-foreground",
-                        isBangla && "leading-[1.45]",
-                      )}
-                    >
-                      {item.title}
-                    </h3>
-                    <p
-                      className={cn(
-                        "mt-2 text-sm text-text-secondary",
-                        isBangla && "leading-[1.75]",
-                      )}
-                    >
-                      {item.body}
-                    </p>
-                  </article>
-                </li>
-              );
-            })}
-          </ul>
-        </Container>
-      </section>
+                    <div className="min-w-0">
+                      <p className="text-sm font-semibold text-foreground">
+                        {item.title}
+                      </p>
+                      <p
+                        className={cn(
+                          "mt-0.5 text-sm text-text-secondary",
+                          isBangla && "leading-[1.7]",
+                        )}
+                      >
+                        {item.body}
+                      </p>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          </AboutBodySection>
 
-      <section
-        id="about-start"
-        aria-labelledby="about-start-heading"
-        className="scroll-mt-28 bg-background py-section-mobile md:py-section-tablet lg:py-section-desktop"
-      >
-        <Container>
-          <SectionHeader
-            title={<span id="about-start-heading">{copy.start.title}</span>}
+          <AboutBodySection
+            id="about-start"
+            headingId="about-start-heading"
+            title={copy.start.title}
             description={copy.start.description}
-          />
-          <ul className="mt-10 grid list-none gap-4 p-0 sm:mt-12 sm:grid-cols-2 lg:gap-5">
-            {startItems.map((item) => {
-              const Icon = START_ICONS[item.key];
-
-              return (
-                <li key={item.key}>
-                  <article className="flex h-full flex-col rounded-card bg-surface p-5 ring-1 ring-border sm:p-6">
-                    <span className="flex size-10 shrink-0 items-center justify-center rounded-btn bg-light-green text-primary">
+            isBangla={isBangla}
+          >
+            <ul className="m-0 grid list-none gap-3 p-0 sm:grid-cols-2 lg:grid-cols-3">
+              {startItems.map((item) => {
+                const Icon = START_ICONS[item.key];
+                const className =
+                  "flex h-full cursor-pointer flex-col gap-3 rounded-card bg-background p-4 outline-none ring-1 ring-border transition-shadow duration-200 ease-standard hover:shadow-card focus-visible:ring-3 focus-visible:ring-ring/50";
+                const inner = (
+                  <>
+                    <span className="flex size-9 items-center justify-center rounded-btn bg-light-green text-primary">
                       <Icon className="size-4" aria-hidden />
                     </span>
-                    <h3
-                      className={cn(
-                        "mt-4 text-lg font-semibold text-foreground",
-                        isBangla && "leading-[1.45]",
-                      )}
-                    >
+                    <p className="text-sm font-semibold text-foreground">
                       {item.title}
-                    </h3>
+                    </p>
                     <p
                       className={cn(
-                        "mt-2 text-sm text-text-secondary",
-                        isBangla && "leading-[1.75]",
+                        "text-sm text-text-secondary",
+                        isBangla && "leading-[1.7]",
                       )}
                     >
                       {item.body}
                     </p>
-                    <Link
-                      href={item.href}
-                      className="mt-auto inline-flex items-center gap-1.5 pt-4 text-sm font-semibold text-primary outline-none hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
-                    >
+                    <span className="mt-auto inline-flex items-center gap-1.5 text-sm font-semibold text-primary">
                       {item.cta}
-                      <ArrowRight className="size-3.5" aria-hidden />
-                    </Link>
-                  </article>
-                </li>
-              );
-            })}
-          </ul>
-        </Container>
-      </section>
+                      {item.external ? (
+                        <ExternalLink className="size-3.5" aria-hidden />
+                      ) : (
+                        <ArrowRight className="size-3.5" aria-hidden />
+                      )}
+                    </span>
+                  </>
+                );
 
-      <section
-        id="about-official"
-        aria-labelledby="about-official-heading"
-        className="scroll-mt-28 bg-primary py-section-mobile md:py-section-tablet lg:py-section-desktop"
-      >
-        <Container>
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between lg:gap-12">
-            <div className="max-w-2xl">
-              <h2
-                id="about-official-heading"
-                className="text-section-heading font-semibold text-balance text-white"
-              >
-                {copy.official.title}
-              </h2>
-              <p
-                className={cn(
-                  "mt-4 text-body text-white/80",
-                  isBangla && "leading-[1.8]",
-                )}
-              >
-                {copy.official.description}
-              </p>
-              <p
-                className={cn(
-                  "mt-4 text-sm text-white/80",
-                  isBangla && "leading-[1.75]",
-                )}
-              >
-                <span className="font-medium text-white">
-                  {t.serviceSource.sourceLabel}:
-                </span>{" "}
-                {t.serviceSource.portalName}
-              </p>
-              <p
-                id="about-official-portal-note"
-                className={cn(
-                  "mt-3 text-base text-white/70",
-                  isBangla && "leading-[1.75]",
-                )}
-              >
-                {copy.official.note}
-              </p>
-            </div>
-
-            <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap lg:flex-col lg:items-stretch">
-              <Button
-                asChild
-                className="inline-flex h-12 items-center gap-2 rounded-btn bg-white px-6 text-button text-primary hover:bg-light-green"
-              >
-                <a
-                  href={OFFICIAL_GOVERNMENT_PORTAL_HREF}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-describedby="about-official-portal-note"
-                >
-                  {copy.official.cta}
-                  <ExternalLink className="size-4" aria-hidden />
-                </a>
-              </Button>
-              <Button
-                asChild
-                variant="outline"
-                className="inline-flex h-12 items-center gap-2 rounded-btn border-white/40 bg-transparent px-6 text-button text-white hover:bg-white/10 hover:text-white"
-              >
-                <Link href={ROUTES.governmentServices}>
-                  {copy.official.prepareCta}
-                  <ArrowRight className="size-4" aria-hidden />
-                </Link>
-              </Button>
-            </div>
-          </div>
+                return (
+                  <li key={item.key}>
+                    {item.external ? (
+                      <a
+                        href={item.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={className}
+                      >
+                        {inner}
+                      </a>
+                    ) : (
+                      <Link href={item.href} className={className}>
+                        {inner}
+                      </Link>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          </AboutBodySection>
         </Container>
-      </section>
+      </div>
     </div>
+  );
+}
+
+function HeroChip({ icon, label }: { icon: ReactNode; label: string }) {
+  return (
+    <li className="inline-flex max-w-full items-center gap-1.5 rounded-btn bg-white/12 px-2.5 py-1 text-sm font-medium text-white ring-1 ring-white/15">
+      {icon}
+      <span>{label}</span>
+    </li>
+  );
+}
+
+function CircleStepper({
+  items,
+  columnsClass,
+  isBangla,
+}: {
+  items: {
+    key: string;
+    title: string;
+    body: string;
+    Icon: ComponentType<{ className?: string; "aria-hidden"?: boolean }>;
+  }[];
+  columnsClass: string;
+  isBangla: boolean;
+}) {
+  return (
+    <ol className={cn("m-0 grid list-none gap-0 p-0", columnsClass)}>
+      {items.map((item, index) => {
+        const last = index === items.length - 1;
+
+        return (
+          <li
+            key={item.key}
+            className={cn(
+              "relative flex gap-3 lg:flex-col lg:items-center lg:px-1.5 lg:text-center",
+              !last &&
+                "lg:after:absolute lg:after:top-5 lg:after:left-[calc(50%+1.35rem)] lg:after:right-[-50%] lg:after:h-px lg:after:bg-border lg:after:content-['']",
+            )}
+          >
+            <div className="flex flex-col items-center">
+              <span className="relative z-10 flex size-10 shrink-0 items-center justify-center rounded-full bg-light-green text-primary ring-4 ring-surface">
+                <item.Icon className="size-4" aria-hidden />
+              </span>
+              {last ? null : (
+                <span
+                  aria-hidden
+                  className="my-1 w-px min-h-5 flex-1 bg-border lg:hidden"
+                />
+              )}
+            </div>
+            <div className="min-w-0 pb-4 lg:pt-2.5 lg:pb-0">
+              <p className="text-sm font-semibold text-foreground">
+                {item.title}
+              </p>
+              <p
+                className={cn(
+                  "mt-1 text-xs text-text-secondary",
+                  isBangla && "leading-[1.65]",
+                )}
+              >
+                {item.body}
+              </p>
+            </div>
+          </li>
+        );
+      })}
+    </ol>
+  );
+}
+
+function AboutBodySection({
+  id,
+  headingId,
+  title,
+  description,
+  isBangla,
+  children,
+}: {
+  id: string;
+  headingId: string;
+  title: string;
+  description: string;
+  isBangla: boolean;
+  children: ReactNode;
+}) {
+  return (
+    <section id={id} aria-labelledby={headingId} className="scroll-mt-28">
+      <article className="rounded-card bg-surface p-4 shadow-card ring-1 ring-border sm:p-5">
+        <h2
+          id={headingId}
+          className={cn(
+            "text-xl font-semibold text-foreground sm:text-2xl",
+            isBangla && "leading-tight",
+          )}
+        >
+          {title}
+        </h2>
+        <p
+          className={cn(
+            "mt-1.5 max-w-2xl text-body text-text-secondary",
+            isBangla && "leading-[1.8]",
+          )}
+        >
+          {description}
+        </p>
+        <div className="mt-4">{children}</div>
+      </article>
+    </section>
   );
 }
 

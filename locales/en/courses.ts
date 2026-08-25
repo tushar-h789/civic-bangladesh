@@ -4,19 +4,42 @@ export const courses = {
   eyebrow: "Courses",
   title: "Learn the Service. Do It Right.",
   description:
-    "Learn the government-service application process simply — through video, guides, and assessment.",
+    "Prepare for a government service with video lessons, a clear guide, and a short assessment — then apply on the official portal.",
   sampleNote:
-    "Sample catalog of Civic Bangladesh courses. Fees are our course fees, kept affordable — not government fees, and not an official government class.",
+    "A sample Civic Bangladesh catalog. Fees are our course fees, kept affordable. They are not government fees, and these are not official government classes.",
   pricingNote:
-    "Government service preparation is our main paid product. Core civic education stays free. Fees are listed in Taka. Nothing is sold with a countdown or a second product on the way to a lesson.",
-  pricingCta: "How we price courses",
+    "Paid courses prepare you for government services. Essential civic education stays free. Prices are in Taka. We do not use countdown offers or extra products on the way to a lesson.",
+  pricingCta: "How we set course prices",
+  civicCatalog: {
+    note: "Core civic education stays free. One sample course is extra depth for teachers and organisers. Fees, if any, are Civic Bangladesh course fees — not government fees.",
+    resultsTitle: "Civic courses",
+    searchPlaceholder: "Search civic courses...",
+    filterTitle: "Filter civic courses",
+    filterDescription:
+      "Narrow by free or paid, duration, difficulty, and certificate — not by government service type.",
+  },
   hero: {
     imageAlt:
-      "People learning together how to prepare papers for a government service",
-    prepareFirst: "Learn here. Apply on the official government portal.",
+      "A young man helping an elderly woman understand an application form in a bright Bangladesh public service waiting hall",
+    prepareFirst: "Learn here. Apply on the official portal.",
     stats: {
       courses: "{count} sample courses",
       categories: "{count} categories",
+    },
+    civic: {
+      eyebrow: "Civic Learning",
+      title: "Learn the habits that keep Bangladesh livable.",
+      description:
+        "Free civic courses on roads, shared places, cleanliness, and digital care. Practical habits — not a government class.",
+      sampleNote:
+        "Sample Civic Learning catalog. Core civic education stays free. This is Civic Bangladesh, not an official government course.",
+      imageAlt:
+        "A young man in Bangladesh placing litter into a public waste bin on a tree-lined city sidewalk",
+      prepareFirst: "Essential civic education stays free.",
+      stats: {
+        courses: "{count} civic courses",
+        free: "Free core courses",
+      },
     },
   },
   search: {
@@ -39,7 +62,7 @@ export const courses = {
     apply: "Show results",
   },
   types: {
-    servicePrep: "Service Learning",
+    servicePrep: "Government service learning",
     civic: "Civic Learning",
   },
   access: {
@@ -57,7 +80,7 @@ export const courses = {
   },
   categories: {
     title: "Course categories",
-    description: "Groups for browsing this sample catalog.",
+    description: "Pick a group to browse this sample catalog.",
     all: "All courses",
     count: "{count}",
     items: {

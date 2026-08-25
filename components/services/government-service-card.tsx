@@ -5,6 +5,7 @@ import Link from "next/link";
 import {
   ArrowRight,
   Banknote,
+  BookOpen,
   Clock,
   ExternalLink,
   FileText,
@@ -75,10 +76,6 @@ function GovernmentServiceCard({
   const copy = t.services.card;
   const officialNote = t.serviceDetail.officialPortalNote;
   const stacked = variant === "mobile" || variant === "default";
-  const dense =
-    variant === "compact" ||
-    variant === "search-result" ||
-    variant === "mobile";
   const officialHandlers = isolateOfficialCta
     ? { onPointerDown: stopRowSelect, onClick: stopRowSelect }
     : undefined;
@@ -166,12 +163,8 @@ function GovernmentServiceCard({
   const officialButton = (
     <Button
       asChild
-      variant={variant === "featured" ? "default" : "outline"}
-      className={cn(
-        "h-10 rounded-btn text-button",
-        variant === "featured" && "text-primary-foreground",
-        (variant === "mobile" || variant === "featured") && "w-full sm:w-auto",
-      )}
+      variant="outline"
+      className="h-11 min-h-11 w-full rounded-btn px-3 text-button sm:flex-1"
     >
       <a
         href={officialHref}
@@ -190,9 +183,8 @@ function GovernmentServiceCard({
     <Card
       hoverable
       className={cn(
-        "h-full gap-0 rounded-card py-0 ring-border",
+        "h-full gap-0 overflow-hidden rounded-card py-0 ring-border",
         variant === "compact" && "sm:flex-row sm:items-stretch",
-        variant === "featured" && "shadow-card",
         isBangla && "font-bengali",
         className,
       )}
@@ -205,22 +197,23 @@ function GovernmentServiceCard({
       >
         <CardHeader
           className={cn(
-            "gap-3",
-            variant === "featured" ? "pt-6 sm:pt-7" : "pt-5",
+            "gap-2.5",
+            variant === "featured" ? "pt-5 sm:pt-6" : "pt-5",
             variant === "compact" && "sm:flex-1 sm:pr-4",
           )}
         >
-          <div className="flex flex-wrap items-center gap-2">
-            <Badge variant="info" className="h-6 px-2.5">
-              {category}
-            </Badge>
-          </div>
+          <Badge
+            variant="info"
+            className="h-6 max-w-full self-start truncate px-2.5"
+          >
+            {category}
+          </Badge>
           <CardTitle
             className={cn(
               "font-semibold text-balance text-foreground",
               variant === "featured"
                 ? "text-xl sm:text-2xl"
-                : "text-lg",
+                : "text-lg leading-snug",
               isBangla && "leading-[1.45]",
             )}
           >
@@ -231,10 +224,10 @@ function GovernmentServiceCard({
               {title}
             </Link>
           </CardTitle>
-          <p className="flex items-start gap-1.5 text-xs text-text-secondary">
-            <Landmark className="mt-0.5 size-3.5 shrink-0" aria-hidden />
-            <span>
-              <span className="font-medium text-foreground/80">
+          <p className="flex items-center gap-1.5 text-sm text-text-secondary">
+            <Landmark className="size-3.5 shrink-0 text-primary" aria-hidden />
+            <span className="min-w-0 truncate">
+              <span className="font-medium text-foreground">
                 {t.serviceSource.sourceLabel}:
               </span>{" "}
               {authority}
@@ -242,8 +235,7 @@ function GovernmentServiceCard({
           </p>
           <CardDescription
             className={cn(
-              "text-body text-text-secondary",
-              dense && "line-clamp-2",
+              "line-clamp-2 text-sm text-text-secondary sm:text-body",
               isBangla && "leading-[1.75]",
             )}
           >
@@ -253,70 +245,77 @@ function GovernmentServiceCard({
 
         <CardContent
           className={cn(
-            "flex flex-1 flex-col gap-3 pt-4",
-            variant === "compact" && "sm:max-w-xs sm:justify-center sm:pt-5",
+            "flex flex-1 flex-col gap-3 pt-1 pb-1",
+            variant === "compact" && "sm:max-w-xs sm:justify-center sm:pt-4",
             variant === "featured" && "px-6 sm:px-7",
           )}
         >
           <ul
             className={cn(
               "m-0 grid list-none gap-2 p-0",
-              stacked && variant !== "mobile" && "sm:grid-cols-3",
+              stacked && variant !== "mobile" && "grid-cols-1 sm:grid-cols-3",
               variant === "compact" && "grid-cols-1",
               variant === "mobile" && "grid-cols-1",
             )}
           >
             {facts.map((fact) => {
               const Icon = fact.icon;
+              const isFee = fact.key === "fee";
 
               return (
-                <li key={fact.key}>
-                  <p className="flex h-full items-start gap-2 rounded-btn bg-light-green px-3 py-2.5">
-                    <Icon
-                      className="mt-0.5 size-4 shrink-0 text-primary"
-                      aria-hidden
-                    />
+                <li key={fact.key} className="min-w-0">
+                  <div className="flex h-full flex-col gap-2 rounded-btn bg-background p-3 ring-1 ring-border">
+                    <span className="flex size-8 items-center justify-center rounded-btn bg-light-green text-primary">
+                      <Icon className="size-4" aria-hidden />
+                    </span>
                     <span className="min-w-0">
                       <span className="block text-xs font-medium text-text-secondary">
                         {fact.label}
                       </span>
                       <span
                         className={cn(
-                          "mt-0.5 block text-sm font-medium text-foreground",
-                          isBangla && "leading-[1.7]",
+                          "mt-0.5 block text-sm font-semibold text-foreground",
+                          isBangla && "leading-[1.45]",
                         )}
                       >
                         {fact.value}
                       </span>
+                      {isFee ? (
+                        <span className="mt-1 block text-xs text-text-secondary">
+                          {copy.feeConfirm}
+                        </span>
+                      ) : null}
                     </span>
-                  </p>
+                  </div>
                 </li>
               );
             })}
           </ul>
 
           {course ? (
-            <p
+            <Link
+              href={course.href ?? href}
               className={cn(
-                "mt-auto border-t border-border pt-3 text-xs text-text-secondary",
-                isBangla && "leading-[1.7]",
+                "mt-auto flex items-center gap-3 rounded-btn bg-light-green px-3 py-2.5 text-sm outline-none ring-1 ring-primary/10 transition-colors hover:bg-light-green/80 focus-visible:ring-3 focus-visible:ring-ring/50",
+                isBangla && "leading-normal",
               )}
             >
-              {course.label}
-              <span aria-hidden> · </span>
-              {course.price}
-              {course.href ? (
-                <>
-                  <span aria-hidden> · </span>
-                  <Link
-                    href={course.href}
-                    className="font-medium text-primary outline-none hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
-                  >
-                    {copy.viewCourse}
-                  </Link>
-                </>
-              ) : null}
-            </p>
+              <span className="flex size-8 shrink-0 items-center justify-center rounded-btn bg-surface text-primary">
+                <BookOpen className="size-4" aria-hidden />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block font-semibold text-primary">
+                  {course.label}
+                </span>
+                <span className="block text-text-secondary">
+                  {course.price}
+                </span>
+              </span>
+              <span className="inline-flex shrink-0 items-center gap-1 font-medium text-primary">
+                {copy.viewCourse}
+                <ArrowRight className="size-3.5" aria-hidden />
+              </span>
+            </Link>
           ) : (
             <div className="mt-auto" />
           )}
@@ -325,20 +324,22 @@ function GovernmentServiceCard({
 
       <CardFooter
         className={cn(
-          "mt-auto flex-col items-stretch gap-3 border-border sm:flex-row sm:items-center sm:justify-between",
+          "mt-auto flex-col items-stretch gap-2 border-border bg-surface py-4 sm:flex-row sm:items-stretch",
           variant === "compact" &&
             "sm:w-52 sm:shrink-0 sm:flex-col sm:justify-center sm:border-t-0 sm:border-l",
-          variant === "featured" && "px-6 py-5 sm:px-7",
+          variant === "featured" && "px-6 py-4 sm:px-7",
           variant === "mobile" && "flex-col",
         )}
       >
-        <Link
-          href={href}
-          className="inline-flex items-center gap-1 text-sm font-semibold text-primary outline-none hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
+        <Button
+          asChild
+          className="h-11 min-h-11 w-full rounded-btn text-button text-primary-foreground sm:flex-1"
         >
-          {copy.cta}
-          <ArrowRight className="size-3.5" aria-hidden />
-        </Link>
+          <Link href={href}>
+            {copy.cta}
+            <ArrowRight className="size-4" aria-hidden />
+          </Link>
+        </Button>
         {officialButton}
       </CardFooter>
     </Card>

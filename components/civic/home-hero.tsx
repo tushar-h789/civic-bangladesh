@@ -23,6 +23,18 @@ function prefersReducedMotion() {
   );
 }
 
+const HERO_SLIDE_MS = 5500;
+
+function formatTemplate(
+  template: string,
+  values: Record<string, string | number>,
+) {
+  return Object.entries(values).reduce(
+    (text, [key, value]) => text.replace(`{${key}}`, String(value)),
+    template,
+  );
+}
+
 function HomeHero() {
   const { t, locale } = useTranslation();
   const hero = t.home.hero;
@@ -113,24 +125,13 @@ function HomeHero() {
       <Container className="relative z-30 flex min-h-[calc(100svh-4.5rem)] flex-col justify-center py-14 sm:py-18 lg:py-20">
         <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-12">
           <div className="flex flex-col gap-6 lg:col-span-7 lg:gap-7">
-            <div className="hero-copy-motion flex flex-col gap-3">
-              <h1
-                className={cn(
-                  "text-hero-mobile font-semibold tracking-tight text-balance text-white lg:text-hero-desktop",
-                  isBangla && "font-bengali leading-tight",
-                )}
-              >
-                {hero.headline}
-              </h1>
-              <p
-                className={cn(
-                  "text-xl font-medium text-white/90 sm:text-2xl",
-                  !isBangla && "font-bengali",
-                )}
-              >
-                {hero.headlineSecondary}
-              </p>
-            </div>
+            <HeroHeadlineSlider
+              slides={[hero.slides.slogan.lines, hero.slides.oneStop.lines]}
+              label={hero.slides.label}
+              goTo={hero.slides.goTo}
+              isBangla={isBangla}
+              motionEnabled={motionEnabled}
+            />
 
             <p
               className={cn(
@@ -139,14 +140,6 @@ function HomeHero() {
               )}
             >
               {hero.description}
-            </p>
-            <p
-              className={cn(
-                "hero-copy-motion hero-copy-motion-delay-1 max-w-xl text-base text-white/75",
-                isBangla && "font-bengali leading-[1.75]",
-              )}
-            >
-              {hero.support}
             </p>
 
             <div className="hero-copy-motion hero-copy-motion-delay-2 flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -198,6 +191,136 @@ function HomeHero() {
         <ChevronDown className="size-7" aria-hidden />
       </a>
     </section>
+  );
+}
+
+function HeroHeadlineSlider({
+  slides,
+  label,
+  goTo,
+  isBangla,
+  motionEnabled,
+}: {
+  slides: readonly (readonly string[])[];
+  label: string;
+  goTo: string;
+  isBangla: boolean;
+  motionEnabled: boolean;
+}) {
+  const [index, setIndex] = React.useState(0);
+  const [paused, setPaused] = React.useState(false);
+
+  React.useEffect(() => {
+    if (!motionEnabled || paused || slides.length < 2) return;
+
+    const id = window.setTimeout(() => {
+      if (document.visibilityState === "hidden") return;
+      setIndex((current) => (current + 1) % slides.length);
+    }, HERO_SLIDE_MS);
+
+    return () => window.clearTimeout(id);
+  }, [index, motionEnabled, paused, slides.length]);
+
+  const goToSlide = (next: number) => {
+    setIndex((next + slides.length) % slides.length);
+  };
+
+  return (
+    <div
+      className="hero-copy-motion flex flex-col gap-4"
+      role="region"
+      aria-roledescription="carousel"
+      aria-label={label}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onFocusCapture={() => setPaused(true)}
+      onBlurCapture={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+          setPaused(false);
+        }
+      }}
+    >
+      <div className="relative">
+        {slides.map((lines, slideIndex) => {
+          const active = slideIndex === index;
+          const Heading = active ? "h1" : "p";
+
+          return (
+            <div
+              key={lines.join(" ")}
+              className={cn(
+                "transition-opacity duration-1000 ease-standard",
+                active
+                  ? "relative z-10 opacity-100"
+                  : "pointer-events-none absolute inset-x-0 top-0 z-0 opacity-0",
+              )}
+              aria-hidden={!active}
+            >
+              <Heading
+                className={cn(
+                  "text-hero-mobile font-semibold tracking-tight text-white lg:text-hero-desktop lg:leading-[1.1]",
+                  isBangla && "font-bengali leading-[1.15]",
+                )}
+              >
+                {lines.map((line) => (
+                  <span key={line} className="block">
+                    {line}
+                  </span>
+                ))}
+              </Heading>
+            </div>
+          );
+        })}
+      </div>
+
+      <div
+        className="flex items-center gap-2"
+        onKeyDown={(event) => {
+          if (event.key === "ArrowRight") {
+            event.preventDefault();
+            goToSlide(index + 1);
+          }
+          if (event.key === "ArrowLeft") {
+            event.preventDefault();
+            goToSlide(index - 1);
+          }
+        }}
+      >
+        {slides.map((lines, slideIndex) => {
+          const selected = slideIndex === index;
+
+          return (
+            <button
+              key={lines.join(" ")}
+              type="button"
+              aria-current={selected}
+              aria-label={formatTemplate(goTo, { n: slideIndex + 1 })}
+              className="h-8 cursor-pointer rounded-btn px-0.5 outline-none focus-visible:ring-3 focus-visible:ring-white/50"
+              onClick={() => goToSlide(slideIndex)}
+            >
+              <span className="block h-px w-8 overflow-hidden bg-white/25 sm:w-10">
+                <span
+                  key={`${slideIndex}-${index}`}
+                  className={cn(
+                    "block h-full origin-left bg-white",
+                    selected && motionEnabled
+                      ? "animate-[hero-headline-progress_5.5s_linear_forwards]"
+                      : selected
+                        ? "scale-x-100"
+                        : "scale-x-0",
+                  )}
+                  style={
+                    selected && paused
+                      ? { animationPlayState: "paused" }
+                      : undefined
+                  }
+                />
+              </span>
+            </button>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 

@@ -9,8 +9,8 @@ export const courseDetail = {
   onThisPage: "On this page",
   jump: {
     learn: "What you will learn",
-    curriculum: "Curriculum",
-    includes: "Includes",
+    curriculum: "Course outline",
+    includes: "What’s included",
     service: "Related service",
     certificate: "Certificate",
   },
@@ -28,9 +28,9 @@ export const courseDetail = {
     price: "Course fee",
   },
   outcomes: {
-    title: "What You Will Learn",
+    title: "What you will learn",
     description:
-      "Practical outcomes you can use. This is preparation, not an official government result.",
+      "These are practical skills for getting ready. Finishing this course is not an official government result.",
     servicePrep: {
       understand: "Know what this service is, in simple words.",
       papers: "Know which papers people are often asked to keep ready.",
@@ -64,13 +64,14 @@ export const courseDetail = {
     },
   },
   curriculum: {
-    title: "Course Curriculum",
+    title: "Course outline",
     description:
-      "Modules and short lessons. Sample outline for this catalog course — not a live classroom timetable.",
+      "Open a module to see the lessons inside. This is a sample outline, not a live class timetable.",
     moduleLabel: "Module {number}",
     lessons: "{count} lessons",
+    summary: "{modules} modules · {lessons} lessons",
     sampleNote:
-      "Lesson titles are sample curriculum, not recorded video names from a government office.",
+      "Lesson titles are a sample outline. They are not recorded names from a government office.",
     servicePrep: {
       aboutService: {
         title: "Learn about this service",
@@ -219,9 +220,10 @@ export const courseDetail = {
     },
   },
   includes: {
-    title: "Course Includes",
+    title: "What this course includes",
     description:
-      "What this Civic Bangladesh course is designed to include. Sample catalog — not a live classroom pack.",
+      "This is what you can expect in this Civic Bangladesh course. It is a sample catalog, not a live classroom pack.",
+    inCourse: "Included",
     items: {
       video: {
         title: "Video lessons",
@@ -247,25 +249,33 @@ export const courseDetail = {
     notInCourse: "Not in this course",
   },
   related: {
-    title: "Related Government Service",
+    title: "The government service this course is for",
     description:
-      "The official service this course helps you prepare for. Apply on the government portal — not here.",
+      "Prepare here, then apply on the official government portal — not on this website.",
+    prepareFor: "This course is for",
+    viewGuide: "Read the service guide",
+    applyOfficial: "Go to the official portal",
   },
   certificate: {
-    title: "Certificate Preview",
+    title: "What the certificate looks like",
     description:
-      "A preview of the Civic Bangladesh learning credential. Civic Bangladesh does not issue government certificates.",
+      "This is a sample of the Civic Bangladesh learning certificate. It is not a government certificate.",
+    sampleBadge: "Sample",
+    meaningTitle: "What this means",
+    meaningIs: "It shows you completed this Civic Bangladesh course.",
+    meaningIsNot:
+      "It is not a stamp, licence, attestation, or government certificate.",
     previewEyebrow: "Civic Bangladesh",
-    heading: "Certificate of Completion",
+    heading: "Certificate of completion",
     awardedTo: "Awarded to",
     sampleName: "Amina Rahman",
     courseLabel: "Course",
-    issuer: "Issued by Civic Bangladesh as a learning credential (sample).",
+    issuer: "Issued by Civic Bangladesh as a learning certificate (sample).",
     notGovernment:
       "This is not a government certificate. It does not replace an official stamp, licence, or attestation.",
-    noCertificateTitle: "No certificate in this course",
+    noCertificateTitle: "This course has no certificate",
     noCertificateBody:
-      "This catalog course has no completion certificate. You can still use the lessons to prepare.",
+      "You can still use the lessons to prepare. There is no completion certificate in this catalog course.",
   },
 } as const;
 

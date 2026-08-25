@@ -8,18 +8,16 @@ export const about = {
   sampleNote:
     "Civic Bangladesh is an independent learning platform. It is not the official government application portal, and it does not process applications.",
   heroImageAlt: "A Bangladesh landscape people share and look after",
+  stats: {
+    independent: "Independent learning",
+    notOffice: "Not a government office",
+  },
   jump: {
     label: "On this page",
     pillars: "Two pillars",
     journey: "How learning works",
-    who: "Who it is for",
     notThis: "What we are not",
     start: "Start here",
-    official: "Official portal",
-  },
-  notice: {
-    title: "Independent learning. Not a government office.",
-    body: "We prepare citizens. The application itself happens on the official government portal. Named government partners would only appear after official confirmation.",
   },
   pillars: {
     title: "Civic learning and service preparation",
@@ -163,14 +161,11 @@ export const about = {
       body: "Small civic habits and quiet learning tasks.",
       cta: "Open challenges",
     },
-  },
-  official: {
-    title: "Apply on the official portal",
-    description:
-      "Civic Bangladesh prepares you. The application happens on the national government portal. Confirm the exact service, office, and fee there.",
-    cta: "Apply on Official Portal",
-    prepareCta: "Explore services first",
-    note: "Opens the national portal (bangladesh.gov.bd). Civic Bangladesh does not submit or process your application.",
+    official: {
+      title: "Official portal",
+      body: "Apply on bangladesh.gov.bd. Civic Bangladesh does not submit your file.",
+      cta: "Apply on Official Portal",
+    },
   },
 } as const;
 

@@ -1,9 +1,10 @@
 import type { ServiceLearningTranslations } from "@/locales/en/service-learning";
 
 export const serviceLearning: ServiceLearningTranslations = {
-  eyebrow: "সেবা শেখা",
-  title: "সরকারি সেবা → শেখার কোর্স",
-  promise: "এই কোর্স আপনাকে এই নির্দিষ্ট সরকারি সেবার জন্য প্রস্তুতি শেখায়।",
+  title: "সেবা আর কোর্স কীভাবে মিলে",
+  promise:
+    "এই কোর্স আপনাকে এই সরকারি সেবার জন্য কীভাবে প্রস্তুতি নিতে হয়, তা শেখায়।",
+  youAreHere: "এখন এখানে",
   disclaimer:
     "সিভিক বাংলাদেশ প্রস্তুতিতে সাহায্য করে। আবেদন করুন সরকারি পোর্টালে—আমরা আবেদন প্রক্রিয়া করি না।",
   certificateNote: "এই সনদ সিভিক বাংলাদেশের শেখার সনদ, সরকারি সনদ নয়।",
@@ -18,28 +19,29 @@ export const serviceLearning: ServiceLearningTranslations = {
     },
     know: {
       title: "কী জানা দরকার",
-      body: "কাগজ, ধাপ ও সাধারণ ভুল—প্রস্তুতির জন্য।",
+      body: "কোন কাগজ লাগে, কী ধাপ, আর কোন ভুল এড়াতে হয়।",
     },
     course: {
-      title: "ভিডিও কোর্স",
-      body: "সিভিক বাংলাদেশের ছোট কোর্স। সরকারি ক্লাস নয়।",
+      title: "এই কোর্স",
+      body: "সিভিক বাংলাদেশের ছোট কোর্স। এটা সরকারি ক্লাস নয়।",
     },
     assessment: {
-      title: "মূল্যায়ন",
-      body: "প্রস্তুতি বুঝেছেন কি না, তা যাচাই।",
+      title: "ছোট যাচাই",
+      body: "প্রস্তুতি ঠিকমতো বুঝেছেন কি না, তা দেখা।",
     },
     certificate: {
       title: "সনদ",
-      body: "সিভিক বাংলাদেশের শেখার সনদ।",
+      body: "সিভিক বাংলাদেশের শেখার সনদ, সরকারি সনদ নয়।",
     },
   },
   cta: {
     viewService: "সেবা দেখুন",
-    startCourse: "Start Course",
+    startCourse: "কোর্স শুরু করুন",
   },
   related: {
     title: "সম্পর্কিত সেবা",
-    description: "যেসব নমুনা সেবার সঙ্গে মিলিয়ে প্রস্তুতি কোর্স আছে।",
+    description:
+      "এই নমুনা তালিকার আরও সেবা, যেগুলোর সঙ্গে প্রস্তুতি কোর্স আছে।",
   },
   search: {
     group: "সেবা শেখা",

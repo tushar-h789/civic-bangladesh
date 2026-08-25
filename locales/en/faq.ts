@@ -8,11 +8,55 @@ export const faq = {
     "These answers describe Civic Bangladesh. They are not official government rules, fees, or helpline advice.",
   heroImageAlt:
     "People learning together how to prepare for civic life and public services",
+  stats: {
+    questions: "{count} questions",
+    notHelpdesk: "Not a government helpdesk",
+  },
   jump: {
     label: "On this page",
     questions: "Questions",
+    how: "How to use this",
+    notThis: "What this is not",
     related: "Useful pages",
-    official: "Official portal",
+  },
+  list: {
+    title: "Questions",
+    description:
+      "Search or open a group. These answers are about Civic Bangladesh — not a ministry helpline.",
+  },
+  how: {
+    title: "How to use this FAQ",
+    description:
+      "Find a Civic Bangladesh answer here. Apply only on the official portal when you are ready.",
+    search: {
+      title: "Search or browse",
+      body: "Type a word, or jump to a group such as services or certificates.",
+    },
+    civic: {
+      title: "Answers about this platform",
+      body: "Each reply describes Civic Bangladesh learning — not a government rulebook.",
+    },
+    apply: {
+      title: "Apply on the official portal",
+      body: "When you are ready to file, leave this site and use bangladesh.gov.bd.",
+    },
+  },
+  notThis: {
+    title: "What this FAQ is not",
+    description:
+      "Keep the line clear. This page supports Civic Bangladesh. It does not replace a government office.",
+    notHelpdesk: {
+      title: "Not a government helpdesk",
+      body: "We do not publish ministry phone numbers or speak for an office.",
+    },
+    notRules: {
+      title: "Not official rules or fees",
+      body: "Confirm every fee, paper, and date on the official portal before you apply.",
+    },
+    notApply: {
+      title: "Not a place to apply",
+      body: "Civic Bangladesh does not submit or process a government application.",
+    },
   },
   search: {
     label: "Search questions",
@@ -177,31 +221,33 @@ export const faq = {
     services: {
       title: "Government services",
       body: "Browse the sample catalog and prepare papers before you apply.",
+      cta: "Open services",
     },
     courses: {
       title: "Courses",
       body: "Short civic lessons and affordable service-preparation courses.",
+      cta: "Open courses",
     },
     civicLearning: {
       title: "Civic learning",
       body: "Everyday habits, topics, and the civic promise.",
+      cta: "Open civic learning",
     },
     pricing: {
       title: "Pricing",
       body: "How course fees work — and what you never pay us for.",
+      cta: "How we price courses",
     },
     challenges: {
       title: "Challenges",
       body: "Small civic habits and quiet learning tasks.",
+      cta: "Open challenges",
     },
-  },
-  official: {
-    title: "Apply on the official portal",
-    description:
-      "Civic Bangladesh prepares you. The application happens on the national government portal. Confirm the exact service, office, and fee there.",
-    cta: "Apply on Official Portal",
-    prepareCta: "Explore services first",
-    note: "Opens the national portal (bangladesh.gov.bd). Civic Bangladesh does not submit or process your application.",
+    official: {
+      title: "Official portal",
+      body: "Apply on bangladesh.gov.bd. Civic Bangladesh does not submit your file.",
+      cta: "Apply on Official Portal",
+    },
   },
 } as const;
 

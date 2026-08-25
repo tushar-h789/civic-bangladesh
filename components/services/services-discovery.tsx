@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { LayoutGrid, List, SlidersHorizontal } from "lucide-react";
+import { LayoutGrid, List, SlidersHorizontal, X } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import {
@@ -214,8 +214,8 @@ function ServicesDiscovery() {
         isBangla={isBangla}
       />
 
-      <section className="bg-background pt-0 pb-8 md:pb-10 lg:pb-12">
-        <Container className="-mt-6 lg:-mt-8 lg:grid lg:grid-cols-[18rem_minmax(0,1fr)] lg:items-start lg:gap-8 xl:grid-cols-[20rem_minmax(0,1fr)] xl:gap-10">
+      <section className="bg-background pt-0 pb-8 md:pb-10">
+        <Container className="-mt-5 lg:-mt-6 lg:grid lg:grid-cols-[17rem_minmax(0,1fr)] lg:items-start lg:gap-5 xl:grid-cols-[18.5rem_minmax(0,1fr)] xl:gap-6">
           <aside
             id="service-categories"
             className="hidden scroll-mt-28 lg:block"
@@ -225,26 +225,33 @@ function ServicesDiscovery() {
             </div>
           </aside>
 
-          <div className="flex min-w-0 flex-col gap-6">
+          <div className="flex min-w-0 flex-col gap-4">
+            <p
+              className={cn(
+                "rounded-card bg-light-green px-4 py-2.5 text-sm text-text-secondary ring-1 ring-border sm:text-body",
+                isBangla && "leading-[1.7]",
+              )}
+            >
+              {copy.sampleNote}
+            </p>
             <div
               id="service-search"
-              className="flex scroll-mt-28 flex-col gap-4 rounded-card bg-surface p-4 shadow-card ring-1 ring-border"
+              className="flex scroll-mt-28 flex-col gap-3 rounded-card bg-surface p-3 shadow-card ring-1 ring-border sm:p-4"
             >
-              <SearchInput
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-                onClear={() => setQuery("")}
-                placeholder={copy.search.placeholder}
-                aria-label={copy.search.label}
-                containerClassName="w-full"
-                className="h-11 rounded-btn bg-background text-body"
-              />
-
-              <div className="flex flex-wrap items-end gap-3">
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+                <SearchInput
+                  value={query}
+                  onChange={(event) => setQuery(event.target.value)}
+                  onClear={() => setQuery("")}
+                  placeholder={copy.search.placeholder}
+                  aria-label={copy.search.label}
+                  containerClassName="w-full min-w-0 flex-1"
+                  className="h-10 rounded-btn bg-background pl-10 text-body"
+                />
                 <Button
                   type="button"
                   variant="outline"
-                  className="h-9 rounded-btn lg:hidden"
+                  className="h-10 shrink-0 rounded-btn lg:hidden"
                   onClick={() => setFiltersOpen(true)}
                 >
                   <SlidersHorizontal className="size-4" aria-hidden />
@@ -255,24 +262,7 @@ function ServicesDiscovery() {
                     </span>
                   ) : null}
                 </Button>
-
-                <FilterSelect
-                  label={copy.sort.label}
-                  value={sort}
-                  onValueChange={(value) => setSort(value as SortKey)}
-                  className="w-full sm:w-48"
-                >
-                  <SelectItem value="featured">{copy.sort.featured}</SelectItem>
-                  <SelectItem value="title">{copy.sort.title}</SelectItem>
-                  <SelectItem value="courseFirst">
-                    {copy.sort.courseFirst}
-                  </SelectItem>
-                  <SelectItem value="documents">
-                    {copy.sort.documents}
-                  </SelectItem>
-                </FilterSelect>
-
-                <div className="ml-auto flex items-center gap-1 rounded-btn bg-background p-1 ring-1 ring-border">
+                <div className="ml-auto hidden items-center gap-1 rounded-btn bg-background p-1 ring-1 ring-border sm:flex">
                   <ViewToggle
                     pressed={view === "grid"}
                     label={copy.view.grid}
@@ -293,24 +283,72 @@ function ServicesDiscovery() {
               <div className="hidden lg:block">
                 <ServiceExtraFilters {...extraFilterProps} />
               </div>
+
+              <ServiceFilterChips
+                copy={copy}
+                citizenType={citizenType}
+                organization={organization}
+                fee={fee}
+                course={course}
+                onClearCitizen={() => setCitizenType(ALL)}
+                onClearOrganization={() => setOrganization(ALL)}
+                onClearFee={() => setFee(ALL)}
+                onClearCourse={() => setCourse(ALL)}
+                onClearAll={clearAllFilters}
+              />
             </div>
 
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <h2
-                id="service-results-heading"
-                className="text-xl font-semibold text-foreground"
-              >
-                {copy.results.title}
-              </h2>
-              <p
-                aria-live="polite"
-                className="text-sm font-semibold text-primary"
-              >
-                {formatTemplate(copy.results.showing, {
-                  shown: visibleResults.length,
-                  total: results.length,
-                })}
-              </p>
+            <div className="flex flex-wrap items-end justify-between gap-2">
+              <div className="min-w-0">
+                <h2
+                  id="service-results-heading"
+                  className="text-lg font-semibold text-foreground sm:text-xl"
+                >
+                  {copy.results.title}
+                </h2>
+                <p
+                  aria-live="polite"
+                  className="mt-0.5 text-sm text-text-secondary"
+                >
+                  {formatTemplate(copy.results.showing, {
+                    shown: visibleResults.length,
+                    total: results.length,
+                  })}
+                </p>
+              </div>
+              <div className="flex w-full flex-wrap items-end gap-2 sm:w-auto">
+                <FilterSelect
+                  label={copy.sort.label}
+                  value={sort}
+                  onValueChange={(value) => setSort(value as SortKey)}
+                  className="w-full sm:w-52"
+                >
+                  <SelectItem value="featured">{copy.sort.featured}</SelectItem>
+                  <SelectItem value="title">{copy.sort.title}</SelectItem>
+                  <SelectItem value="courseFirst">
+                    {copy.sort.courseFirst}
+                  </SelectItem>
+                  <SelectItem value="documents">
+                    {copy.sort.documents}
+                  </SelectItem>
+                </FilterSelect>
+                <div className="flex items-center gap-1 rounded-btn bg-surface p-1 ring-1 ring-border sm:hidden">
+                  <ViewToggle
+                    pressed={view === "grid"}
+                    label={copy.view.grid}
+                    onClick={() => setView("grid")}
+                  >
+                    <LayoutGrid className="size-4" aria-hidden />
+                  </ViewToggle>
+                  <ViewToggle
+                    pressed={view === "list"}
+                    label={copy.view.list}
+                    onClick={() => setView("list")}
+                  >
+                    <List className="size-4" aria-hidden />
+                  </ViewToggle>
+                </div>
+              </div>
             </div>
 
             {results.length === 0 ? (
@@ -340,6 +378,7 @@ function ServicesDiscovery() {
                       <li key={service.key}>
                         <GovernmentServiceCardFromModel
                           variant={view === "list" ? "compact" : "default"}
+                          isolateOfficialCta
                           model={getGovernmentServiceCardModel(service, t)}
                         />
                       </li>
@@ -435,7 +474,7 @@ function ServiceExtraFilters({
   onCourseChange: (value: CourseFilter) => void;
 }) {
   return (
-    <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+    <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-4">
       <FilterSelect
         label={copy.filters.citizenType}
         value={citizenType}
@@ -484,6 +523,87 @@ function ServiceExtraFilters({
   );
 }
 
+function ServiceFilterChips({
+  copy,
+  citizenType,
+  organization,
+  fee,
+  course,
+  onClearCitizen,
+  onClearOrganization,
+  onClearFee,
+  onClearCourse,
+  onClearAll,
+}: {
+  copy: ServicesDiscoveryCopy;
+  citizenType: CitizenFilter;
+  organization: OrganizationFilter;
+  fee: FeeFilter;
+  course: CourseFilter;
+  onClearCitizen: () => void;
+  onClearOrganization: () => void;
+  onClearFee: () => void;
+  onClearCourse: () => void;
+  onClearAll: () => void;
+}) {
+  const chips: { key: string; label: string; onClear: () => void }[] = [];
+
+  if (citizenType !== ALL) {
+    chips.push({
+      key: "citizen",
+      label: copy.citizenTypes[citizenType],
+      onClear: onClearCitizen,
+    });
+  }
+  if (organization !== ALL) {
+    chips.push({
+      key: "org",
+      label: copy.organizations[organization],
+      onClear: onClearOrganization,
+    });
+  }
+  if (fee !== ALL) {
+    chips.push({
+      key: "fee",
+      label: copy.fee[fee],
+      onClear: onClearFee,
+    });
+  }
+  if (course !== ALL) {
+    chips.push({
+      key: "course",
+      label: copy.courseFilter[course],
+      onClear: onClearCourse,
+    });
+  }
+
+  if (chips.length === 0) return null;
+
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      {chips.map((chip) => (
+        <button
+          key={chip.key}
+          type="button"
+          onClick={chip.onClear}
+          className="inline-flex h-8 items-center gap-1.5 rounded-btn bg-light-green px-2.5 text-sm font-medium text-primary outline-none ring-1 ring-border transition-colors hover:bg-muted focus-visible:ring-3 focus-visible:ring-ring/50"
+        >
+          {chip.label}
+          <X className="size-3.5" aria-hidden />
+          <span className="sr-only">{copy.filters.clear}</span>
+        </button>
+      ))}
+      <button
+        type="button"
+        onClick={onClearAll}
+        className="text-sm font-medium text-text-secondary underline-offset-2 outline-none hover:text-foreground hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
+      >
+        {copy.filters.clear}
+      </button>
+    </div>
+  );
+}
+
 type ServicesDiscoveryCopy = ReturnType<typeof useTranslation>["t"]["services"];
 
 function FilterSelect({
@@ -504,7 +624,7 @@ function FilterSelect({
   return (
     <div
       className={cn(
-        "flex min-w-0 flex-1 flex-col gap-1.5 sm:flex-none sm:w-44",
+        "flex min-w-0 w-full flex-col gap-1",
         className,
       )}
     >

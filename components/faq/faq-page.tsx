@@ -1,12 +1,15 @@
 "use client";
 
 import * as React from "react";
-import type { ComponentType } from "react";
+import type { ComponentType, ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowRight,
   Award,
+  Ban,
+  Banknote,
+  BookOpen,
   Building2,
   CircleHelp,
   ExternalLink,
@@ -14,17 +17,19 @@ import {
   HeartHandshake,
   Landmark,
   ScrollText,
+  Search,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { ROUTES } from "@/constants/routes";
 import { FAQ_ITEMS, type FaqGroupKey } from "@/data/faq";
-import { OFFICIAL_GOVERNMENT_PORTAL_HREF } from "@/data/government-services";
 import { useDebouncedValue } from "@/hooks/use-debounced-value";
 import { useTranslation } from "@/hooks/use-translation";
 import {
   filterFaqGroups,
   getFaqGroups,
+  getFaqHowItems,
+  getFaqNotItems,
   getFaqRelatedPages,
 } from "@/lib/get-faq-view";
 import { SEARCH_DEBOUNCE_MS } from "@/lib/search-catalog";
@@ -32,7 +37,6 @@ import { Breadcrumb } from "@/components/common/breadcrumb";
 import { Container } from "@/components/common/container";
 import { EmptyState } from "@/components/common/empty-state";
 import { SearchInput } from "@/components/common/search-input";
-import { SectionHeader } from "@/components/common/section-header";
 import {
   Accordion,
   AccordionContent,
@@ -43,10 +47,7 @@ import { Button } from "@/components/ui/button";
 
 const HERO_IMAGE = "/images/home/intro-people.png";
 
-const GROUP_ICONS: Record<
-  FaqGroupKey,
-  ComponentType<{ className?: string; "aria-hidden"?: boolean }>
-> = {
+const GROUP_ICONS = {
   about: Landmark,
   services: ScrollText,
   learning: GraduationCap,
@@ -54,7 +55,40 @@ const GROUP_ICONS: Record<
   challenges: HeartHandshake,
   organizations: Building2,
   usingTheSite: CircleHelp,
-};
+} as const satisfies Record<
+  FaqGroupKey,
+  ComponentType<{ className?: string; "aria-hidden"?: boolean }>
+>;
+
+const HOW_ICONS = {
+  search: Search,
+  civic: CircleHelp,
+  apply: Landmark,
+} as const satisfies Record<
+  string,
+  ComponentType<{ className?: string; "aria-hidden"?: boolean }>
+>;
+
+const NOT_ICONS = {
+  notHelpdesk: Ban,
+  notRules: ScrollText,
+  notApply: Landmark,
+} as const satisfies Record<
+  string,
+  ComponentType<{ className?: string; "aria-hidden"?: boolean }>
+>;
+
+const RELATED_ICONS = {
+  services: ScrollText,
+  courses: GraduationCap,
+  civicLearning: BookOpen,
+  pricing: Banknote,
+  challenges: HeartHandshake,
+  official: ExternalLink,
+} as const satisfies Record<
+  string,
+  ComponentType<{ className?: string; "aria-hidden"?: boolean }>
+>;
 
 function formatTemplate(
   template: string,
@@ -71,6 +105,8 @@ function FaqPage() {
   const isBangla = locale === "bn";
   const copy = t.faq;
   const groups = getFaqGroups(t);
+  const howItems = getFaqHowItems(t);
+  const notItems = getFaqNotItems(t);
   const related = getFaqRelatedPages(t);
   const totalCount = FAQ_ITEMS.length;
 
@@ -97,9 +133,16 @@ function FaqPage() {
     ? visibleGroups.flatMap((group) => group.items.map((item) => item.key))
     : openItems;
 
+  const jumpLinks = [
+    { href: "#faq-questions", label: copy.jump.questions },
+    { href: "#faq-how", label: copy.jump.how },
+    { href: "#faq-not", label: copy.jump.notThis },
+    { href: "#faq-related", label: copy.jump.related },
+  ];
+
   return (
     <div className={cn(isBangla && "font-bengali")}>
-      <section className="relative isolate overflow-hidden bg-primary">
+      <section className="relative isolate overflow-hidden bg-text">
         <div className="absolute inset-0" aria-hidden="true">
           <Image
             src={HERO_IMAGE}
@@ -107,34 +150,40 @@ function FaqPage() {
             fill
             priority
             sizes="100vw"
-            className="object-cover object-[60%_center]"
+            className="object-cover object-[50%_center]"
           />
         </div>
         <div
           aria-hidden="true"
-          className="absolute inset-0 bg-linear-to-r from-text/90 via-text/72 to-text/30"
+          className="absolute inset-0 bg-linear-to-r from-text/80 via-text/50 to-text/20 lg:from-text/75 lg:via-text/40 lg:to-transparent"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-linear-to-t from-text/70 via-transparent to-text/25"
         />
 
-        <Container className="relative flex flex-col gap-8 pt-14 pb-16 sm:pt-16 sm:pb-20 lg:pt-20 lg:pb-24">
+        <Container className="relative flex flex-col gap-4 pt-6 pb-7 sm:pt-7 sm:pb-8 lg:pt-8 lg:pb-8">
           <Breadcrumb
             tone="onPrimary"
+            className="text-sm sm:text-base"
             items={[
               { label: t.nav.links.home, href: ROUTES.home },
               { label: t.nav.resources.faq },
             ]}
           />
-          <div className="flex max-w-2xl flex-col gap-5">
+
+          <div className="flex max-w-2xl flex-col gap-3 rounded-2xl bg-text/50 p-4 ring-1 ring-white/15 backdrop-blur-md sm:gap-3.5 sm:p-5">
             <h1
               className={cn(
-                "text-hero-mobile font-semibold text-balance text-white lg:text-5xl",
-                isBangla && "leading-tight",
+                "text-[1.75rem] leading-[1.28] font-semibold text-balance text-white sm:text-[2.125rem] sm:leading-snug lg:text-4xl lg:leading-[1.2]",
+                isBangla && "leading-[1.32] sm:leading-[1.3]",
               )}
             >
               {copy.title}
             </h1>
             <p
               className={cn(
-                "max-w-xl text-body text-white/85",
+                "text-base text-white/85 sm:text-body",
                 isBangla && "leading-[1.8]",
               )}
             >
@@ -142,119 +191,77 @@ function FaqPage() {
             </p>
             <p
               className={cn(
-                "max-w-xl text-base text-white/70",
+                "text-sm text-white/70",
                 isBangla && "leading-[1.75]",
               )}
             >
               {copy.sampleNote}
             </p>
-          </div>
-          <nav aria-label={copy.jump.label}>
-            <ul className="m-0 flex list-none flex-wrap gap-x-4 gap-y-2 p-0 text-base">
-              <li>
-                <a
-                  href="#faq-questions"
-                  className="font-medium text-white/85 outline-none hover:text-white hover:underline focus-visible:ring-3 focus-visible:ring-white/50"
-                >
-                  {copy.jump.questions}
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#faq-related"
-                  className="font-medium text-white/85 outline-none hover:text-white hover:underline focus-visible:ring-3 focus-visible:ring-white/50"
-                >
-                  {copy.jump.related}
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#faq-official"
-                  className="font-medium text-white/85 outline-none hover:text-white hover:underline focus-visible:ring-3 focus-visible:ring-white/50"
-                >
-                  {copy.jump.official}
-                </a>
-              </li>
+            <ul className="m-0 flex list-none flex-wrap gap-2 p-0">
+              <HeroChip
+                icon={<CircleHelp className="size-3.5" aria-hidden />}
+                label={formatTemplate(copy.stats.questions, {
+                  count: totalCount,
+                })}
+              />
+              <HeroChip
+                icon={<Ban className="size-3.5" aria-hidden />}
+                label={copy.stats.notHelpdesk}
+              />
             </ul>
+          </div>
+
+          <nav aria-label={copy.jump.label}>
+            <p className="text-sm font-semibold text-white">
+              {copy.jump.label}
+            </p>
+            <ol className="mt-2 flex list-none flex-wrap gap-1.5 p-0">
+              {jumpLinks.map((link) => (
+                <li key={link.href}>
+                  <a
+                    href={link.href}
+                    className="inline-flex h-8 items-center rounded-btn bg-white/10 px-3 text-sm font-medium text-white/90 ring-1 ring-white/15 transition-colors duration-200 ease-standard hover:bg-white/18 hover:text-white"
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ol>
           </nav>
         </Container>
         <span className="sr-only">{copy.heroImageAlt}</span>
       </section>
 
-      <section
-        id="faq-questions"
-        aria-labelledby="faq-questions-heading"
-        className="scroll-mt-28 bg-background py-section-mobile md:py-section-tablet lg:py-section-desktop"
-      >
-        <Container>
-          <h2 id="faq-questions-heading" className="sr-only">
-            {copy.jump.questions}
-          </h2>
-          <div className="lg:grid lg:grid-cols-[16rem_minmax(0,1fr)] lg:items-start lg:gap-10 xl:grid-cols-[18rem_minmax(0,1fr)] xl:gap-12">
-          <aside className="hidden lg:block">
-            <nav
-              aria-label={copy.jump.questions}
-              className="sticky top-24 rounded-card bg-surface p-4 shadow-card ring-1 ring-border"
-            >
-              <p className="text-sm font-semibold text-foreground">
-                {copy.jump.questions}
-              </p>
-              <ul className="mt-3 flex list-none flex-col gap-1 p-0">
-                {groups.map((group) => {
-                  const Icon = GROUP_ICONS[group.key];
+      <div className="bg-background py-6 md:py-7 lg:py-8">
+        <Container className="flex flex-col gap-3 sm:gap-4">
+          <FaqBodySection
+            id="faq-questions"
+            headingId="faq-questions-heading"
+            title={copy.list.title}
+            description={copy.list.description}
+            meta={formatTemplate(copy.search.showing, {
+              shown: shownCount,
+              total: totalCount,
+            })}
+            isBangla={isBangla}
+          >
+            <SearchInput
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              onClear={() => setQuery("")}
+              placeholder={copy.search.placeholder}
+              aria-label={copy.search.label}
+              containerClassName="w-full"
+              className="h-11 rounded-btn bg-background text-body"
+            />
 
-                  return (
-                    <li key={group.key}>
-                      <a
-                        href={group.href}
-                        className="flex items-center gap-2.5 rounded-btn px-2 py-2 text-sm text-foreground outline-none transition-colors hover:bg-muted hover:text-primary focus-visible:ring-3 focus-visible:ring-ring/50"
-                      >
-                        <span className="flex size-8 shrink-0 items-center justify-center rounded-btn bg-light-green text-primary">
-                          <Icon className="size-4" aria-hidden />
-                        </span>
-                        <span className="min-w-0 leading-snug">
-                          {group.title}
-                        </span>
-                      </a>
-                    </li>
-                  );
-                })}
-              </ul>
-            </nav>
-          </aside>
-
-          <div className="flex min-w-0 flex-col gap-10">
-            <div className="rounded-card bg-surface p-4 shadow-card ring-1 ring-border sm:p-5">
-              <SearchInput
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-                onClear={() => setQuery("")}
-                placeholder={copy.search.placeholder}
-                aria-label={copy.search.label}
-                containerClassName="w-full"
-                className="h-11 rounded-btn bg-background text-body"
-              />
-              <p
-                aria-live="polite"
-                className="mt-3 text-sm font-semibold text-primary"
-              >
-                {formatTemplate(copy.search.showing, {
-                  shown: shownCount,
-                  total: totalCount,
-                })}
-              </p>
-            </div>
-
-            <nav
-              aria-label={copy.jump.questions}
-              className="lg:hidden"
-            >
-              <ul className="m-0 flex list-none flex-wrap gap-2 p-0">
+            <nav aria-label={copy.jump.questions} className="mt-4">
+              <ul className="m-0 flex list-none flex-wrap gap-1.5 p-0">
                 {groups.map((group) => (
                   <li key={group.key}>
                     <a
                       href={group.href}
-                      className="inline-flex rounded-btn bg-surface px-3 py-1.5 text-sm font-medium text-foreground ring-1 ring-border outline-none hover:text-primary hover:ring-primary/40 focus-visible:ring-3 focus-visible:ring-ring/50"
+                      className="inline-flex h-9 items-center rounded-btn bg-background px-3 text-sm font-medium text-text-secondary ring-1 ring-border outline-none transition-colors duration-200 ease-standard hover:bg-light-green hover:text-primary focus-visible:ring-3 focus-visible:ring-ring/50"
                     >
                       {group.title}
                     </a>
@@ -264,208 +271,301 @@ function FaqPage() {
             </nav>
 
             {visibleGroups.length === 0 ? (
-              <EmptyState
-                icon={<CircleHelp className="size-6" aria-hidden />}
-                title={copy.search.emptyTitle}
-                description={copy.search.emptyDescription}
-                action={
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => setQuery("")}
-                  >
-                    {copy.search.clear}
-                  </Button>
-                }
-              />
+              <div className="mt-4">
+                <EmptyState
+                  icon={<CircleHelp className="size-6" aria-hidden />}
+                  title={copy.search.emptyTitle}
+                  description={copy.search.emptyDescription}
+                  action={
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => setQuery("")}
+                    >
+                      {copy.search.clear}
+                    </Button>
+                  }
+                />
+              </div>
             ) : (
-              visibleGroups.map((group) => {
-                const Icon = GROUP_ICONS[group.key];
+              <div className="mt-5 flex flex-col gap-5">
+                {visibleGroups.map((group) => {
+                  const Icon = GROUP_ICONS[group.key];
+
+                  return (
+                    <div
+                      key={group.key}
+                      id={`faq-${group.key}`}
+                      className="scroll-mt-28"
+                    >
+                      <div className="flex items-start gap-3">
+                        <span className="flex size-9 shrink-0 items-center justify-center rounded-btn bg-light-green text-primary">
+                          <Icon className="size-4" aria-hidden />
+                        </span>
+                        <div className="min-w-0">
+                          <h3 className="text-base font-semibold text-foreground">
+                            {group.title}
+                          </h3>
+                          <p
+                            className={cn(
+                              "mt-0.5 text-sm text-text-secondary",
+                              isBangla && "leading-[1.7]",
+                            )}
+                          >
+                            {group.description}
+                          </p>
+                        </div>
+                      </div>
+
+                      <Accordion
+                        type="multiple"
+                        value={accordionValue}
+                        onValueChange={(next) => {
+                          if (!isFiltering) setOpenItems(next);
+                        }}
+                        className="mt-3 gap-0 overflow-hidden rounded-card bg-background ring-1 ring-border"
+                      >
+                        {group.items.map((item) => (
+                          <AccordionItem
+                            key={item.key}
+                            value={item.key}
+                            className="border-border px-4 sm:px-5"
+                          >
+                            <AccordionTrigger className="items-start py-4 text-left text-sm font-semibold hover:no-underline sm:text-base">
+                              {item.question}
+                            </AccordionTrigger>
+                            <AccordionContent>
+                              <p
+                                className={cn(
+                                  "text-sm text-text-secondary sm:text-body",
+                                  isBangla && "leading-[1.8]",
+                                )}
+                              >
+                                {item.answer}
+                              </p>
+                            </AccordionContent>
+                          </AccordionItem>
+                        ))}
+                      </Accordion>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </FaqBodySection>
+
+          <FaqBodySection
+            id="faq-how"
+            headingId="faq-how-heading"
+            title={copy.how.title}
+            description={copy.how.description}
+            isBangla={isBangla}
+          >
+            <ol className="m-0 grid list-none gap-0 p-0 sm:grid-cols-3">
+              {howItems.map((item, index) => {
+                const Icon = HOW_ICONS[item.key];
+                const last = index === howItems.length - 1;
 
                 return (
-                  <div
-                    key={group.key}
-                    id={`faq-${group.key}`}
-                    className="scroll-mt-28"
+                  <li
+                    key={item.key}
+                    className={cn(
+                      "relative flex gap-3 sm:flex-col sm:items-center sm:px-2 sm:text-center",
+                      !last &&
+                        "sm:after:absolute sm:after:top-5 sm:after:left-[calc(50%+1.35rem)] sm:after:right-[-50%] sm:after:h-px sm:after:bg-border sm:after:content-['']",
+                    )}
                   >
-                    <div className="flex items-start gap-3">
-                      <span className="flex size-10 shrink-0 items-center justify-center rounded-btn bg-light-green text-primary">
+                    <div className="flex flex-col items-center">
+                      <span className="relative z-10 flex size-10 shrink-0 items-center justify-center rounded-full bg-light-green text-primary ring-4 ring-surface">
                         <Icon className="size-4" aria-hidden />
                       </span>
-                      <div className="min-w-0">
-                        <h2 className="text-xl font-semibold text-foreground">
-                          {group.title}
-                        </h2>
-                        <p
-                          className={cn(
-                            "mt-1 text-sm text-text-secondary",
-                            isBangla && "leading-[1.75]",
-                          )}
-                        >
-                          {group.description}
-                        </p>
-                      </div>
+                      {last ? null : (
+                        <span
+                          aria-hidden
+                          className="my-1 w-px min-h-5 flex-1 bg-border sm:hidden"
+                        />
+                      )}
                     </div>
-
-                    <Accordion
-                      type="multiple"
-                      value={accordionValue}
-                      onValueChange={(next) => {
-                        if (!isFiltering) setOpenItems(next);
-                      }}
-                      className="mt-5 gap-0 overflow-hidden rounded-card bg-surface shadow-card ring-1 ring-border"
-                    >
-                      {group.items.map((item) => (
-                        <AccordionItem
-                          key={item.key}
-                          value={item.key}
-                          className="border-border px-5 sm:px-6"
-                        >
-                          <AccordionTrigger className="items-start py-5 text-left text-base font-semibold hover:no-underline">
-                            {item.question}
-                          </AccordionTrigger>
-                          <AccordionContent>
-                            <p
-                              className={cn(
-                                "text-body text-text-secondary",
-                                isBangla && "leading-[1.8]",
-                              )}
-                            >
-                              {item.answer}
-                            </p>
-                          </AccordionContent>
-                        </AccordionItem>
-                      ))}
-                    </Accordion>
-                  </div>
+                    <div className="min-w-0 pb-4 sm:pt-2.5 sm:pb-0">
+                      <p className="text-sm font-semibold text-foreground">
+                        {item.title}
+                      </p>
+                      <p
+                        className={cn(
+                          "mt-1 text-xs text-text-secondary",
+                          isBangla && "leading-[1.65]",
+                        )}
+                      >
+                        {item.body}
+                      </p>
+                    </div>
+                  </li>
                 );
-              })
-            )}
-          </div>
-          </div>
-        </Container>
-      </section>
+              })}
+            </ol>
+          </FaqBodySection>
 
-      <section
-        id="faq-related"
-        aria-labelledby="faq-related-heading"
-        className="scroll-mt-28 bg-light-green py-section-mobile md:py-section-tablet lg:py-section-desktop"
-      >
-        <Container>
-          <SectionHeader
-            title={
-              <span id="faq-related-heading">{copy.related.title}</span>
-            }
+          <FaqBodySection
+            id="faq-not"
+            headingId="faq-not-heading"
+            title={copy.notThis.title}
+            description={copy.notThis.description}
+            isBangla={isBangla}
+          >
+            <ul className="m-0 divide-y divide-border overflow-hidden rounded-card bg-background ring-1 ring-border">
+              {notItems.map((item) => {
+                const Icon = NOT_ICONS[item.key];
+
+                return (
+                  <li
+                    key={item.key}
+                    className="flex items-start gap-3 px-3.5 py-3 sm:items-center"
+                  >
+                    <span className="flex size-9 shrink-0 items-center justify-center rounded-btn bg-light-green text-primary">
+                      <Icon className="size-4" aria-hidden />
+                    </span>
+                    <div className="min-w-0">
+                      <p className="text-sm font-semibold text-foreground">
+                        {item.title}
+                      </p>
+                      <p
+                        className={cn(
+                          "mt-0.5 text-sm text-text-secondary",
+                          isBangla && "leading-[1.7]",
+                        )}
+                      >
+                        {item.body}
+                      </p>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          </FaqBodySection>
+
+          <FaqBodySection
+            id="faq-related"
+            headingId="faq-related-heading"
+            title={copy.related.title}
             description={copy.related.description}
-          />
-          <ul className="mt-10 grid list-none gap-4 p-0 sm:mt-12 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
-            {related.map((page) => (
-              <li key={page.key}>
-                <article className="flex h-full flex-col rounded-card bg-surface p-5 ring-1 ring-border sm:p-6">
-                  <h3
-                    className={cn(
-                      "text-lg font-semibold text-foreground",
-                      isBangla && "leading-[1.45]",
-                    )}
-                  >
-                    {page.title}
-                  </h3>
-                  <p
-                    className={cn(
-                      "mt-2 text-sm text-text-secondary",
-                      isBangla && "leading-[1.75]",
-                    )}
-                  >
-                    {page.body}
-                  </p>
-                  <Link
-                    href={page.href}
-                    className="mt-auto inline-flex items-center gap-1.5 pt-4 text-sm font-semibold text-primary outline-none hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
-                  >
-                    {page.title}
-                    <ArrowRight className="size-3.5" aria-hidden />
-                  </Link>
-                </article>
-              </li>
-            ))}
-          </ul>
-        </Container>
-      </section>
+            isBangla={isBangla}
+          >
+            <ul className="m-0 grid list-none gap-3 p-0 sm:grid-cols-2 lg:grid-cols-3">
+              {related.map((page) => {
+                const Icon = RELATED_ICONS[page.key];
+                const className =
+                  "flex h-full cursor-pointer flex-col gap-3 rounded-card bg-background p-4 outline-none ring-1 ring-border transition-shadow duration-200 ease-standard hover:shadow-card focus-visible:ring-3 focus-visible:ring-ring/50";
 
-      <section
-        id="faq-official"
-        aria-labelledby="faq-official-heading"
-        className="scroll-mt-28 bg-primary py-section-mobile md:py-section-tablet lg:py-section-desktop"
-      >
-        <Container>
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between lg:gap-12">
-            <div className="max-w-2xl">
-              <h2
-                id="faq-official-heading"
-                className="text-section-heading font-semibold text-balance text-white"
-              >
-                {copy.official.title}
-              </h2>
-              <p
-                className={cn(
-                  "mt-4 text-body text-white/80",
-                  isBangla && "leading-[1.8]",
-                )}
-              >
-                {copy.official.description}
-              </p>
-              <p
-                className={cn(
-                  "mt-4 text-sm text-white/80",
-                  isBangla && "leading-[1.75]",
-                )}
-              >
-                <span className="font-medium text-white">
-                  {t.serviceSource.sourceLabel}:
-                </span>{" "}
-                {t.serviceSource.portalName}
-              </p>
-              <p
-                id="faq-official-portal-note"
-                className={cn(
-                  "mt-3 text-base text-white/70",
-                  isBangla && "leading-[1.75]",
-                )}
-              >
-                {copy.official.note}
-              </p>
-            </div>
+                const inner = (
+                  <>
+                    <span className="flex size-9 items-center justify-center rounded-btn bg-light-green text-primary">
+                      <Icon className="size-4" aria-hidden />
+                    </span>
+                    <p className="text-sm font-semibold text-foreground">
+                      {page.title}
+                    </p>
+                    <p
+                      className={cn(
+                        "text-sm text-text-secondary",
+                        isBangla && "leading-[1.7]",
+                      )}
+                    >
+                      {page.body}
+                    </p>
+                    <span className="mt-auto inline-flex items-center gap-1.5 text-sm font-semibold text-primary">
+                      {page.cta}
+                      {page.external ? (
+                        <ExternalLink className="size-3.5" aria-hidden />
+                      ) : (
+                        <ArrowRight className="size-3.5" aria-hidden />
+                      )}
+                    </span>
+                  </>
+                );
 
-            <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap lg:flex-col lg:items-stretch">
-              <Button
-                asChild
-                className="inline-flex h-12 items-center gap-2 rounded-btn bg-white px-6 text-button text-primary hover:bg-light-green"
-              >
-                <a
-                  href={OFFICIAL_GOVERNMENT_PORTAL_HREF}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-describedby="faq-official-portal-note"
-                >
-                  {copy.official.cta}
-                  <ExternalLink className="size-4" aria-hidden />
-                </a>
-              </Button>
-              <Button
-                asChild
-                variant="outline"
-                className="inline-flex h-12 items-center gap-2 rounded-btn border-white/40 bg-transparent px-6 text-button text-white hover:bg-white/10 hover:text-white"
-              >
-                <Link href={ROUTES.governmentServices}>
-                  {copy.official.prepareCta}
-                  <ArrowRight className="size-4" aria-hidden />
-                </Link>
-              </Button>
-            </div>
-          </div>
+                return (
+                  <li key={page.key}>
+                    {page.external ? (
+                      <a
+                        href={page.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={className}
+                      >
+                        {inner}
+                      </a>
+                    ) : (
+                      <Link href={page.href} className={className}>
+                        {inner}
+                      </Link>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          </FaqBodySection>
         </Container>
-      </section>
+      </div>
     </div>
+  );
+}
+
+function HeroChip({ icon, label }: { icon: ReactNode; label: string }) {
+  return (
+    <li className="inline-flex max-w-full items-center gap-1.5 rounded-btn bg-white/12 px-2.5 py-1 text-sm font-medium text-white ring-1 ring-white/15">
+      {icon}
+      <span>{label}</span>
+    </li>
+  );
+}
+
+function FaqBodySection({
+  id,
+  headingId,
+  title,
+  description,
+  meta,
+  isBangla,
+  children,
+}: {
+  id: string;
+  headingId: string;
+  title: string;
+  description: string;
+  meta?: string;
+  isBangla: boolean;
+  children: ReactNode;
+}) {
+  return (
+    <section id={id} aria-labelledby={headingId} className="scroll-mt-28">
+      <article className="rounded-card bg-surface p-4 shadow-card ring-1 ring-border sm:p-5">
+        <div className="flex flex-col gap-1.5 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+          <h2
+            id={headingId}
+            className={cn(
+              "text-xl font-semibold text-foreground sm:text-2xl",
+              isBangla && "leading-tight",
+            )}
+          >
+            {title}
+          </h2>
+          {meta ? (
+            <p className="text-sm font-medium text-text-secondary sm:pt-1.5">
+              {meta}
+            </p>
+          ) : null}
+        </div>
+        <p
+          className={cn(
+            "mt-1.5 max-w-2xl text-body text-text-secondary",
+            isBangla && "leading-[1.8]",
+          )}
+        >
+          {description}
+        </p>
+        <div className="mt-4">{children}</div>
+      </article>
+    </section>
   );
 }
 

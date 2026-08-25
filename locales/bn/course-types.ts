@@ -13,7 +13,7 @@ export const courseTypes: CourseTypesTranslations = {
     },
   },
   servicePrep: {
-    label: "সেবা শিক্ষা",
+    label: "সরকারি সেবা শিক্ষা",
     purpose: "একটি নির্দিষ্ট সরকারি সেবার জন্য কীভাবে প্রস্তুতি নিতে হয়, তা শেখায়।",
     examplesLabel: "উদাহরণ",
     examples: {

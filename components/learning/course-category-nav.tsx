@@ -54,23 +54,25 @@ function CourseCategoryNav({
 }: CourseCategoryNavProps) {
   return (
     <nav aria-label={copy.categories.title} className="flex flex-col gap-3">
-      <div>
+      <div className="border-b border-border pb-3">
         <p className="text-sm font-semibold text-foreground">
           {copy.categories.title}
         </p>
-        <p className="mt-1 text-xs text-text-secondary">
+        <p className="mt-1 text-xs leading-relaxed text-text-secondary">
           {copy.categories.description}
         </p>
       </div>
 
-      <CategoryButton
-        label={copy.categories.all}
-        count={formatCount(copy.categories.count, totalCount)}
-        selected={selected === ALL}
-        onSelect={() => onSelect(ALL)}
-      />
-
       <ul className="flex list-none flex-col gap-1 p-0">
+        <li>
+          <CategoryButton
+            icon={LayoutGrid}
+            label={copy.categories.all}
+            count={formatCount(copy.categories.count, totalCount)}
+            selected={selected === ALL}
+            onSelect={() => onSelect(ALL)}
+          />
+        </li>
         {COURSE_CATALOG_CATEGORY_KEYS.map((key) => {
           const count = counts[key];
           const Icon = CATEGORY_ICONS[key];
@@ -114,29 +116,36 @@ function CategoryButton({
       type="button"
       aria-pressed={selected}
       className={cn(
-        "flex w-full items-center gap-2.5 rounded-btn px-2 py-2 text-left text-sm transition-colors duration-200 ease-standard",
+        "flex w-full items-start gap-2.5 rounded-btn border-l-[3px] px-2.5 py-2 text-left text-sm transition-colors duration-200 ease-standard",
         "outline-none focus-visible:ring-3 focus-visible:ring-ring/50",
         selected
-          ? "bg-light-green font-semibold text-primary"
-          : "text-foreground hover:bg-muted",
+          ? "border-l-primary bg-light-green font-semibold text-primary"
+          : "border-l-transparent text-foreground hover:bg-muted",
       )}
       onClick={onSelect}
     >
       {Icon ? (
         <span
           className={cn(
-            "flex size-8 shrink-0 items-center justify-center rounded-btn",
+            "mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-btn",
             selected
-              ? "bg-surface text-primary"
+              ? "bg-surface text-primary ring-1 ring-border"
               : "bg-light-green text-primary",
           )}
         >
           <Icon className="size-4" aria-hidden />
         </span>
       ) : null}
-      <span className="min-w-0 flex-1 leading-snug">{label}</span>
+      <span className="min-w-0 flex-1 pt-1 leading-snug">{label}</span>
       {count ? (
-        <span className="tabular-nums text-xs text-text-secondary">
+        <span
+          className={cn(
+            "mt-1 inline-flex min-w-7 shrink-0 items-center justify-center rounded-full px-2 py-0.5 text-xs tabular-nums",
+            selected
+              ? "bg-surface font-semibold text-primary"
+              : "bg-muted text-text-secondary",
+          )}
+        >
           {count}
         </span>
       ) : null}

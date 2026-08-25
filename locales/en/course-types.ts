@@ -13,7 +13,7 @@ export const courseTypes = {
     },
   },
   servicePrep: {
-    label: "Service Learning",
+    label: "Government service learning",
     purpose:
       "Teach citizens how to prepare for a specific government service.",
     examplesLabel: "Examples",

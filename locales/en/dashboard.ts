@@ -4,6 +4,7 @@ export const dashboard = {
   eyebrow: "Dashboard",
   title: "Your learning",
   greeting: "Hello, {name}",
+  heroImageAlt: "People studying civic habits and government-service preparation together",
   description:
     "Civic learning and government-service preparation in one place. Civic Bangladesh helps you learn. It does not process government applications.",
   sampleNote:
@@ -84,6 +85,8 @@ export const dashboard = {
     ctaPassed: "Review course",
     emptyTitle: "No assessments in this sample",
     emptyDescription: "Assessments appear when a course includes one.",
+    nonePending: "Nothing waiting in this sample.",
+    nonePassed: "No passed checks in this sample yet.",
   },
   certificates: {
     eyebrow: "Civic Bangladesh credentials",

@@ -1,22 +1,86 @@
 import type { TranslationShape } from "@/locales/types";
 
 export const certificates = {
-  title: "Learning credentials",
+  title: "Learning certificates",
   description:
-    "Sample Civic Bangladesh certificates for courses you can complete on this site. They record learning here. They are not government certificates.",
+    "Sample Civic Bangladesh credentials for courses you can complete on this site. They record learning here. They are not government certificates.",
   sampleNote:
     "Sample catalog only. These credentials do not stamp papers, replace a licence, or confirm a government application.",
+  heroImageAlt:
+    "A Civic Bangladesh course workspace — learning records, not government stamps",
   pricingNote:
-    "We do not sell a government stamp. Certificate-related paid learning is a Civic Bangladesh credential or a preparation course, only where this catalog already supports it.",
+    "We do not sell a government stamp. Paid learning here is a Civic Bangladesh credential or a preparation course, only where this catalog already supports it.",
   pricingCta: "How we price courses",
+  stats: {
+    samples: "{count} sample credentials",
+    notGovernment: "Not government certificates",
+  },
+  jump: {
+    label: "On this page",
+    list: "Sample certificates",
+    how: "How they work",
+    notThis: "What this is not",
+    more: "Keep learning",
+  },
   list: {
-    title: "Earned certificates",
-    showing: "{count} sample credentials",
-    emptyTitle: "No certificates in this catalog",
+    title: "Sample certificates",
+    description:
+      "Sample records for Civic Bangladesh courses. Names, dates, and IDs are catalog fields, not a live enrolment roll.",
+    showing: "{count} credentials",
+    emptyTitle: "No certificates in this sample",
     emptyDescription:
-      "Complete a course that includes a Civic Bangladesh learning credential, then it can appear here as a sample record.",
+      "Complete a course that includes a Civic Bangladesh learning credential. It can then appear here as a sample record.",
     cta: "View certificate",
     earnedOn: "Completed {date}",
+  },
+  how: {
+    title: "How these certificates work",
+    description:
+      "Finish a course that includes a credential. What you get is a Civic Bangladesh learning record — not a government stamp.",
+    complete: {
+      title: "Finish a course",
+      body: "Only courses that include a credential can show a sample certificate here.",
+    },
+    credential: {
+      title: "A learning record",
+      body: "The certificate shows you completed that Civic Bangladesh course.",
+    },
+    visit: {
+      title: "It is not official paper",
+      body: "It does not stamp, licence, attest, or change a government application.",
+    },
+  },
+  notThis: {
+    title: "What this is not",
+    description:
+      "Keep the line clear. Civic Bangladesh issues a learning credential, not a government certificate.",
+    notGovernment: {
+      title: "Not a government certificate",
+      body: "It does not replace an official stamp, licence, attestation, or portal result.",
+    },
+    notStamp: {
+      title: "Not a stamp you can buy",
+      body: "Civic Bangladesh does not sell a government seal or process an application.",
+    },
+    notLive: {
+      title: "Not a live enrolment record",
+      body: "Names, dates, and IDs on this page are sample catalog fields.",
+    },
+  },
+  more: {
+    title: "Courses that can include a credential",
+    description:
+      "Browse preparation and civic courses. A certificate appears only where the catalog says it is included.",
+    courses: {
+      title: "Courses",
+      body: "See which Civic Bangladesh courses include a learning credential.",
+      cta: "Open courses",
+    },
+    pricing: {
+      title: "Pricing",
+      body: "How we price Civic Bangladesh courses. This is not a government fee.",
+      cta: "How we price courses",
+    },
   },
   card: {
     imageAlt: "Preview of a Civic Bangladesh learning credential",

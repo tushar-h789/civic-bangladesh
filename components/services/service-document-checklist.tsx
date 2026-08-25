@@ -21,7 +21,6 @@ import {
 import { cn } from "@/lib/utils";
 import type { ServiceDocumentSpec } from "@/data/government-services";
 import { Badge } from "@/components/common/badge";
-import { Card, CardContent } from "@/components/common/card";
 import { ProgressBar } from "@/components/common/progress-bar";
 import { Checkbox } from "@/components/ui/checkbox";
 
@@ -100,11 +99,12 @@ function ServiceDocumentChecklist({
   isBangla = false,
 }: ServiceDocumentChecklistProps) {
   const [prepared, setPrepared] = React.useState<Record<string, boolean>>({});
-  const preparedCount = documents.filter((document) => prepared[document.key])
-    .length;
+  const preparedCount = documents.filter(
+    (document) => prepared[document.key],
+  ).length;
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-4">
       <ProgressBar
         value={preparedCount}
         max={documents.length || 1}
@@ -114,7 +114,7 @@ function ServiceDocumentChecklist({
         })}
       />
 
-      <ul className="m-0 grid list-none gap-3 p-0">
+      <ul className="m-0 flex list-none flex-col divide-y divide-border overflow-hidden rounded-card bg-surface ring-1 ring-border p-0">
         {documents.map((document, index) => {
           const item = items[document.key];
           if (!item) return null;
@@ -125,84 +125,74 @@ function ServiceDocumentChecklist({
 
           return (
             <li key={document.key}>
-              <Card
-                hoverable
+              <div
                 className={cn(
-                  "rounded-card ring-border transition-colors duration-200 ease-standard",
-                  checked && "bg-light-green ring-transparent",
+                  "flex items-start gap-3 p-4 transition-colors duration-200 ease-standard sm:gap-4 sm:px-5",
+                  checked && "bg-light-green",
                 )}
               >
-                <CardContent className="flex items-start gap-4 py-1">
-                  <span
-                    aria-hidden
-                    className="hidden w-8 shrink-0 pt-1 text-sm font-semibold text-primary sm:block"
-                  >
-                    {padIndex(index)}
-                  </span>
+                <span
+                  className={cn(
+                    "mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-btn",
+                    checked
+                      ? "bg-surface text-primary ring-1 ring-border"
+                      : "bg-light-green text-primary",
+                  )}
+                  aria-hidden
+                >
+                  <Icon className="size-4" />
+                </span>
 
-                  <span
-                    className={cn(
-                      "mt-0.5 flex size-10 shrink-0 items-center justify-center rounded-btn",
-                      checked
-                        ? "bg-surface text-primary"
-                        : "bg-light-green text-primary",
-                    )}
-                    aria-hidden
-                  >
-                    <Icon className="size-4" />
-                  </span>
-
-                  <div className="min-w-0 flex-1">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <label
-                        htmlFor={id}
-                        className="cursor-pointer text-base font-semibold text-foreground"
-                      >
-                        {item.name}
-                      </label>
-                      <Badge
-                        variant={document.required ? "warning" : "info"}
-                        className="h-6 px-2.5"
-                      >
-                        {document.required ? labels.required : labels.optional}
-                      </Badge>
-                    </div>
-
-                    <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:gap-3">
-                      <p className="inline-flex max-w-full items-center rounded-btn bg-light-green px-2.5 py-1 text-sm font-medium text-primary">
-                        <span className="mr-1.5 text-text-secondary">
-                          {labels.format}
-                        </span>
-                        {item.format}
-                      </p>
-                      <p
-                        className={cn(
-                          "text-sm text-text-secondary",
-                          isBangla && "leading-[1.75]",
-                        )}
-                      >
-                        <span className="font-medium text-foreground">
-                          {labels.notes}:{" "}
-                        </span>
-                        {item.notes}
-                      </p>
-                    </div>
+                <div className="min-w-0 flex-1">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="hidden text-xs font-semibold text-primary sm:inline">
+                      {padIndex(index)}
+                    </span>
+                    <label
+                      htmlFor={id}
+                      className="cursor-pointer text-base font-semibold text-foreground"
+                    >
+                      {item.name}
+                    </label>
+                    <Badge
+                      variant={document.required ? "warning" : "info"}
+                      className="h-6 px-2.5"
+                    >
+                      {document.required ? labels.required : labels.optional}
+                    </Badge>
                   </div>
 
-                  <Checkbox
-                    id={id}
-                    checked={checked}
-                    onCheckedChange={(value) =>
-                      setPrepared((current) => ({
-                        ...current,
-                        [document.key]: value === true,
-                      }))
-                    }
-                    aria-label={`${labels.markPrepared}: ${item.name}`}
-                    className="mt-1 size-5"
-                  />
-                </CardContent>
-              </Card>
+                  <p
+                    className={cn(
+                      "mt-1.5 text-sm text-text-secondary",
+                      isBangla && "leading-[1.7]",
+                    )}
+                  >
+                    <span className="font-medium text-foreground">
+                      {labels.format}:
+                    </span>{" "}
+                    {item.format}
+                    <span aria-hidden> · </span>
+                    <span className="font-medium text-foreground">
+                      {labels.notes}:
+                    </span>{" "}
+                    {item.notes}
+                  </p>
+                </div>
+
+                <Checkbox
+                  id={id}
+                  checked={checked}
+                  onCheckedChange={(value) =>
+                    setPrepared((current) => ({
+                      ...current,
+                      [document.key]: value === true,
+                    }))
+                  }
+                  aria-label={`${labels.markPrepared}: ${item.name}`}
+                  className="mt-1 size-5"
+                />
+              </div>
             </li>
           );
         })}

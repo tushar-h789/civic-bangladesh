@@ -1,6 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import {
   AlertTriangle,
@@ -27,9 +28,7 @@ import {
 } from "@/data/government-services";
 import { serviceCategoryHrefFromKey } from "@/data/service-categories";
 import { useTranslation } from "@/hooks/use-translation";
-import { Badge } from "@/components/common/badge";
 import { Breadcrumb } from "@/components/common/breadcrumb";
-import { Card, CardContent } from "@/components/common/card";
 import { Container } from "@/components/common/container";
 import { SectionHeader } from "@/components/common/section-header";
 import { CourseCard } from "@/components/learning/course-card";
@@ -66,7 +65,9 @@ function ServiceDetail({ slug }: { slug: string }) {
   const copy = t.serviceDetail;
   const guide = t.serviceGuides[service.key];
   const item = listing.items[service.key];
-  const category = listing.categoryItems[service.category].title;
+  const categoryShort = listing.categoryItems[service.category].shortTitle;
+  const heroImage =
+    service.course?.image ?? "/images/home/courses-hero-service-v2.png";
   const officialSource = getServiceOfficialSource(service);
   const guideCourse = "course" in guide ? guide.course : null;
   const documentItems = guide.documents as Record<
@@ -84,6 +85,8 @@ function ServiceDetail({ slug }: { slug: string }) {
       : []),
     { href: "#documents", label: copy.jump.documents },
     { href: "#process", label: copy.jump.process },
+    { href: "#instructions", label: copy.instructions.title },
+    { href: "#mistakes", label: copy.mistakes.title },
     ...(service.course
       ? [{ href: "#related-course", label: copy.jump.course }]
       : []),
@@ -95,9 +98,30 @@ function ServiceDetail({ slug }: { slug: string }) {
 
   return (
     <div className={cn(isBangla && "font-bengali")}>
-      <section className="relative overflow-hidden bg-light-green pt-10 pb-16 md:pt-12 md:pb-20 lg:pt-16 lg:pb-24">
-        <Container className="flex flex-col gap-8">
+      <section className="relative isolate overflow-hidden bg-text">
+        <div className="absolute inset-0" aria-hidden="true">
+          <Image
+            src={heroImage}
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-center"
+          />
+        </div>
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-linear-to-r from-text/80 via-text/50 to-text/20 lg:from-text/75 lg:via-text/40 lg:to-transparent"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-linear-to-t from-text/70 via-transparent to-text/25"
+        />
+
+        <Container className="relative flex flex-col gap-6 pt-8 pb-10 sm:pt-10 sm:pb-12 lg:pt-12 lg:pb-14">
           <Breadcrumb
+            tone="onPrimary"
+            className="text-sm sm:text-base"
             items={[
               { label: t.nav.links.home, href: ROUTES.home },
               {
@@ -108,30 +132,31 @@ function ServiceDetail({ slug }: { slug: string }) {
             ]}
           />
 
-          <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1.4fr)_22rem] xl:grid-cols-[minmax(0,1.5fr)_24rem] xl:gap-12">
-            <div className="flex flex-col gap-5">
+          <div className="grid items-start gap-5 lg:grid-cols-[minmax(0,1fr)_22rem] xl:grid-cols-[minmax(0,1fr)_24rem] xl:gap-8">
+            <div className="flex max-w-3xl flex-col gap-4 rounded-2xl bg-text/50 p-4 ring-1 ring-white/15 backdrop-blur-md sm:gap-5 sm:p-6">
               <div className="flex flex-wrap items-center gap-2">
-                <Badge variant="info" asChild className="h-6 px-2.5">
-                  <Link href={serviceCategoryHrefFromKey(service.category)}>
-                    {category}
-                  </Link>
-                </Badge>
-                <Badge variant="outline" className="h-6 px-2.5">
+                <Link
+                  href={serviceCategoryHrefFromKey(service.category)}
+                  className="inline-flex h-7 items-center rounded-btn bg-white/12 px-2.5 text-sm font-medium text-white ring-1 ring-white/15 outline-none hover:bg-white/18 focus-visible:ring-3 focus-visible:ring-ring/50"
+                >
+                  {categoryShort}
+                </Link>
+                <span className="inline-flex h-7 items-center rounded-btn bg-white/8 px-2.5 text-sm font-medium text-white/80 ring-1 ring-white/10">
                   {copy.sampleBadge}
-                </Badge>
+                </span>
               </div>
 
               <h1
                 className={cn(
-                  "text-hero-mobile font-semibold text-balance text-foreground lg:text-5xl",
-                  isBangla && "leading-tight",
+                  "text-[1.75rem] leading-[1.28] font-semibold text-balance text-white sm:text-[2.125rem] sm:leading-snug lg:text-4xl lg:leading-[1.2]",
+                  isBangla && "leading-[1.32] sm:leading-[1.3]",
                 )}
               >
                 {item.title}
               </h1>
               <p
                 className={cn(
-                  "max-w-2xl text-body text-text-secondary",
+                  "text-base text-white/85 sm:text-body",
                   isBangla && "leading-[1.8]",
                 )}
               >
@@ -139,21 +164,42 @@ function ServiceDetail({ slug }: { slug: string }) {
               </p>
               <p
                 className={cn(
-                  "max-w-2xl text-sm text-text-secondary",
+                  "text-sm text-white/70 sm:text-base",
                   isBangla && "leading-[1.75]",
                 )}
               >
                 {copy.catalogNote}
               </p>
 
-              <div className="flex flex-col gap-3 pt-1 sm:flex-row sm:flex-wrap sm:items-center">
-                <OfficialPortalButton>
+              <ul className="m-0 flex list-none flex-wrap gap-2 p-0">
+                <HeroChip
+                  icon={<FileText className="size-3.5" aria-hidden />}
+                  label={formatTemplate(listing.card.documents, {
+                    count: service.documentCount,
+                  })}
+                />
+                <HeroChip
+                  icon={<Clock className="size-3.5" aria-hidden />}
+                  label={item.processingTime}
+                />
+                <HeroChip
+                  icon={<Banknote className="size-3.5" aria-hidden />}
+                  label={
+                    service.feeType === "paid"
+                      ? listing.card.feePaidShort
+                      : listing.card.feeFreeShort
+                  }
+                />
+              </ul>
+
+              <div className="flex flex-col gap-2.5 sm:flex-row sm:flex-wrap sm:items-center">
+                <OfficialPortalButton onPrimary>
                   {copy.cta.applyOfficial}
                 </OfficialPortalButton>
                 <Button
                   asChild
                   variant="outline"
-                  className="h-12 rounded-btn bg-surface px-6 text-button"
+                  className="h-12 rounded-btn border-white/25 bg-white/10 px-6 text-button text-white hover:bg-white/18 hover:text-white"
                 >
                   <a href={learnHref}>
                     <BookOpen className="size-4" aria-hidden />
@@ -167,27 +213,21 @@ function ServiceDetail({ slug }: { slug: string }) {
               verifiedAuthorityName={officialSource.verifiedAuthorityName}
               lastUpdated={officialSource.lastUpdated}
               href={officialSource.href}
+              className="bg-surface/95 backdrop-blur-md"
             />
           </div>
 
-          <nav
-            aria-label={copy.onThisPage}
-            className="border-t border-primary/15 pt-5"
-          >
-            <p className="text-sm font-semibold text-primary">
+          <nav aria-label={copy.onThisPage} className="pt-1">
+            <p className="text-sm font-semibold text-white">
               {copy.onThisPage}
             </p>
-            <ol className="mt-3 flex list-none flex-wrap items-center gap-x-5 gap-y-2 p-0">
-              {jumpLinks.map((link, index) => (
+            <ol className="mt-2.5 flex list-none flex-wrap gap-2 p-0">
+              {jumpLinks.map((link) => (
                 <li key={link.href}>
                   <a
                     href={link.href}
-                    className="text-sm font-medium text-text-secondary transition-colors duration-200 ease-standard hover:text-primary"
+                    className="inline-flex h-8 items-center rounded-btn bg-white/10 px-3 text-sm font-medium text-white/90 ring-1 ring-white/15 transition-colors duration-200 ease-standard hover:bg-white/18 hover:text-white"
                   >
-                    <span className="text-primary">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-                    <span className="mx-2 text-border">/</span>
                     {link.label}
                   </a>
                 </li>
@@ -200,76 +240,89 @@ function ServiceDetail({ slug }: { slug: string }) {
       <section
         id="quick-info"
         aria-labelledby="quick-info-heading"
-        className="scroll-mt-28 bg-background py-section-mobile md:py-section-tablet lg:py-section-desktop"
+        className="scroll-mt-28 bg-background pt-10 pb-10 md:pt-12 md:pb-12 lg:pt-14 lg:pb-14"
       >
         <Container>
           <SectionHeader
             title={<span id="quick-info-heading">{copy.quick.title}</span>}
             description={copy.quick.description}
+            className="gap-4"
           />
 
-          <ul className="mt-8 grid list-none gap-4 p-0 sm:mt-10 lg:grid-cols-12">
-            <QuickFactCard
-              icon={<Users className="size-5" aria-hidden />}
-              label={copy.quick.who}
-              value={guide.whoCanApply}
-              isBangla={isBangla}
-              className="lg:col-span-5 lg:row-span-2"
-              featured
-            />
-            <QuickFactCard
-              icon={<FileText className="size-5" aria-hidden />}
-              label={copy.quick.documents}
-              value={formatTemplate(listing.card.documents, {
-                count: service.documentCount,
-              })}
-              highlight
-              isBangla={isBangla}
-              className="lg:col-span-3"
-            />
-            <QuickFactCard
-              icon={<Clock className="size-5" aria-hidden />}
-              label={copy.quick.time}
-              value={item.processingTime}
-              highlight
-              isBangla={isBangla}
-              className="lg:col-span-4"
-            />
-            <QuickFactCard
-              icon={<Banknote className="size-5" aria-hidden />}
-              label={copy.quick.fee}
-              value={copy.fee[service.feeType]}
-              highlight
-              isBangla={isBangla}
-              className="lg:col-span-4"
-            />
-            <QuickFactCard
-              icon={<Building2 className="size-5" aria-hidden />}
-              label={copy.quick.method}
-              value={copy.methods[service.applicationMethod]}
-              isBangla={isBangla}
-              className="lg:col-span-3"
-            />
-          </ul>
+          <div className="mt-6 rounded-card bg-surface p-4 shadow-card ring-1 ring-border sm:mt-8 sm:p-6">
+            <div className="flex gap-4 border-b border-border pb-5">
+              <span className="flex size-11 shrink-0 items-center justify-center rounded-btn bg-light-green text-primary">
+                <Users className="size-5" aria-hidden />
+              </span>
+              <div className="min-w-0">
+                <p className="text-sm font-medium text-text-secondary">
+                  {copy.quick.who}
+                </p>
+                <p
+                  className={cn(
+                    "mt-1 text-base font-semibold text-pretty text-foreground sm:text-lg",
+                    isBangla && "leading-[1.7]",
+                  )}
+                >
+                  {guide.whoCanApply}
+                </p>
+              </div>
+            </div>
+
+            <ul className="mt-5 grid list-none gap-3 p-0 sm:grid-cols-2 xl:grid-cols-4">
+              <QuickFactCard
+                icon={<FileText className="size-4" aria-hidden />}
+                label={copy.quick.documents}
+                value={formatTemplate(listing.card.documents, {
+                  count: service.documentCount,
+                })}
+                isBangla={isBangla}
+              />
+              <QuickFactCard
+                icon={<Clock className="size-4" aria-hidden />}
+                label={copy.quick.time}
+                value={item.processingTime}
+                isBangla={isBangla}
+              />
+              <QuickFactCard
+                icon={<Banknote className="size-4" aria-hidden />}
+                label={copy.quick.fee}
+                value={
+                  service.feeType === "paid"
+                    ? listing.card.feePaidShort
+                    : listing.card.feeFreeShort
+                }
+                hint={listing.card.feeConfirm}
+                isBangla={isBangla}
+              />
+              <QuickFactCard
+                icon={<Building2 className="size-4" aria-hidden />}
+                label={copy.quick.method}
+                value={copy.methods[service.applicationMethod]}
+                isBangla={isBangla}
+              />
+            </ul>
+          </div>
         </Container>
       </section>
 
       <section
         id="about"
         aria-labelledby="about-heading"
-        className="scroll-mt-28 bg-surface py-section-mobile md:py-section-tablet lg:py-section-desktop"
+        className="scroll-mt-28 bg-background pb-10 md:pb-12 lg:pb-14"
       >
-        <Container className="grid gap-8 lg:grid-cols-[minmax(0,18rem)_minmax(0,1fr)] lg:items-start lg:gap-14">
-          <h2
-            id="about-heading"
-            className="text-section-heading font-semibold text-balance text-foreground"
-          >
-            {copy.about.title}
-          </h2>
-          <div className="rounded-card bg-light-green p-6 sm:p-8">
+        <Container>
+          <SectionHeader
+            title={<span id="about-heading">{copy.about.title}</span>}
+            className="gap-4"
+          />
+          <div className="mt-6 flex gap-4 rounded-card bg-surface p-5 shadow-card ring-1 ring-border sm:mt-8 sm:p-6">
+            <span className="flex size-11 shrink-0 items-center justify-center rounded-btn bg-light-green text-primary">
+              <BookOpen className="size-5" aria-hidden />
+            </span>
             <p
               className={cn(
-                "max-w-3xl border-l-2 border-primary pl-5 text-body text-foreground",
+                "min-w-0 text-body text-foreground",
                 isBangla && "leading-[1.85]",
               )}
             >
@@ -283,7 +336,7 @@ function ServiceDetail({ slug }: { slug: string }) {
         <section
           id="service-learning"
           aria-labelledby="service-learning-heading"
-          className="scroll-mt-28 bg-background py-section-mobile md:py-section-tablet lg:py-section-desktop"
+          className="scroll-mt-28 bg-background pb-10 md:pb-12 lg:pb-14"
         >
           <Container>
             <h2 id="service-learning-heading" className="sr-only">
@@ -304,17 +357,23 @@ function ServiceDetail({ slug }: { slug: string }) {
       <section
         id="documents"
         aria-labelledby="documents-heading"
-        className="scroll-mt-28 bg-background py-section-mobile md:py-section-tablet lg:py-section-desktop"
+        className="scroll-mt-28 bg-background pb-10 md:pb-12 lg:pb-14"
       >
         <Container>
           <SectionHeader
             title={<span id="documents-heading">{copy.documents.title}</span>}
             description={copy.documents.description}
+            className="gap-4"
           />
-          <p className="mt-4 max-w-2xl text-base text-text-secondary">
+          <p
+            className={cn(
+              "mt-3 max-w-2xl text-sm text-text-secondary",
+              isBangla && "leading-[1.7]",
+            )}
+          >
             {copy.documents.sampleNote}
           </p>
-          <div className="mt-8 sm:mt-10">
+          <div className="mt-6 sm:mt-8">
             <ServiceDocumentChecklist
               documents={service.documents}
               items={documentItems}
@@ -328,14 +387,15 @@ function ServiceDetail({ slug }: { slug: string }) {
       <section
         id="process"
         aria-labelledby="process-heading"
-        className="scroll-mt-28 bg-light-green py-section-mobile md:py-section-tablet lg:py-section-desktop"
+        className="scroll-mt-28 bg-background pb-10 md:pb-12 lg:pb-14"
       >
         <Container>
           <SectionHeader
             title={<span id="process-heading">{copy.process.title}</span>}
             description={copy.process.description}
+            className="gap-4"
           />
-          <div className="mt-10 sm:mt-12">
+          <div className="mt-6 rounded-card bg-surface p-5 shadow-card ring-1 ring-border sm:mt-8 sm:p-6">
             <ServiceProcessTimeline
               steps={copy.process.steps}
               isBangla={isBangla}
@@ -347,7 +407,7 @@ function ServiceDetail({ slug }: { slug: string }) {
       <section
         id="instructions"
         aria-labelledby="instructions-heading"
-        className="scroll-mt-28 bg-background py-section-mobile md:py-section-tablet lg:py-section-desktop"
+        className="scroll-mt-28 bg-background pb-10 md:pb-12 lg:pb-14"
       >
         <Container>
           <SectionHeader
@@ -355,11 +415,13 @@ function ServiceDetail({ slug }: { slug: string }) {
               <span id="instructions-heading">{copy.instructions.title}</span>
             }
             description={copy.instructions.description}
+            className="gap-4"
           />
           <Accordion
             type="single"
             collapsible
-            className="mt-8 overflow-hidden rounded-card bg-surface shadow-card ring-1 ring-border sm:mt-10"
+            defaultValue={SERVICE_INSTRUCTION_KEYS[0]}
+            className="mt-6 overflow-hidden rounded-card bg-surface shadow-card ring-1 ring-border sm:mt-8"
           >
             {SERVICE_INSTRUCTION_KEYS.map((key, index) => {
               const instruction = copy.instructions.items[key];
@@ -368,11 +430,11 @@ function ServiceDetail({ slug }: { slug: string }) {
                 <AccordionItem
                   key={key}
                   value={key}
-                  className="border-border px-4 sm:px-6"
+                  className="border-border px-4 sm:px-5"
                 >
-                  <AccordionTrigger className="py-5 text-left text-base font-semibold text-foreground hover:no-underline">
-                    <span className="flex flex-1 items-start gap-3 pr-3">
-                      <span className="mt-0.5 text-sm font-semibold text-primary">
+                  <AccordionTrigger className="py-4 text-left text-base font-semibold text-foreground hover:no-underline">
+                    <span className="flex flex-1 items-center gap-3 pr-3">
+                      <span className="flex size-8 shrink-0 items-center justify-center rounded-btn bg-light-green text-sm font-semibold text-primary">
                         {String(index + 1).padStart(2, "0")}
                       </span>
                       {instruction.title}
@@ -380,7 +442,7 @@ function ServiceDetail({ slug }: { slug: string }) {
                   </AccordionTrigger>
                   <AccordionContent
                     className={cn(
-                      "ps-9 text-body text-text-secondary",
+                      "ps-11 pb-4 text-body text-text-secondary",
                       isBangla && "leading-[1.8]",
                     )}
                   >
@@ -396,39 +458,36 @@ function ServiceDetail({ slug }: { slug: string }) {
       <section
         id="mistakes"
         aria-labelledby="mistakes-heading"
-        className="scroll-mt-28 bg-surface py-section-mobile md:py-section-tablet lg:py-section-desktop"
+        className="scroll-mt-28 bg-background pb-10 md:pb-12 lg:pb-14"
       >
         <Container>
           <SectionHeader
             title={<span id="mistakes-heading">{copy.mistakes.title}</span>}
             description={copy.mistakes.description}
+            className="gap-4"
           />
-          <ul className="mt-8 grid list-none gap-4 p-0 sm:mt-10 lg:grid-cols-3">
+          <ul className="mt-6 m-0 flex list-none flex-col divide-y divide-border overflow-hidden rounded-card bg-surface ring-1 ring-border p-0 sm:mt-8">
             {guide.mistakes.map((mistake, index) => (
-              <li key={mistake.title}>
-                <Card className="h-full rounded-card shadow-card ring-border">
-                  <CardContent className="flex h-full flex-col gap-4">
-                    <div className="flex items-center justify-between">
-                      <span className="flex size-10 items-center justify-center rounded-btn bg-warning/10 text-warning">
-                        <AlertTriangle className="size-4" aria-hidden />
-                      </span>
-                      <span className="text-sm font-semibold text-warning">
-                        {String(index + 1).padStart(2, "0")}
-                      </span>
-                    </div>
-                    <h3 className="text-lg font-semibold text-balance text-foreground">
-                      {mistake.title}
-                    </h3>
-                    <p
-                      className={cn(
-                        "text-sm text-text-secondary",
-                        isBangla && "leading-[1.75]",
-                      )}
-                    >
-                      {mistake.body}
-                    </p>
-                  </CardContent>
-                </Card>
+              <li key={mistake.title} className="flex gap-4 p-4 sm:p-5">
+                <span className="flex size-10 shrink-0 items-center justify-center rounded-btn bg-warning/10 text-warning">
+                  <AlertTriangle className="size-4" aria-hidden />
+                </span>
+                <div className="min-w-0">
+                  <p className="text-xs font-semibold text-warning">
+                    {String(index + 1).padStart(2, "0")}
+                  </p>
+                  <h3 className="mt-0.5 text-base font-semibold text-foreground sm:text-lg">
+                    {mistake.title}
+                  </h3>
+                  <p
+                    className={cn(
+                      "mt-1 text-sm text-text-secondary",
+                      isBangla && "leading-[1.75]",
+                    )}
+                  >
+                    {mistake.body}
+                  </p>
+                </div>
               </li>
             ))}
           </ul>
@@ -439,61 +498,59 @@ function ServiceDetail({ slug }: { slug: string }) {
         <section
           id="related-course"
           aria-labelledby="related-course-heading"
-          className="scroll-mt-28 bg-light-green py-section-mobile md:py-section-tablet lg:py-section-desktop"
+          className="scroll-mt-28 bg-background pb-10 md:pb-12 lg:pb-14"
         >
-          <Container className="grid items-center gap-10 lg:grid-cols-[minmax(0,1fr)_24rem] lg:gap-14 xl:grid-cols-[minmax(0,1fr)_28rem]">
-            <div className="flex max-w-xl flex-col gap-4">
-              <p className="text-sm font-semibold tracking-wide text-primary uppercase">
-                {copy.jump.course}
-              </p>
-              <h2
-                id="related-course-heading"
-                className="text-section-heading font-semibold text-balance text-foreground"
-              >
-                {copy.course.title}
-              </h2>
-              <p
-                className={cn(
-                  "text-body text-text-secondary",
-                  isBangla && "leading-[1.8]",
-                )}
-              >
-                {copy.course.description}
-              </p>
+          <Container>
+            <div className="rounded-card bg-surface p-5 shadow-card ring-1 ring-border sm:p-6 lg:grid lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-center lg:gap-8">
+              <div className="mb-6 flex max-w-xl flex-col gap-3 lg:mb-0">
+                <h2
+                  id="related-course-heading"
+                  className="text-xl font-semibold text-balance text-foreground sm:text-2xl"
+                >
+                  {copy.course.title}
+                </h2>
+                <p
+                  className={cn(
+                    "text-body text-text-secondary",
+                    isBangla && "leading-[1.8]",
+                  )}
+                >
+                  {copy.course.description}
+                </p>
+              </div>
+              <CourseCard
+                href={catalogCourseHref(service.course.slug)}
+                image={service.course.image}
+                imageAlt={copy.course.imageAlt}
+                title={guideCourse.title}
+                description={guideCourse.description}
+                access={service.course.access}
+                accessLabel={t.learning.access[service.course.access]}
+                duration={formatTemplate(t.learning.duration, {
+                  hours: service.course.hours,
+                })}
+                lessons={formatTemplate(t.learning.lessons, {
+                  count: service.course.lessons,
+                })}
+                difficulty={t.learning.difficulty[service.course.difficulty]}
+                certificate={
+                  service.course.hasCertificate
+                    ? t.learning.certificate.included
+                    : t.learning.certificate.notIncluded
+                }
+                hasCertificate={service.course.hasCertificate}
+                courseType="servicePrep"
+                courseTypeLabel={t.courseTypes.servicePrep.label}
+                price={
+                  service.course.access === "free"
+                    ? t.learning.access.free
+                    : formatTemplate(copy.course.price, {
+                        amount: service.course.priceBdt,
+                      })
+                }
+                cta={copy.cta.startCourse}
+              />
             </div>
-
-            <CourseCard
-              href={catalogCourseHref(service.course.slug)}
-              image={service.course.image}
-              imageAlt={copy.course.imageAlt}
-              title={guideCourse.title}
-              description={guideCourse.description}
-              access={service.course.access}
-              accessLabel={t.learning.access[service.course.access]}
-              duration={formatTemplate(t.learning.duration, {
-                hours: service.course.hours,
-              })}
-              lessons={formatTemplate(t.learning.lessons, {
-                count: service.course.lessons,
-              })}
-              difficulty={t.learning.difficulty[service.course.difficulty]}
-              certificate={
-                service.course.hasCertificate
-                  ? t.learning.certificate.included
-                  : t.learning.certificate.notIncluded
-              }
-              hasCertificate={service.course.hasCertificate}
-              courseType="servicePrep"
-              courseTypeLabel={t.courseTypes.servicePrep.label}
-              price={
-                service.course.access === "free"
-                  ? t.learning.access.free
-                  : formatTemplate(copy.course.price, {
-                      amount: service.course.priceBdt,
-                    })
-              }
-              cta={copy.cta.startCourse}
-            />
           </Container>
         </section>
       ) : null}
@@ -502,7 +559,7 @@ function ServiceDetail({ slug }: { slug: string }) {
         <section
           id="related-services"
           aria-labelledby="related-services-heading"
-          className="scroll-mt-28 bg-background py-section-mobile md:py-section-tablet lg:py-section-desktop"
+          className="scroll-mt-28 bg-background pb-10 md:pb-12 lg:pb-14"
         >
           <Container>
             <SectionHeader
@@ -512,8 +569,9 @@ function ServiceDetail({ slug }: { slug: string }) {
                 </span>
               }
               description={t.serviceLearning.related.description}
+              className="gap-4"
             />
-            <ul className="mt-8 grid list-none gap-4 p-0 sm:mt-10 lg:grid-cols-3">
+            <ul className="mt-6 grid list-none gap-3 p-0 sm:mt-8 sm:grid-cols-2 lg:grid-cols-3">
               {relatedServices.map((related) => {
                 const relatedItem = listing.items[related.key];
                 const relatedGuide = t.serviceGuides[related.key];
@@ -620,6 +678,15 @@ function ServiceDetail({ slug }: { slug: string }) {
   );
 }
 
+function HeroChip({ icon, label }: { icon: ReactNode; label: string }) {
+  return (
+    <li className="inline-flex max-w-full items-center gap-1.5 rounded-btn bg-white/12 px-2.5 py-1 text-sm font-medium text-white ring-1 ring-white/15">
+      {icon}
+      <span>{label}</span>
+    </li>
+  );
+}
+
 function OfficialPortalButton({
   children,
   ariaDescribedBy,
@@ -656,60 +723,43 @@ function QuickFactCard({
   icon,
   label,
   value,
-  highlight = false,
-  featured = false,
+  hint,
   isBangla = false,
-  className,
 }: {
   icon: ReactNode;
   label: string;
   value: string;
-  highlight?: boolean;
-  featured?: boolean;
+  hint?: string;
   isBangla?: boolean;
-  className?: string;
 }) {
   return (
-    <li className={className}>
-      <Card
-        className={cn(
-          "h-full rounded-card shadow-card ring-border",
-          highlight && "bg-light-green ring-transparent shadow-none",
-          featured && "bg-surface",
-        )}
-      >
-        <CardContent
-          className={cn(
-            "flex h-full flex-col gap-4",
-            featured && "justify-between sm:p-6",
-          )}
-        >
-          <div className="flex items-start justify-between gap-3">
-            <span className="text-sm font-medium text-text-secondary">
-              {label}
-            </span>
-            <span
-              className={cn(
-                "flex size-10 shrink-0 items-center justify-center rounded-btn text-primary",
-                highlight ? "bg-surface" : "bg-light-green",
-              )}
-            >
-              {icon}
-            </span>
-          </div>
+    <li>
+      <div className="flex h-full flex-col gap-3 rounded-btn bg-background p-4 ring-1 ring-border">
+        <span className="flex size-9 items-center justify-center rounded-btn bg-light-green text-primary">
+          {icon}
+        </span>
+        <div className="min-w-0">
+          <p className="text-xs font-medium text-text-secondary">{label}</p>
           <p
             className={cn(
-              "text-pretty text-foreground",
-              featured
-                ? "text-lg font-semibold sm:text-xl"
-                : "text-base font-semibold",
-              isBangla && "leading-[1.7]",
+              "mt-1 text-sm font-semibold text-pretty text-foreground sm:text-base",
+              isBangla && "leading-[1.55]",
             )}
           >
             {value}
           </p>
-        </CardContent>
-      </Card>
+          {hint ? (
+            <p
+              className={cn(
+                "mt-1 text-xs text-text-secondary",
+                isBangla && "leading-[1.6]",
+              )}
+            >
+              {hint}
+            </p>
+          ) : null}
+        </div>
+      </div>
     </li>
   );
 }

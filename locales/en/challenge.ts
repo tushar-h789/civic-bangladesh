@@ -76,6 +76,15 @@ export const challenge = {
         "Five kinds of everyday habit. The 30-day journey on the homepage uses these same categories.",
       openDay: "Open the 30-day journey",
       days: "{count} habits",
+      filterLabel: "Habit type",
+      all: "All types",
+      calendarHint:
+        "Pick a day to read the habit. Marking it kept stays on this visit only — it is not saved to an account.",
+      markKept: "Mark as kept this visit",
+      markedNote: "Marked kept on this visit — not live tracking.",
+      keptInCategory: "{kept} of {total} kept",
+      jumpToday: "Today’s habit",
+      lockedUpcoming: "This day comes later in the sample journey.",
     },
     learning: {
       title: "Learning challenges",
@@ -84,6 +93,13 @@ export const challenge = {
       sampleNote: "Sample progress for one learner. Not a live account.",
       related: "Related course",
       progress: "{completed} of {total}",
+      filterLabel: "Task status",
+      all: "All tasks",
+      pathLabel: "Preparation path",
+      selectHint:
+        "Choose a task to open the related course. This is sample study progress — not a game and not a government result.",
+      doneOf: "{completed} of {total} sample tasks finished",
+      step: "Step {index}",
     },
   },
   learningItems: {

@@ -59,7 +59,7 @@ export function getGovernmentServiceCardModel(
     href: serviceHref(service.slug),
     officialHref: source.href,
     title: item.title,
-    category: t.services.categoryItems[service.category].title,
+    category: t.services.categoryItems[service.category].shortTitle,
     categoryHref: serviceCategoryHrefFromKey(service.category),
     authority: source.verifiedAuthorityName ?? t.serviceSource.portalName,
     description: item.description,
@@ -68,7 +68,7 @@ export function getGovernmentServiceCardModel(
     }),
     processingTime: item.processingTime,
     governmentFee:
-      service.feeType === "paid" ? copy.feePaid : copy.feeFree,
+      service.feeType === "paid" ? copy.feePaidShort : copy.feeFreeShort,
     course,
   };
 }

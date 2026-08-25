@@ -9,6 +9,7 @@ import {
   ABOUT_START_HREF,
   ABOUT_START_KEYS,
 } from "@/data/about";
+import { OFFICIAL_GOVERNMENT_PORTAL_HREF } from "@/data/government-services";
 import type { Dictionary } from "@/locales";
 
 export function getAboutPillars(t: Dictionary) {
@@ -57,11 +58,24 @@ export function getAboutNotItems(t: Dictionary) {
 }
 
 export function getAboutStartItems(t: Dictionary) {
-  return ABOUT_START_KEYS.map((key) => ({
+  const sitePages = ABOUT_START_KEYS.map((key) => ({
     key,
     href: ABOUT_START_HREF[key],
     title: t.about.start[key].title,
     body: t.about.start[key].body,
     cta: t.about.start[key].cta,
+    external: false as const,
   }));
+
+  return [
+    ...sitePages,
+    {
+      key: "official" as const,
+      href: OFFICIAL_GOVERNMENT_PORTAL_HREF,
+      title: t.about.start.official.title,
+      body: t.about.start.official.body,
+      cta: t.about.start.official.cta,
+      external: true as const,
+    },
+  ];
 }

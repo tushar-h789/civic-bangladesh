@@ -84,6 +84,7 @@ type AssessmentCopy = {
 };
 
 type CertificateCopy = {
+  sampleBadge: string;
   previewEyebrow: string;
   heading: string;
   awardedTo: string;

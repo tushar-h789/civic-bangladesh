@@ -3,13 +3,19 @@ import type { TranslationShape } from "@/locales/types";
 export const stories = {
   title: "Stories that teach a habit",
   description:
-    "Short civic stories from everyday Bangladesh. They are sample teaching stories — not news reports, interviews, or government case studies.",
+    "Short civic stories from everyday Bangladesh. They are sample teaching stories — not news, interviews, or government case studies.",
   sampleNote:
-    "This catalog has three sample stories. Names and places are for reading. They are not verified accounts.",
+    "Three sample stories. Names and places are for reading. They are not verified accounts.",
   heroImageAlt: "Neighbors sharing a public place they look after together",
+  stats: {
+    stories: "{count} sample stories",
+    kinds: "Citizen, student, and community",
+  },
   jump: {
     label: "On this page",
     stories: "Sample stories",
+    how: "How to read",
+    notThis: "What this is not",
     practice: "Practice a habit",
   },
   notice: {
@@ -18,27 +24,61 @@ export const stories = {
   },
   filter: {
     label: "Show",
-    all: "All",
-    showing: "{count} sample stories",
+    all: "All stories",
+    showing: "{count} stories",
   },
   reading: {
     sampleBadge: "Sample story",
-    habitLabel: "The habit",
-    topicCta: "Practice this in civic learning",
-    backCta: "All sample stories",
+    habitLabel: "The habit to try",
+    topicCta: "Open this civic topic",
+    backCta: "Back to all stories",
   },
   missing: {
     title: "That story is not in this sample",
     description:
-      "This catalog has three teaching stories. Pick one below. Nothing here is an official case study.",
+      "This page has three teaching stories. Choose one below. None of them is an official case study.",
   },
   list: {
-    title: "Three sample stories",
+    title: "Sample stories",
     description:
       "Citizen, student, and community. Read one, then try the habit the same day.",
   },
+  how: {
+    title: "How to use these stories",
+    description:
+      "Read for a few minutes, notice the habit, then try it in real life.",
+    read: {
+      title: "Choose a short story",
+      body: "Each story is a sample. It shows one small civic choice.",
+    },
+    habit: {
+      title: "Notice the habit",
+      body: "Every story ends with one thing you can do the same day.",
+    },
+    practice: {
+      title: "Then practice it",
+      body: "Open a civic topic, a challenge, or a promise. Reading is not a certificate.",
+    },
+  },
+  notThis: {
+    title: "What this is not",
+    description:
+      "These stories teach a habit. They do not report the news or speak for a government office.",
+    notNews: {
+      title: "Not news or interviews",
+      body: "Civic Bangladesh wrote these to teach. They are not journalism.",
+    },
+    notOfficial: {
+      title: "Not official case studies",
+      body: "They are not government success stories or verified programme reports.",
+    },
+    notVerified: {
+      title: "Names are for reading",
+      body: "Names and places help you follow the story. They are not verified accounts.",
+    },
+  },
   practice: {
-    title: "Turn a story into a habit",
+    title: "Keep the habit after the story",
     description:
       "Stories inspire. Practice happens on the street, in a queue, and in a class.",
     civicLearning: {

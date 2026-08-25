@@ -1,11 +1,4 @@
-import {
-  FolderOpen,
-  LogIn,
-  PenLine,
-  Search,
-  Send,
-  Upload,
-} from "lucide-react";
+import { FolderOpen, LogIn, PenLine, Search, Send, Upload } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import {
@@ -27,45 +20,46 @@ interface ServiceProcessTimelineProps {
   isBangla?: boolean;
 }
 
-function stepNumber(index: number) {
-  return String(index + 1).padStart(2, "0");
-}
-
 function ServiceProcessTimeline({
   steps,
   isBangla = false,
 }: ServiceProcessTimelineProps) {
   return (
-    <ol className="relative m-0 grid list-none gap-3 p-0 sm:grid-cols-2 xl:grid-cols-3">
+    <ol className="m-0 flex list-none flex-col p-0">
       {SERVICE_PROCESS_STEP_KEYS.map((key, index) => {
         const step = steps[key];
         const Icon = STEP_ICONS[key];
+        const last = index === SERVICE_PROCESS_STEP_KEYS.length - 1;
 
         return (
-          <li key={key}>
-            <article className="flex h-full flex-col gap-4 rounded-card bg-surface p-5 shadow-card ring-1 ring-border sm:p-6">
-              <div className="flex items-center justify-between gap-3">
-                <span className="flex size-11 items-center justify-center rounded-btn bg-light-green text-primary">
-                  <Icon className="size-5" aria-hidden />
-                </span>
-                <span className="text-sm font-semibold tracking-wide text-primary">
-                  {stepNumber(index)}
-                </span>
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold text-balance text-foreground">
-                  {step.title}
-                </h3>
-                <p
-                  className={cn(
-                    "mt-2 text-sm text-text-secondary",
-                    isBangla && "leading-[1.75]",
-                  )}
-                >
-                  {step.body}
-                </p>
-              </div>
-            </article>
+          <li key={key} className="flex gap-4">
+            <div className="flex w-10 shrink-0 flex-col items-center">
+              <span className="flex size-10 items-center justify-center rounded-btn bg-light-green text-primary">
+                <Icon className="size-4" aria-hidden />
+              </span>
+              {last ? null : (
+                <span
+                  aria-hidden
+                  className="mt-1 mb-1 w-px flex-1 min-h-6 bg-border"
+                />
+              )}
+            </div>
+            <div className={cn("min-w-0 flex-1", last ? "pb-0" : "pb-6")}>
+              <p className="text-xs font-semibold text-primary">
+                {String(index + 1).padStart(2, "0")}
+              </p>
+              <h3 className="mt-0.5 text-base font-semibold text-foreground sm:text-lg">
+                {step.title}
+              </h3>
+              <p
+                className={cn(
+                  "mt-1 text-sm text-text-secondary sm:text-body",
+                  isBangla && "leading-[1.75]",
+                )}
+              >
+                {step.body}
+              </p>
+            </div>
           </li>
         );
       })}

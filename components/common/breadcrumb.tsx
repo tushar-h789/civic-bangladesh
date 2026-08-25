@@ -1,6 +1,8 @@
 import * as React from "react";
 import Link from "next/link";
 
+import { cn } from "@/lib/utils";
+
 import {
   Breadcrumb as BaseBreadcrumb,
   BreadcrumbItem,
@@ -25,8 +27,10 @@ function Breadcrumb({ items, className, tone = "default" }: BreadcrumbProps) {
   const onPrimary = tone === "onPrimary";
 
   return (
-    <BaseBreadcrumb className={className}>
-      <BreadcrumbList className={onPrimary ? "text-white/75" : undefined}>
+    <BaseBreadcrumb>
+      <BreadcrumbList
+        className={cn(onPrimary ? "text-white/75" : undefined, className)}
+      >
         {items.map((item, index) => {
           const isLast = index === items.length - 1;
 

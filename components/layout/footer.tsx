@@ -114,7 +114,7 @@ function Footer() {
   ];
 
   return (
-    <footer className="mt-auto border-t border-border bg-card">
+    <footer className="relative z-10 isolate mt-auto w-full border-t border-border bg-card">
       <Container className="flex flex-col gap-12 py-12 sm:py-16 lg:py-20">
         <div className="flex flex-col gap-10 xl:flex-row xl:gap-12">
           <div className="flex flex-col gap-4 xl:w-72 xl:shrink-0">

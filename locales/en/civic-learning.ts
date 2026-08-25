@@ -10,7 +10,7 @@ export const civicLearning = {
     imageAlt:
       "People using a clean tree-lined walkway in a Bangladesh city — everyday habits that keep a place livable",
     primaryCta: "Explore topics",
-    secondaryCta: "Take the civic challenge",
+    secondaryCta: "Join the Civic Challenge",
     freeNote: "Essential civic education stays free.",
   },
   stats: {

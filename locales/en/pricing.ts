@@ -1,17 +1,22 @@
 import type { TranslationShape } from "@/locales/types";
 
 export const pricing = {
-  title: "Clear fees. Useful learning.",
+  title: "How we price courses",
   description:
-    "Civic Bangladesh stays affordable. Core civic education is free. Paid products help you prepare — they are not government fees, and nothing is sold with pressure.",
+    "Civic Bangladesh stays affordable. Core civic education is free. Paid courses help you prepare — they are not government fees, and nothing is sold with pressure.",
   sampleNote:
-    "Sample pricing page. Listed amounts are Civic Bangladesh catalog course fees — not government fees, and not a live payment.",
+    "Sample amounts from this catalog. They are Civic Bangladesh course fees — not government fees, and not a live payment.",
   heroImageAlt:
     "People learning together how to prepare papers for a government service",
+  stats: {
+    paid: "{count} paid preparation courses",
+    noPayment: "No payment on this site",
+  },
   jump: {
     label: "On this page",
-    values: "How we price",
     primary: "Main paid product",
+    values: "How we price",
+    notThis: "What you never pay",
     secondary: "Other offerings",
   },
   values: {
@@ -37,10 +42,21 @@ export const pricing = {
   },
   never: {
     title: "What you never pay Civic Bangladesh for",
+    description:
+      "A course fee here is for Civic Bangladesh learning. It does not buy a government stamp, result, or licence.",
     items: {
-      governmentFee: "A government application fee or stamp.",
-      officialResult: "An official result, licence, or attestation.",
-      coreCivic: "Core civic education — that stays free.",
+      governmentFee: {
+        title: "Not a government fee",
+        body: "You never pay Civic Bangladesh an application fee or a stamp.",
+      },
+      officialResult: {
+        title: "Not an official result",
+        body: "A course does not grant a licence, attestation, or portal result.",
+      },
+      coreCivic: {
+        title: "Not a lock on civic education",
+        body: "Core civic education stays free. Paid products sit beside it.",
+      },
     },
   },
   paymentNote:
@@ -109,14 +125,12 @@ export const pricing = {
     },
   },
   primary: {
-    badge: "Primary",
     feeLabel: "Sample course fees",
   },
   secondary: {
     title: "Also available, without pressure",
     description:
       "These sit beside the main preparation courses. None of them replace free civic education, and none of them process a government application.",
-    badge: "Secondary",
   },
 } as const;
 
