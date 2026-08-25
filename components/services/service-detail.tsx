@@ -1,6 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import {
   AlertTriangle,
@@ -27,7 +28,6 @@ import {
 } from "@/data/government-services";
 import { serviceCategoryHrefFromKey } from "@/data/service-categories";
 import { useTranslation } from "@/hooks/use-translation";
-import { Badge } from "@/components/common/badge";
 import { Breadcrumb } from "@/components/common/breadcrumb";
 import { Card, CardContent } from "@/components/common/card";
 import { Container } from "@/components/common/container";
@@ -66,7 +66,9 @@ function ServiceDetail({ slug }: { slug: string }) {
   const copy = t.serviceDetail;
   const guide = t.serviceGuides[service.key];
   const item = listing.items[service.key];
-  const category = listing.categoryItems[service.category].title;
+  const categoryShort = listing.categoryItems[service.category].shortTitle;
+  const heroImage =
+    service.course?.image ?? "/images/home/courses-hero-service-v2.png";
   const officialSource = getServiceOfficialSource(service);
   const guideCourse = "course" in guide ? guide.course : null;
   const documentItems = guide.documents as Record<
@@ -95,9 +97,30 @@ function ServiceDetail({ slug }: { slug: string }) {
 
   return (
     <div className={cn(isBangla && "font-bengali")}>
-      <section className="relative overflow-hidden bg-light-green pt-10 pb-16 md:pt-12 md:pb-20 lg:pt-16 lg:pb-24">
-        <Container className="flex flex-col gap-8">
+      <section className="relative isolate overflow-hidden bg-text">
+        <div className="absolute inset-0" aria-hidden="true">
+          <Image
+            src={heroImage}
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-center"
+          />
+        </div>
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-linear-to-r from-text/80 via-text/50 to-text/20 lg:from-text/75 lg:via-text/40 lg:to-transparent"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-linear-to-t from-text/70 via-transparent to-text/25"
+        />
+
+        <Container className="relative flex flex-col gap-6 pt-8 pb-10 sm:pt-10 sm:pb-12 lg:pt-12 lg:pb-14">
           <Breadcrumb
+            tone="onPrimary"
+            className="text-sm sm:text-base"
             items={[
               { label: t.nav.links.home, href: ROUTES.home },
               {
@@ -108,30 +131,31 @@ function ServiceDetail({ slug }: { slug: string }) {
             ]}
           />
 
-          <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1.4fr)_22rem] xl:grid-cols-[minmax(0,1.5fr)_24rem] xl:gap-12">
-            <div className="flex flex-col gap-5">
+          <div className="grid items-start gap-5 lg:grid-cols-[minmax(0,1fr)_22rem] xl:grid-cols-[minmax(0,1fr)_24rem] xl:gap-8">
+            <div className="flex max-w-3xl flex-col gap-4 rounded-2xl bg-text/50 p-4 ring-1 ring-white/15 backdrop-blur-md sm:gap-5 sm:p-6">
               <div className="flex flex-wrap items-center gap-2">
-                <Badge variant="info" asChild className="h-6 px-2.5">
-                  <Link href={serviceCategoryHrefFromKey(service.category)}>
-                    {category}
-                  </Link>
-                </Badge>
-                <Badge variant="outline" className="h-6 px-2.5">
+                <Link
+                  href={serviceCategoryHrefFromKey(service.category)}
+                  className="inline-flex h-7 items-center rounded-btn bg-white/12 px-2.5 text-sm font-medium text-white ring-1 ring-white/15 outline-none hover:bg-white/18 focus-visible:ring-3 focus-visible:ring-ring/50"
+                >
+                  {categoryShort}
+                </Link>
+                <span className="inline-flex h-7 items-center rounded-btn bg-white/8 px-2.5 text-sm font-medium text-white/80 ring-1 ring-white/10">
                   {copy.sampleBadge}
-                </Badge>
+                </span>
               </div>
 
               <h1
                 className={cn(
-                  "text-hero-mobile font-semibold text-balance text-foreground lg:text-5xl",
-                  isBangla && "leading-tight",
+                  "text-[1.75rem] leading-[1.28] font-semibold text-balance text-white sm:text-[2.125rem] sm:leading-snug lg:text-4xl lg:leading-[1.2]",
+                  isBangla && "leading-[1.32] sm:leading-[1.3]",
                 )}
               >
                 {item.title}
               </h1>
               <p
                 className={cn(
-                  "max-w-2xl text-body text-text-secondary",
+                  "text-base text-white/85 sm:text-body",
                   isBangla && "leading-[1.8]",
                 )}
               >
@@ -139,21 +163,42 @@ function ServiceDetail({ slug }: { slug: string }) {
               </p>
               <p
                 className={cn(
-                  "max-w-2xl text-sm text-text-secondary",
+                  "text-sm text-white/70 sm:text-base",
                   isBangla && "leading-[1.75]",
                 )}
               >
                 {copy.catalogNote}
               </p>
 
-              <div className="flex flex-col gap-3 pt-1 sm:flex-row sm:flex-wrap sm:items-center">
-                <OfficialPortalButton>
+              <ul className="m-0 flex list-none flex-wrap gap-2 p-0">
+                <HeroChip
+                  icon={<FileText className="size-3.5" aria-hidden />}
+                  label={formatTemplate(listing.card.documents, {
+                    count: service.documentCount,
+                  })}
+                />
+                <HeroChip
+                  icon={<Clock className="size-3.5" aria-hidden />}
+                  label={item.processingTime}
+                />
+                <HeroChip
+                  icon={<Banknote className="size-3.5" aria-hidden />}
+                  label={
+                    service.feeType === "paid"
+                      ? listing.card.feePaidShort
+                      : listing.card.feeFreeShort
+                  }
+                />
+              </ul>
+
+              <div className="flex flex-col gap-2.5 sm:flex-row sm:flex-wrap sm:items-center">
+                <OfficialPortalButton onPrimary>
                   {copy.cta.applyOfficial}
                 </OfficialPortalButton>
                 <Button
                   asChild
                   variant="outline"
-                  className="h-12 rounded-btn bg-surface px-6 text-button"
+                  className="h-12 rounded-btn border-white/25 bg-white/10 px-6 text-button text-white hover:bg-white/18 hover:text-white"
                 >
                   <a href={learnHref}>
                     <BookOpen className="size-4" aria-hidden />
@@ -167,27 +212,21 @@ function ServiceDetail({ slug }: { slug: string }) {
               verifiedAuthorityName={officialSource.verifiedAuthorityName}
               lastUpdated={officialSource.lastUpdated}
               href={officialSource.href}
+              className="bg-surface/95 backdrop-blur-md"
             />
           </div>
 
-          <nav
-            aria-label={copy.onThisPage}
-            className="border-t border-primary/15 pt-5"
-          >
-            <p className="text-sm font-semibold text-primary">
+          <nav aria-label={copy.onThisPage} className="pt-1">
+            <p className="text-sm font-semibold text-white">
               {copy.onThisPage}
             </p>
-            <ol className="mt-3 flex list-none flex-wrap items-center gap-x-5 gap-y-2 p-0">
-              {jumpLinks.map((link, index) => (
+            <ol className="mt-2.5 flex list-none flex-wrap gap-2 p-0">
+              {jumpLinks.map((link) => (
                 <li key={link.href}>
                   <a
                     href={link.href}
-                    className="text-sm font-medium text-text-secondary transition-colors duration-200 ease-standard hover:text-primary"
+                    className="inline-flex h-8 items-center rounded-btn bg-white/10 px-3 text-sm font-medium text-white/90 ring-1 ring-white/15 transition-colors duration-200 ease-standard hover:bg-white/18 hover:text-white"
                   >
-                    <span className="text-primary">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-                    <span className="mx-2 text-border">/</span>
                     {link.label}
                   </a>
                 </li>
@@ -617,6 +656,15 @@ function ServiceDetail({ slug }: { slug: string }) {
         </Container>
       </section>
     </div>
+  );
+}
+
+function HeroChip({ icon, label }: { icon: ReactNode; label: string }) {
+  return (
+    <li className="inline-flex max-w-full items-center gap-1.5 rounded-btn bg-white/12 px-2.5 py-1 text-sm font-medium text-white ring-1 ring-white/15">
+      {icon}
+      <span>{label}</span>
+    </li>
   );
 }
 
