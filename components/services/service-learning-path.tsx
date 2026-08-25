@@ -1,9 +1,7 @@
 "use client";
 
-import type { ReactNode } from "react";
 import Link from "next/link";
 import {
-  ArrowDown,
   ArrowRight,
   Award,
   Building2,
@@ -14,7 +12,6 @@ import {
 
 import { cn } from "@/lib/utils";
 import { useTranslation } from "@/hooks/use-translation";
-import { Badge } from "@/components/common/badge";
 
 export const SERVICE_LEARNING_STEP_KEYS = [
   "service",
@@ -96,7 +93,7 @@ function ServiceLearningPath({
           className,
         )}
       >
-        <p className="text-xs font-semibold text-primary">{copy.eyebrow}</p>
+        <p className="text-xs font-semibold text-primary">{copy.title}</p>
         <PairHeadline
           serviceLabel={copy.pair.service}
           courseLabel={copy.pair.course}
@@ -137,17 +134,14 @@ function ServiceLearningPath({
   return (
     <article
       className={cn(
-        "rounded-card bg-surface p-5 shadow-card ring-1 ring-border sm:p-8",
+        "rounded-card bg-surface p-5 shadow-card ring-1 ring-border sm:p-6",
         className,
       )}
     >
       <div className="flex flex-col gap-3">
-        <Badge variant="info" className="h-6 w-fit px-2.5">
-          {copy.eyebrow}
-        </Badge>
         <h2
           className={cn(
-            "text-xl font-semibold text-balance text-foreground sm:text-2xl",
+            "text-xl font-semibold text-foreground sm:text-2xl",
             isBangla && "leading-tight",
           )}
         >
@@ -163,55 +157,77 @@ function ServiceLearningPath({
         </p>
       </div>
 
-      <div className="mt-6 grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] sm:items-stretch">
+      <div className="mt-5 grid gap-3 sm:grid-cols-2">
         <PairCard
           href={serviceHref}
           eyebrow={copy.pair.service}
           title={serviceTitle}
           cta={copy.cta.viewService}
           active={current === "service"}
+          hereLabel={copy.youAreHere}
           isBangla={isBangla}
         />
-        <div className="flex items-center justify-center text-primary">
-          <ArrowDown className="size-5 sm:hidden" aria-hidden />
-          <ArrowRight className="hidden size-5 sm:block" aria-hidden />
-          <span className="sr-only">→</span>
-        </div>
         <PairCard
           href={courseHref}
           eyebrow={copy.pair.course}
           title={courseTitle}
           cta={copy.cta.startCourse}
           active={current === "course"}
+          hereLabel={copy.youAreHere}
           isBangla={isBangla}
         />
       </div>
 
-      <ol className="mt-6 m-0 grid list-none gap-2 p-0 sm:grid-cols-5 sm:gap-3">
+      <ol className="mt-6 m-0 grid list-none gap-0 p-0 sm:grid-cols-5">
         {SERVICE_LEARNING_STEP_KEYS.map((key, index) => {
           const step = copy.steps[key];
           const Icon = STEP_ICONS[key];
-          const href =
-            key === "service"
-              ? serviceHref
-              : key === "course"
-                ? courseHref
-                : undefined;
+          const last = index === SERVICE_LEARNING_STEP_KEYS.length - 1;
           const isCurrent =
             (key === "service" && current === "service") ||
             (key === "course" && current === "course");
 
           return (
-            <li key={key}>
-              <StepNode
-                href={href}
-                number={String(index + 1).padStart(2, "0")}
-                icon={<Icon className="size-4" aria-hidden />}
-                title={step.title}
-                body={step.body}
-                active={isCurrent}
-                isBangla={isBangla}
-              />
+            <li
+              key={key}
+              aria-current={isCurrent ? "step" : undefined}
+              className={cn(
+                "relative flex gap-3 sm:flex-col sm:items-center sm:px-2 sm:text-center",
+                !last &&
+                  "sm:after:absolute sm:after:top-5 sm:after:left-[calc(50%+1.35rem)] sm:after:right-[-50%] sm:after:h-px sm:after:bg-border sm:after:content-['']",
+              )}
+            >
+              <div className="flex flex-col items-center">
+                <span
+                  className={cn(
+                    "relative z-10 flex size-10 shrink-0 items-center justify-center rounded-full ring-4 ring-surface",
+                    isCurrent
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-light-green text-primary",
+                  )}
+                >
+                  <Icon className="size-4" aria-hidden />
+                </span>
+                {last ? null : (
+                  <span
+                    aria-hidden
+                    className="my-1 w-px min-h-5 flex-1 bg-border sm:hidden"
+                  />
+                )}
+              </div>
+              <div className={cn("min-w-0 pb-5 sm:pt-3 sm:pb-0")}>
+                <p className="text-sm font-semibold text-foreground">
+                  {step.title}
+                </p>
+                <p
+                  className={cn(
+                    "mt-1 text-xs text-text-secondary",
+                    isBangla && "leading-[1.65]",
+                  )}
+                >
+                  {step.body}
+                </p>
+              </div>
             </li>
           );
         })}
@@ -219,7 +235,7 @@ function ServiceLearningPath({
 
       <div
         className={cn(
-          "mt-6 border-t border-border pt-4 text-sm text-text-secondary",
+          "mt-5 border-t border-border pt-4 text-sm text-text-secondary",
           isBangla && "leading-[1.75]",
         )}
       >
@@ -294,6 +310,7 @@ function PairCard({
   title,
   cta,
   active,
+  hereLabel,
   isBangla,
 }: {
   href: string;
@@ -301,20 +318,26 @@ function PairCard({
   title: string;
   cta: string;
   active?: boolean;
+  hereLabel: string;
   isBangla: boolean;
 }) {
   return (
     <Link
       href={href}
       className={cn(
-        "flex min-w-0 flex-col justify-between gap-3 rounded-card bg-light-green p-4 outline-none ring-1 ring-transparent transition-shadow duration-200 ease-standard hover:shadow-card focus-visible:ring-3 focus-visible:ring-ring/50",
-        active && "ring-primary",
+        "flex min-w-0 cursor-pointer flex-col justify-between gap-3 rounded-card bg-background p-4 outline-none ring-1 ring-border transition-shadow duration-200 ease-standard hover:shadow-card focus-visible:ring-3 focus-visible:ring-ring/50",
+        active && "bg-light-green ring-primary",
       )}
     >
       <div>
-        <p className="text-xs font-semibold tracking-wide text-primary uppercase">
-          {eyebrow}
-        </p>
+        <div className="flex flex-wrap items-center gap-2">
+          <p className="text-xs font-semibold text-primary">{eyebrow}</p>
+          {active ? (
+            <span className="rounded-btn bg-primary px-2 py-0.5 text-xs font-medium text-primary-foreground">
+              {hereLabel}
+            </span>
+          ) : null}
+        </div>
         <p
           className={cn(
             "mt-2 text-base font-semibold text-balance text-foreground",
@@ -330,68 +353,6 @@ function PairCard({
       </span>
     </Link>
   );
-}
-
-function StepNode({
-  href,
-  number,
-  icon,
-  title,
-  body,
-  active,
-  isBangla,
-}: {
-  href?: string;
-  number: string;
-  icon: ReactNode;
-  title: string;
-  body: string;
-  active?: boolean;
-  isBangla: boolean;
-}) {
-  const content = (
-    <>
-      <div className="flex items-center justify-between gap-2">
-        <span
-          className={cn(
-            "flex size-9 items-center justify-center rounded-btn",
-            href
-              ? "bg-primary text-primary-foreground"
-              : "bg-light-green text-primary",
-          )}
-        >
-          {icon}
-        </span>
-        <span className="text-xs font-semibold text-primary">{number}</span>
-      </div>
-      <p className="mt-3 text-sm font-semibold text-foreground">{title}</p>
-      <p
-        className={cn(
-          "mt-1 text-xs text-text-secondary",
-          isBangla && "leading-[1.7]",
-        )}
-      >
-        {body}
-      </p>
-    </>
-  );
-
-  const className = cn(
-    "flex h-full flex-col rounded-card bg-background p-4 ring-1 ring-border",
-    active && "ring-primary",
-    href &&
-      "outline-none transition-shadow duration-200 ease-standard hover:shadow-card focus-visible:ring-3 focus-visible:ring-ring/50",
-  );
-
-  if (href) {
-    return (
-      <Link href={href} className={className}>
-        {content}
-      </Link>
-    );
-  }
-
-  return <div className={className}>{content}</div>;
 }
 
 export { ServiceLearningPath };

@@ -5,13 +5,18 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   Award,
+  Banknote,
   BookOpen,
   CheckCircle2,
   ClipboardCheck,
   Clock,
+  ExternalLink,
+  FileText,
   Info,
+  Landmark,
   Lightbulb,
   ListChecks,
+  MinusCircle,
   PlayCircle,
   UserRound,
 } from "lucide-react";
@@ -24,19 +29,20 @@ import {
   getCatalogCourseBySlug,
   type CatalogCourse,
 } from "@/data/course-catalog";
-import { getServiceBySlug, serviceHref } from "@/data/government-services";
-import { getGovernmentServiceCardModel } from "@/lib/get-government-service-card";
+import {
+  getServiceBySlug,
+  getServiceOfficialSource,
+  serviceHref,
+} from "@/data/government-services";
 import { getCourseCopy } from "@/lib/get-course-copy";
 import { getCurriculumModules } from "@/lib/get-curriculum";
 import { useTranslation } from "@/hooks/use-translation";
 import { CourseTypeLabel } from "@/components/learning/course-type-label";
 import { Breadcrumb } from "@/components/common/breadcrumb";
 import { Container } from "@/components/common/container";
-import { SectionHeader } from "@/components/common/section-header";
 import { CourseCertificatePreview } from "@/components/learning/course-certificate-preview";
 import { CourseCheckoutDialog } from "@/components/learning/course-checkout-dialog";
 import { CourseCurriculum } from "@/components/learning/course-curriculum";
-import { GovernmentServiceCardFromModel } from "@/components/services/government-service-card";
 import { ServiceLearningPath } from "@/components/services/service-learning-path";
 import { Button } from "@/components/ui/button";
 
@@ -309,202 +315,262 @@ function CourseDetail({ slug }: { slug: string }) {
         <span className="sr-only">{item.imageAlt}</span>
       </section>
 
-      {relatedService && relatedItem ? (
-        <section
-          aria-labelledby="course-learning-heading"
-          className="bg-background py-section-mobile md:py-section-tablet lg:py-section-desktop"
-        >
-          <Container>
-            <h2 id="course-learning-heading" className="sr-only">
-              {t.serviceLearning.title}
-            </h2>
-            <ServiceLearningPath
-              variant="full"
-              current="course"
-              serviceTitle={relatedItem.title}
-              serviceHref={serviceHref(relatedService.slug)}
-              courseTitle={item.title}
-              courseHref={catalogCourseHref(course.slug)}
-            />
-          </Container>
-        </section>
-      ) : null}
+      <div className="bg-background py-10 md:py-12 lg:py-14">
+        <Container className="flex flex-col gap-5 sm:gap-6">
+          {relatedService && relatedItem ? (
+            <section aria-labelledby="course-learning-heading">
+              <h2 id="course-learning-heading" className="sr-only">
+                {t.serviceLearning.title}
+              </h2>
+              <ServiceLearningPath
+                variant="full"
+                current="course"
+                serviceTitle={relatedItem.title}
+                serviceHref={serviceHref(relatedService.slug)}
+                courseTitle={item.title}
+                courseHref={catalogCourseHref(course.slug)}
+              />
+            </section>
+          ) : null}
 
-      <section
-        id="what-you-will-learn"
-        aria-labelledby="outcomes-heading"
-        className="scroll-mt-28 bg-surface py-section-mobile md:py-section-tablet lg:py-section-desktop"
-      >
-        <Container>
-          <SectionHeader
-            title={<span id="outcomes-heading">{copy.outcomes.title}</span>}
+          <CourseBodySection
+            id="what-you-will-learn"
+            headingId="outcomes-heading"
+            title={copy.outcomes.title}
             description={copy.outcomes.description}
-          />
-          <ul className="mt-8 grid list-none gap-3 p-0 sm:mt-10 sm:grid-cols-2">
-            {outcomes.map((outcome) => (
-              <li
-                key={outcome}
-                className="flex items-start gap-3 rounded-card bg-light-green p-5"
-              >
-                <CheckCircle2
-                  className="mt-0.5 size-5 shrink-0 text-primary"
-                  aria-hidden
-                />
-                <p
-                  className={cn(
-                    "text-body text-foreground",
-                    isBangla && "leading-[1.8]",
-                  )}
-                >
-                  {outcome}
-                </p>
-              </li>
-            ))}
-          </ul>
-        </Container>
-      </section>
-
-      <section
-        id="curriculum"
-        aria-labelledby="curriculum-heading"
-        className="scroll-mt-28 bg-background py-section-mobile md:py-section-tablet lg:py-section-desktop"
-      >
-        <Container>
-          <SectionHeader
-            title={<span id="curriculum-heading">{copy.curriculum.title}</span>}
-            description={copy.curriculum.description}
-          />
-          <p
-            className={cn(
-              "mt-4 max-w-2xl text-base text-text-secondary",
-              isBangla && "leading-[1.75]",
-            )}
+            isBangla={isBangla}
           >
-            {copy.curriculum.sampleNote}
-          </p>
-          <div className="mt-8 sm:mt-10">
+            <ol className="m-0 grid list-none gap-x-8 gap-y-3 p-0 sm:grid-cols-2">
+              {outcomes.map((outcome, index) => (
+                <li key={outcome} className="flex items-start gap-3">
+                  <span className="mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-btn bg-light-green text-xs font-semibold text-primary">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <p
+                    className={cn(
+                      "text-sm text-foreground sm:text-base",
+                      isBangla && "leading-[1.8]",
+                    )}
+                  >
+                    {outcome}
+                  </p>
+                </li>
+              ))}
+            </ol>
+          </CourseBodySection>
+
+          <CourseBodySection
+            id="curriculum"
+            headingId="curriculum-heading"
+            title={copy.curriculum.title}
+            description={copy.curriculum.description}
+            meta={formatTemplate(copy.curriculum.summary, {
+              modules: modules.length,
+              lessons: modules.reduce(
+                (count, module) => count + module.lessons.length,
+                0,
+              ),
+            })}
+            isBangla={isBangla}
+          >
             <CourseCurriculum
               modules={modules}
               moduleLabel={copy.curriculum.moduleLabel}
               lessonsLabel={copy.curriculum.lessons}
               isBangla={isBangla}
             />
-          </div>
-        </Container>
-      </section>
+            <p
+              className={cn(
+                "mt-3 text-xs text-text-secondary",
+                isBangla && "leading-[1.7]",
+              )}
+            >
+              {copy.curriculum.sampleNote}
+            </p>
+          </CourseBodySection>
 
-      <section
-        id="includes"
-        aria-labelledby="includes-heading"
-        className="scroll-mt-28 bg-light-green py-section-mobile md:py-section-tablet lg:py-section-desktop"
-      >
-        <Container>
-          <SectionHeader
-            title={<span id="includes-heading">{copy.includes.title}</span>}
+          <CourseBodySection
+            id="includes"
+            headingId="includes-heading"
+            title={copy.includes.title}
             description={copy.includes.description}
-          />
-          <ul className="mt-8 grid list-none gap-4 p-0 sm:mt-10 sm:grid-cols-2 lg:grid-cols-3">
-            {COURSE_INCLUDE_KEYS.map((key) => {
-              const included = key !== "certificate" || course.hasCertificate;
-              const Icon = INCLUDE_ICONS[key];
-              const itemCopy = copy.includes.items[key];
+            isBangla={isBangla}
+          >
+            <ul className="m-0 divide-y divide-border overflow-hidden rounded-card bg-background ring-1 ring-border">
+              {COURSE_INCLUDE_KEYS.map((key) => {
+                const included = key !== "certificate" || course.hasCertificate;
+                const Icon = INCLUDE_ICONS[key];
+                const itemCopy = copy.includes.items[key];
 
-              return (
-                <li key={key}>
-                  <article
-                    className={cn(
-                      "flex h-full flex-col gap-3 rounded-card bg-surface p-5 shadow-card ring-1 ring-border",
-                      !included && "opacity-70",
-                    )}
+                return (
+                  <li
+                    key={key}
+                    className="flex items-start gap-3 px-4 py-3.5 sm:items-center"
                   >
-                    <span className="flex size-11 items-center justify-center rounded-btn bg-light-green text-primary">
-                      <Icon className="size-5" aria-hidden />
-                    </span>
-                    <h3 className="text-lg font-semibold text-foreground">
-                      {itemCopy.title}
-                    </h3>
-                    <p
+                    <span
                       className={cn(
-                        "text-sm text-text-secondary",
-                        isBangla && "leading-[1.75]",
+                        "flex size-9 shrink-0 items-center justify-center rounded-btn",
+                        included
+                          ? "bg-light-green text-primary"
+                          : "bg-background text-text-secondary ring-1 ring-border",
                       )}
                     >
-                      {included ? itemCopy.body : copy.includes.notInCourse}
-                    </p>
-                  </article>
-                </li>
-              );
-            })}
-          </ul>
-        </Container>
-      </section>
+                      <Icon className="size-4" aria-hidden />
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm font-semibold text-foreground">
+                        {itemCopy.title}
+                      </p>
+                      <p
+                        className={cn(
+                          "mt-0.5 text-sm text-text-secondary",
+                          isBangla && "leading-[1.7]",
+                        )}
+                      >
+                        {itemCopy.body}
+                      </p>
+                    </div>
+                    <span
+                      className={cn(
+                        "inline-flex shrink-0 items-center gap-1 text-xs font-semibold",
+                        included ? "text-primary" : "text-text-secondary",
+                      )}
+                    >
+                      {included ? (
+                        <CheckCircle2 className="size-3.5" aria-hidden />
+                      ) : (
+                        <MinusCircle className="size-3.5" aria-hidden />
+                      )}
+                      {included
+                        ? copy.includes.inCourse
+                        : copy.includes.notInCourse}
+                    </span>
+                  </li>
+                );
+              })}
+            </ul>
+          </CourseBodySection>
 
-      {relatedService && relatedItem ? (
-        <section
-          id="related-service"
-          aria-labelledby="related-service-heading"
-          className="scroll-mt-28 bg-background py-section-mobile md:py-section-tablet lg:py-section-desktop"
-        >
-          <Container>
-            <SectionHeader
-              title={
-                <span id="related-service-heading">{copy.related.title}</span>
+          {relatedService && relatedItem ? (
+            <RelatedServicePanel
+              headingId="related-service-heading"
+              copy={copy.related}
+              serviceTitle={relatedItem.title}
+              serviceHref={serviceHref(relatedService.slug)}
+              officialHref={getServiceOfficialSource(relatedService).href}
+              authority={
+                getServiceOfficialSource(relatedService)
+                  .verifiedAuthorityName ?? t.serviceSource.portalName
               }
-              description={copy.related.description}
+              documents={formatTemplate(t.services.card.documents, {
+                count: relatedService.documentCount,
+              })}
+              processingTime={relatedItem.processingTime}
+              fee={
+                relatedService.feeType === "paid"
+                  ? t.services.card.feePaidShort
+                  : t.services.card.feeFreeShort
+              }
+              labels={{
+                authority: t.serviceSource.sourceLabel,
+                documents: t.services.card.documentsLabel,
+                time: t.services.card.processingLabel,
+                fee: t.services.card.feeLabel,
+              }}
+              officialNote={t.serviceDetail.officialPortalNote}
+              isBangla={isBangla}
             />
-            <div className="mt-8 max-w-xl sm:mt-10">
-              <GovernmentServiceCardFromModel
-                variant="featured"
-                model={getGovernmentServiceCardModel(relatedService, t)}
-              />
-            </div>
-          </Container>
-        </section>
-      ) : null}
+          ) : null}
 
-      <section
-        id="certificate"
-        aria-labelledby="certificate-heading"
-        className="scroll-mt-28 bg-surface py-section-mobile md:py-section-tablet lg:py-section-desktop"
-      >
-        <Container>
-          {course.hasCertificate ? (
-            <>
-              <SectionHeader
-                title={
-                  <span id="certificate-heading">{copy.certificate.title}</span>
-                }
-                description={copy.certificate.description}
-              />
-              <div className="mt-10 sm:mt-12">
-                <CourseCertificatePreview
-                  courseTitle={item.title}
-                  copy={copy.certificate}
-                  logoAlt={t.nav.brandName}
-                  isBangla={isBangla}
-                />
-              </div>
-            </>
-          ) : (
-            <div className="mx-auto max-w-xl text-center">
-              <h2
-                id="certificate-heading"
-                className="text-section-heading font-semibold text-balance text-foreground"
-              >
-                {copy.certificate.noCertificateTitle}
-              </h2>
-              <p
-                className={cn(
-                  "mt-3 text-body text-text-secondary",
-                  isBangla && "leading-[1.8]",
-                )}
-              >
-                {copy.certificate.noCertificateBody}
-              </p>
-            </div>
-          )}
+          <section
+            id="certificate"
+            aria-labelledby="certificate-heading"
+            className="scroll-mt-28"
+          >
+            <article className="rounded-card bg-surface p-5 shadow-card ring-1 ring-border sm:p-6">
+              {course.hasCertificate ? (
+                <div className="grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:items-start">
+                  <div>
+                    <h2
+                      id="certificate-heading"
+                      className={cn(
+                        "text-xl font-semibold text-foreground sm:text-2xl",
+                        isBangla && "leading-tight",
+                      )}
+                    >
+                      {copy.certificate.title}
+                    </h2>
+                    <p
+                      className={cn(
+                        "mt-2 max-w-xl text-body text-text-secondary",
+                        isBangla && "leading-[1.8]",
+                      )}
+                    >
+                      {copy.certificate.description}
+                    </p>
+                    <div className="mt-5 space-y-3">
+                      <p className="text-sm font-semibold text-foreground">
+                        {copy.certificate.meaningTitle}
+                      </p>
+                      <ul className="m-0 flex list-none flex-col gap-2 p-0">
+                        <li className="flex items-start gap-2 text-sm text-text-secondary">
+                          <CheckCircle2
+                            className="mt-0.5 size-4 shrink-0 text-primary"
+                            aria-hidden
+                          />
+                          <span className={cn(isBangla && "leading-[1.75]")}>
+                            {copy.certificate.meaningIs}
+                          </span>
+                        </li>
+                        <li className="flex items-start gap-2 text-sm text-text-secondary">
+                          <MinusCircle
+                            className="mt-0.5 size-4 shrink-0 text-text-secondary"
+                            aria-hidden
+                          />
+                          <span className={cn(isBangla && "leading-[1.75]")}>
+                            {copy.certificate.meaningIsNot}
+                          </span>
+                        </li>
+                      </ul>
+                      <p
+                        className={cn(
+                          "rounded-btn bg-background px-3 py-2.5 text-sm text-text-secondary ring-1 ring-border",
+                          isBangla && "leading-[1.75]",
+                        )}
+                      >
+                        {copy.certificate.notGovernment}
+                      </p>
+                    </div>
+                  </div>
+                  <CourseCertificatePreview
+                    courseTitle={item.title}
+                    copy={copy.certificate}
+                    logoAlt={t.nav.brandName}
+                    isBangla={isBangla}
+                  />
+                </div>
+              ) : (
+                <div>
+                  <h2
+                    id="certificate-heading"
+                    className="text-xl font-semibold text-foreground sm:text-2xl"
+                  >
+                    {copy.certificate.noCertificateTitle}
+                  </h2>
+                  <p
+                    className={cn(
+                      "mt-2 max-w-xl text-body text-text-secondary",
+                      isBangla && "leading-[1.8]",
+                    )}
+                  >
+                    {copy.certificate.noCertificateBody}
+                  </p>
+                </div>
+              )}
+            </article>
+          </section>
         </Container>
-      </section>
+      </div>
 
       <CourseCheckoutDialog
         open={checkoutOpen}
@@ -527,15 +593,198 @@ function HeroChip({ icon, label }: { icon: React.ReactNode; label: string }) {
   );
 }
 
+function CourseBodySection({
+  id,
+  headingId,
+  title,
+  description,
+  meta,
+  isBangla,
+  children,
+}: {
+  id: string;
+  headingId: string;
+  title: string;
+  description: string;
+  meta?: string;
+  isBangla: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <section id={id} aria-labelledby={headingId} className="scroll-mt-28">
+      <article className="rounded-card bg-surface p-5 shadow-card ring-1 ring-border sm:p-6">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+          <h2
+            id={headingId}
+            className={cn(
+              "text-xl font-semibold text-foreground sm:text-2xl",
+              isBangla && "leading-tight",
+            )}
+          >
+            {title}
+          </h2>
+          {meta ? (
+            <p className="text-sm font-medium text-text-secondary sm:pt-1.5">
+              {meta}
+            </p>
+          ) : null}
+        </div>
+        <p
+          className={cn(
+            "mt-2 max-w-2xl text-body text-text-secondary",
+            isBangla && "leading-[1.8]",
+          )}
+        >
+          {description}
+        </p>
+        <div className="mt-5">{children}</div>
+      </article>
+    </section>
+  );
+}
+
+function RelatedServicePanel({
+  headingId,
+  copy,
+  serviceTitle,
+  serviceHref,
+  officialHref,
+  authority,
+  documents,
+  processingTime,
+  fee,
+  labels,
+  officialNote,
+  isBangla,
+}: {
+  headingId: string;
+  copy: {
+    title: string;
+    description: string;
+    prepareFor: string;
+    viewGuide: string;
+    applyOfficial: string;
+  };
+  serviceTitle: string;
+  serviceHref: string;
+  officialHref: string;
+  authority: string;
+  documents: string;
+  processingTime: string;
+  fee: string;
+  labels: {
+    authority: string;
+    documents: string;
+    time: string;
+    fee: string;
+  };
+  officialNote: string;
+  isBangla: boolean;
+}) {
+  const facts = [
+    { icon: Landmark, label: labels.authority, value: authority },
+    { icon: FileText, label: labels.documents, value: documents },
+    { icon: Clock, label: labels.time, value: processingTime },
+    { icon: Banknote, label: labels.fee, value: fee },
+  ] as const;
+
+  return (
+    <section
+      id="related-service"
+      aria-labelledby={headingId}
+      className="scroll-mt-28"
+    >
+      <article className="rounded-card bg-surface p-5 shadow-card ring-1 ring-border sm:p-6">
+        <h2
+          id={headingId}
+          className={cn(
+            "text-xl font-semibold text-foreground sm:text-2xl",
+            isBangla && "leading-tight",
+          )}
+        >
+          {copy.title}
+        </h2>
+        <p
+          className={cn(
+            "mt-2 max-w-2xl text-body text-text-secondary",
+            isBangla && "leading-[1.8]",
+          )}
+        >
+          {copy.description}
+        </p>
+
+        <div className="mt-5 rounded-card bg-background p-4 ring-1 ring-border sm:p-5">
+          <p className="text-xs font-semibold text-primary">
+            {copy.prepareFor}
+          </p>
+          <p
+            className={cn(
+              "mt-1 text-lg font-semibold text-balance text-foreground",
+              isBangla && "leading-[1.45]",
+            )}
+          >
+            {serviceTitle}
+          </p>
+          <ul className="mt-4 m-0 grid list-none gap-3 p-0 sm:grid-cols-2">
+            {facts.map((fact) => (
+              <li key={fact.label} className="flex items-start gap-2.5">
+                <span className="flex size-8 shrink-0 items-center justify-center rounded-btn bg-light-green text-primary">
+                  <fact.icon className="size-3.5" aria-hidden />
+                </span>
+                <div className="min-w-0">
+                  <p className="text-xs text-text-secondary">{fact.label}</p>
+                  <p
+                    className={cn(
+                      "text-sm font-medium text-foreground",
+                      isBangla && "leading-[1.55]",
+                    )}
+                  >
+                    {fact.value}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ul>
+          <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+            <Button asChild className="h-11 rounded-btn">
+              <Link href={serviceHref}>{copy.viewGuide}</Link>
+            </Button>
+            <Button asChild variant="outline" className="h-11 rounded-btn">
+              <a
+                href={officialHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-describedby="course-related-official-note"
+              >
+                {copy.applyOfficial}
+                <ExternalLink className="size-3.5" aria-hidden />
+              </a>
+            </Button>
+          </div>
+          <p
+            id="course-related-official-note"
+            className={cn(
+              "mt-3 text-xs text-text-secondary",
+              isBangla && "leading-[1.7]",
+            )}
+          >
+            {officialNote}
+          </p>
+        </div>
+      </article>
+    </section>
+  );
+}
+
 function getOutcomeList(
   course: CatalogCourse,
   copy: ReturnType<typeof useTranslation>["t"]["courseDetail"],
 ) {
   if (course.civicKey) {
-    return Object.values(copy.outcomes.civic[course.civicKey]);
+    return Object.values(copy.outcomes.civic[course.civicKey]) as string[];
   }
 
-  return Object.values(copy.outcomes.servicePrep);
+  return Object.values(copy.outcomes.servicePrep) as string[];
 }
 
 export { CourseDetail };
