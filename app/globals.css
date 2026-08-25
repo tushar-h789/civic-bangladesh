@@ -217,6 +217,12 @@
     @apply bg-background text-foreground;
   }
 
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  summary {
+    cursor: pointer;
+  }
+
   /* Consistent, accessible focus state across native + custom elements */
   :focus-visible {
     outline: 2px solid var(--color-primary);
@@ -337,8 +343,16 @@ html.a11y-highlight-headings h6 {
 
 .purpose-grid {
   background-image:
-    linear-gradient(to right, color-mix(in oklch, var(--color-border) 70%, transparent) 1px, transparent 1px),
-    linear-gradient(to bottom, color-mix(in oklch, var(--color-border) 70%, transparent) 1px, transparent 1px);
+    linear-gradient(
+      to right,
+      color-mix(in oklch, var(--color-border) 70%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in oklch, var(--color-border) 70%, transparent) 1px,
+      transparent 1px
+    );
   background-size: 44px 44px;
   mask-image: radial-gradient(ellipse at 70% 40%, #000 18%, transparent 72%);
 }

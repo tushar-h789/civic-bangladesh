@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   Award,
-  Banknote,
   BookOpen,
   CheckCircle2,
   ClipboardCheck,
@@ -20,23 +19,17 @@ import {
 import { cn } from "@/lib/utils";
 import { ROUTES } from "@/constants/routes";
 import { catalogCourseHref } from "@/data/civic-courses";
-import {
-  COURSE_INCLUDE_KEYS,
-} from "@/data/course-curriculum";
+import { COURSE_INCLUDE_KEYS } from "@/data/course-curriculum";
 import {
   getCatalogCourseBySlug,
   type CatalogCourse,
 } from "@/data/course-catalog";
-import {
-  getServiceBySlug,
-  serviceHref,
-} from "@/data/government-services";
+import { getServiceBySlug, serviceHref } from "@/data/government-services";
 import { getGovernmentServiceCardModel } from "@/lib/get-government-service-card";
 import { getCourseCopy } from "@/lib/get-course-copy";
 import { getCurriculumModules } from "@/lib/get-curriculum";
 import { useTranslation } from "@/hooks/use-translation";
 import { CourseTypeLabel } from "@/components/learning/course-type-label";
-import { Badge } from "@/components/common/badge";
 import { Breadcrumb } from "@/components/common/breadcrumb";
 import { Container } from "@/components/common/container";
 import { SectionHeader } from "@/components/common/section-header";
@@ -109,9 +102,30 @@ function CourseDetail({ slug }: { slug: string }) {
 
   return (
     <div className={cn(isBangla && "font-bengali")}>
-      <section className="relative overflow-hidden bg-light-green pt-10 pb-16 md:pt-12 md:pb-20 lg:pt-16 lg:pb-24">
-        <Container className="flex flex-col gap-8">
+      <section className="relative isolate overflow-hidden bg-text">
+        <div className="absolute inset-0" aria-hidden="true">
+          <Image
+            src={course.image}
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-center"
+          />
+        </div>
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-linear-to-r from-text/80 via-text/50 to-text/20 lg:from-text/75 lg:via-text/40 lg:to-transparent"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-linear-to-t from-text/70 via-transparent to-text/25"
+        />
+
+        <Container className="relative flex flex-col gap-6 pt-8 pb-10 sm:pt-10 sm:pb-12 lg:pt-12 lg:pb-14">
           <Breadcrumb
+            tone="onPrimary"
+            className="text-sm sm:text-base"
             items={[
               { label: t.nav.links.home, href: ROUTES.home },
               { label: t.nav.links.courses, href: ROUTES.courses },
@@ -119,85 +133,71 @@ function CourseDetail({ slug }: { slug: string }) {
             ]}
           />
 
-          <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1.4fr)_22rem] xl:grid-cols-[minmax(0,1.5fr)_24rem] xl:gap-12">
-            <div className="flex flex-col gap-5">
+          <div className="grid items-start gap-5 lg:grid-cols-[minmax(0,1fr)_22rem] xl:grid-cols-[minmax(0,1fr)_24rem] xl:gap-8">
+            <div className="flex max-w-3xl flex-col gap-4 rounded-2xl bg-text/50 p-4 ring-1 ring-white/15 backdrop-blur-md sm:gap-5 sm:p-6">
               <div className="flex flex-wrap items-center gap-2">
                 <CourseTypeLabel
                   type={course.type}
                   label={t.courseTypes[course.type].label}
+                  className="bg-white/12 text-white ring-1 ring-white/15"
                 />
-                <Badge variant="info" className="h-6 px-2.5">
-                  {t.courses.categories.items[course.category]}
-                </Badge>
-                <Badge variant="outline" className="h-6 px-2.5">
+                <span className="inline-flex h-7 items-center rounded-btn bg-white/8 px-2.5 text-sm font-medium text-white/80 ring-1 ring-white/10">
                   {copy.sampleBadge}
-                </Badge>
-                {relatedItem ? (
-                  <Badge variant="outline" className="h-6 px-2.5">
-                    <Link
-                      href={serviceHref(relatedService!.slug)}
-                      className="outline-none hover:underline"
-                    >
-                      {relatedItem.title}
-                    </Link>
-                  </Badge>
-                ) : null}
+                </span>
               </div>
 
-              {relatedItem ? (
-                <p className="text-sm font-medium text-primary">
-                  {copy.relatedService}: {relatedItem.title}
+              {relatedItem && relatedService ? (
+                <p className="text-sm font-medium text-white/80">
+                  {copy.relatedService}:{" "}
+                  <Link
+                    href={serviceHref(relatedService.slug)}
+                    className="text-white underline-offset-2 outline-none hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
+                  >
+                    {relatedItem.title}
+                  </Link>
                 </p>
               ) : (
-                <p className="text-sm text-text-secondary">
+                <p className="text-sm text-white/70">
                   {t.courseTypes[course.type].purpose}
                 </p>
               )}
 
               <h1
                 className={cn(
-                  "text-hero-mobile font-semibold text-balance text-foreground lg:text-5xl",
-                  isBangla && "leading-tight",
+                  "text-[1.75rem] leading-[1.28] font-semibold text-balance text-white sm:text-[2.125rem] sm:leading-snug lg:text-4xl lg:leading-[1.2]",
+                  isBangla && "leading-[1.32] sm:leading-[1.3]",
                 )}
               >
                 {item.title}
               </h1>
               <p
                 className={cn(
-                  "max-w-2xl text-body text-text-secondary",
+                  "text-base text-white/85 sm:text-body",
                   isBangla && "leading-[1.8]",
                 )}
               >
                 {item.description}
               </p>
 
-              <ul className="m-0 grid list-none grid-cols-2 gap-3 p-0 sm:grid-cols-4">
-                <MetaChip
-                  icon={<Banknote className="size-4" aria-hidden />}
-                  label={copy.meta.price}
-                  value={priceLabel}
+              <ul className="m-0 flex list-none flex-wrap gap-2 p-0">
+                <HeroChip
+                  icon={<Clock className="size-3.5" aria-hidden />}
+                  label={durationLabel}
                 />
-                <MetaChip
-                  icon={<Clock className="size-4" aria-hidden />}
-                  label={copy.meta.duration}
-                  value={durationLabel}
+                <HeroChip
+                  icon={<BookOpen className="size-3.5" aria-hidden />}
+                  label={lessonsLabel}
                 />
-                <MetaChip
-                  icon={<BookOpen className="size-4" aria-hidden />}
-                  label={copy.meta.lessons}
-                  value={lessonsLabel}
-                />
-                <MetaChip
-                  icon={<Award className="size-4" aria-hidden />}
-                  label={copy.meta.certificate}
-                  value={certificateLabel}
+                <HeroChip
+                  icon={<Award className="size-3.5" aria-hidden />}
+                  label={certificateLabel}
                 />
               </ul>
 
-              <div className="flex flex-col gap-3 pt-1 sm:flex-row sm:flex-wrap sm:items-center">
+              <div className="flex flex-col gap-2.5 sm:flex-row sm:flex-wrap sm:items-center">
                 <Button
                   type="button"
-                  className="h-12 rounded-btn px-6 text-button text-primary-foreground"
+                  className="h-12 rounded-btn bg-white px-6 text-button text-primary hover:bg-light-green"
                   onClick={() => setCheckoutOpen(true)}
                 >
                   {copy.cta.enroll}
@@ -206,37 +206,23 @@ function CourseDetail({ slug }: { slug: string }) {
                   <Button
                     asChild
                     variant="outline"
-                    className="h-12 rounded-btn bg-surface px-6 text-button"
+                    className="h-12 rounded-btn border-white/25 bg-white/10 px-6 text-button text-white hover:bg-white/18 hover:text-white"
                   >
                     <Link href={serviceHref(relatedService.slug)}>
                       {copy.cta.viewService}
                     </Link>
                   </Button>
                 ) : null}
-                <Link
-                  href={ROUTES.pricing}
-                  className="text-sm font-semibold text-primary outline-none hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
-                >
-                  {copy.cta.pricing}
-                </Link>
               </div>
             </div>
 
-            <aside className="overflow-hidden rounded-card bg-surface shadow-card ring-1 ring-border lg:sticky lg:top-24">
-              <div className="relative aspect-16/10">
-                <Image
-                  src={course.image}
-                  alt={item.imageAlt}
-                  fill
-                  priority
-                  sizes="(min-width: 1024px) 24rem, 100vw"
-                  className="object-cover"
-                />
-              </div>
-              <div className="flex flex-col gap-4 p-6">
+            <aside className="overflow-hidden rounded-card bg-surface/95 shadow-card ring-1 ring-white/20 backdrop-blur-md lg:sticky lg:top-24">
+              <div className="flex flex-col gap-4 p-5 sm:p-6">
                 <div>
-                  <p className="text-sm text-text-secondary">{copy.meta.price}</p>
-                  <p className="mt-1 text-2xl font-semibold text-foreground">
+                  <p className="text-sm text-text-secondary">
+                    {copy.meta.price}
+                  </p>
+                  <p className="mt-1 text-2xl font-semibold tracking-tight text-primary">
                     {priceLabel}
                   </p>
                   <p
@@ -249,12 +235,17 @@ function CourseDetail({ slug }: { slug: string }) {
                   </p>
                 </div>
                 <p className="inline-flex items-start gap-2 text-sm text-text-secondary">
-                  <UserRound className="mt-0.5 size-4 shrink-0" aria-hidden />
+                  <UserRound
+                    className="mt-0.5 size-4 shrink-0 text-primary"
+                    aria-hidden
+                  />
                   <span>
                     <span className="block font-medium text-foreground">
                       {t.courses.instructors[course.instructor]}
                     </span>
-                    <span className="text-xs">{t.courses.card.instructorRole}</span>
+                    <span className="text-xs">
+                      {t.courses.card.instructorRole}
+                    </span>
                   </span>
                 </p>
                 <Button
@@ -265,7 +256,11 @@ function CourseDetail({ slug }: { slug: string }) {
                   {copy.cta.enroll}
                 </Button>
                 {relatedService ? (
-                  <Button asChild variant="outline" className="h-11 rounded-btn">
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="h-11 rounded-btn"
+                  >
                     <Link href={serviceHref(relatedService.slug)}>
                       {copy.cta.viewService}
                     </Link>
@@ -293,24 +288,17 @@ function CourseDetail({ slug }: { slug: string }) {
             </aside>
           </div>
 
-          <nav
-            aria-label={copy.onThisPage}
-            className="border-t border-primary/15 pt-5"
-          >
-            <p className="text-sm font-semibold text-primary">
+          <nav aria-label={copy.onThisPage} className="pt-1">
+            <p className="text-sm font-semibold text-white">
               {copy.onThisPage}
             </p>
-            <ol className="mt-3 flex list-none flex-wrap items-center gap-x-5 gap-y-2 p-0">
-              {jumpLinks.map((link, index) => (
+            <ol className="mt-2.5 flex list-none flex-wrap gap-2 p-0">
+              {jumpLinks.map((link) => (
                 <li key={link.href}>
                   <a
                     href={link.href}
-                    className="text-sm font-medium text-text-secondary transition-colors duration-200 ease-standard hover:text-primary"
+                    className="inline-flex h-8 items-center rounded-btn bg-white/10 px-3 text-sm font-medium text-white/90 ring-1 ring-white/15 transition-colors duration-200 ease-standard hover:bg-white/18 hover:text-white"
                   >
-                    <span className="text-primary">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-                    <span className="mx-2 text-border">/</span>
                     {link.label}
                   </a>
                 </li>
@@ -318,6 +306,7 @@ function CourseDetail({ slug }: { slug: string }) {
             </ol>
           </nav>
         </Container>
+        <span className="sr-only">{item.imageAlt}</span>
       </section>
 
       {relatedService && relatedItem ? (
@@ -529,22 +518,11 @@ function CourseDetail({ slug }: { slug: string }) {
   );
 }
 
-function MetaChip({
-  icon,
-  label,
-  value,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  value: string;
-}) {
+function HeroChip({ icon, label }: { icon: React.ReactNode; label: string }) {
   return (
-    <li className="rounded-btn bg-surface px-3 py-2.5 ring-1 ring-border">
-      <p className="inline-flex items-center gap-1.5 text-xs text-text-secondary">
-        {icon}
-        {label}
-      </p>
-      <p className="mt-1 text-sm font-semibold text-foreground">{value}</p>
+    <li className="inline-flex max-w-full items-center gap-1.5 rounded-btn bg-white/12 px-2.5 py-1 text-sm font-medium text-white ring-1 ring-white/15">
+      {icon}
+      <span>{label}</span>
     </li>
   );
 }
