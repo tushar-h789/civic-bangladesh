@@ -9,7 +9,7 @@ export const services = {
     "Sample catalog for learning and preparation — not an official government list. Document counts and processing times are demo fields, not official figures.",
   hero: {
     imageAlt:
-      "A younger citizen helping an older family member use a phone to prepare for a government service",
+      "A young man helping an elderly woman understand an application form in a Bangladesh public service waiting hall",
     prepareFirst:
       "Prepare here. Apply on the official government portal.",
     stats: {
@@ -85,6 +85,9 @@ export const services = {
       "A government fee usually applies. Confirm the amount on the official portal. (sample)",
     feeFree:
       "No government fee listed here. Confirm on the official portal. (sample)",
+    feePaidShort: "Usually applies (sample)",
+    feeFreeShort: "None listed (sample)",
+    feeConfirm: "Confirm on the official portal",
     courseIndicator: "Preparation course",
     coursePrice: "Civic Bangladesh course ৳{amount}",
     courseFree: "Free Civic Bangladesh course",

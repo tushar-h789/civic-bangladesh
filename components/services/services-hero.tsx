@@ -11,7 +11,7 @@ import {
 import { Breadcrumb } from "@/components/common/breadcrumb";
 import { Container } from "@/components/common/container";
 
-const HERO_IMAGE = "/images/topics/topic-digital.png";
+const HERO_IMAGE = "/images/home/courses-hero-service-v2.png";
 
 interface ServicesHeroCopy {
   eyebrow: string;
@@ -52,7 +52,7 @@ function ServicesHero({
   isBangla,
 }: ServicesHeroProps) {
   return (
-    <section className="relative isolate overflow-hidden bg-primary">
+    <section className="relative isolate overflow-hidden bg-text">
       <div className="absolute inset-0" aria-hidden="true">
         <Image
           src={HERO_IMAGE}
@@ -60,80 +60,68 @@ function ServicesHero({
           fill
           priority
           sizes="100vw"
-          className="object-cover object-[70%_center] lg:object-[78%_center]"
+          className="object-cover object-center"
         />
       </div>
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-linear-to-r from-primary/94 via-primary/78 to-primary/28"
-      />
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 bg-linear-to-t from-text/45 via-transparent to-text/20"
+        className="absolute inset-0 bg-linear-to-r from-text/55 via-text/20 to-transparent lg:from-text/40 lg:via-text/10"
       />
 
-      <Container className="relative flex flex-col gap-8 pt-14 pb-16 sm:pt-16 sm:pb-20 lg:pt-20 lg:pb-24">
+      <Container className="relative flex flex-col gap-4 pt-8 pb-10 sm:gap-5 sm:pt-10 sm:pb-12 lg:pt-12 lg:pb-14">
         <Breadcrumb
           tone="onPrimary"
+          className="text-sm sm:text-base"
           items={[
             { label: homeLabel, href: ROUTES.home },
             { label: servicesLabel },
           ]}
         />
 
-        <div className="flex max-w-2xl flex-col gap-5">
-          <p
-            className={cn(
-              "text-sm font-medium text-white/80",
-              !isBangla && "tracking-wide uppercase",
-            )}
-          >
-            {copy.eyebrow}
-          </p>
+        <div className="flex max-w-xl flex-col gap-3 rounded-2xl bg-text/50 p-4 ring-1 ring-white/15 backdrop-blur-md sm:p-5">
           <h1
             className={cn(
-              "text-hero-mobile font-semibold text-balance text-white lg:text-5xl",
-              isBangla && "leading-tight",
+              "text-[1.75rem] leading-[1.28] font-semibold text-balance text-white sm:text-[2.125rem] sm:leading-snug lg:text-4xl lg:leading-[1.2]",
+              isBangla && "leading-[1.32] sm:leading-[1.3]",
             )}
           >
             {copy.title}
           </h1>
           <p
             className={cn(
-              "max-w-xl text-body text-white/85",
-              isBangla && "leading-[1.8]",
+              "text-base text-white/85 sm:text-body",
+              isBangla && "leading-[1.75] sm:leading-[1.8]",
             )}
           >
             {copy.description}
           </p>
           <p
             className={cn(
-              "max-w-xl text-base text-white/70",
-              isBangla && "leading-[1.75]",
+              "text-sm text-white/70 sm:text-base",
+              isBangla && "leading-[1.7] sm:leading-[1.75]",
             )}
           >
             {copy.sampleNote}
           </p>
+          <ul className="m-0 flex list-none flex-wrap gap-2 p-0">
+            <HeroStat
+              icon={<Files className="size-3.5" aria-hidden />}
+              label={formatTemplate(copy.hero.stats.services, {
+                count: SAMPLE_GOVERNMENT_SERVICES.length,
+              })}
+            />
+            <HeroStat
+              icon={<Landmark className="size-3.5" aria-hidden />}
+              label={formatTemplate(copy.hero.stats.categories, {
+                count: SERVICE_CATEGORY_KEYS.length,
+              })}
+            />
+            <HeroStat
+              icon={<BookOpen className="size-3.5" aria-hidden />}
+              label={copy.hero.prepareFirst}
+            />
+          </ul>
         </div>
-
-        <ul className="m-0 flex list-none flex-wrap gap-2.5 p-0">
-          <HeroStat
-            icon={<Files className="size-3.5" aria-hidden />}
-            label={formatTemplate(copy.hero.stats.services, {
-              count: SAMPLE_GOVERNMENT_SERVICES.length,
-            })}
-          />
-          <HeroStat
-            icon={<Landmark className="size-3.5" aria-hidden />}
-            label={formatTemplate(copy.hero.stats.categories, {
-              count: SERVICE_CATEGORY_KEYS.length,
-            })}
-          />
-          <HeroStat
-            icon={<BookOpen className="size-3.5" aria-hidden />}
-            label={copy.hero.prepareFirst}
-          />
-        </ul>
       </Container>
 
       <span className="sr-only">{copy.hero.imageAlt}</span>
@@ -143,7 +131,7 @@ function ServicesHero({
 
 function HeroStat({ icon, label }: { icon: ReactNode; label: string }) {
   return (
-    <li className="inline-flex max-w-full items-center gap-2 rounded-btn bg-white/12 px-3 py-1.5 text-base font-medium text-white ring-1 ring-white/15">
+    <li className="inline-flex max-w-full items-center gap-1.5 rounded-btn bg-white/12 px-2.5 py-1 text-sm font-medium text-white ring-1 ring-white/15 sm:gap-2 sm:px-3 sm:py-1.5 sm:text-base">
       {icon}
       <span>{label}</span>
     </li>
