@@ -1,6 +1,6 @@
 "use client";
 
-import type { ComponentType } from "react";
+import type { ComponentType, ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -8,19 +8,20 @@ import {
   Ban,
   BookOpen,
   Clapperboard,
+  Clock,
   ExternalLink,
+  Footprints,
   GraduationCap,
+  ImageOff,
   Landmark,
+  MonitorPlay,
   Play,
-  ShieldAlert,
   Tv,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { ROUTES } from "@/constants/routes";
-import {
-  getCivicVideoBySlug,
-} from "@/data/civic-learning";
+import { getCivicVideoBySlug } from "@/data/civic-learning";
 import type { CivicTopicKey } from "@/data/civic-topics";
 import { useTranslation } from "@/hooks/use-translation";
 import { getCivicShortVideos } from "@/lib/get-civic-learning-view";
@@ -31,14 +32,22 @@ import {
   getVideosMoreItems,
   getVideosNotItems,
 } from "@/lib/get-videos-view";
-import { Badge } from "@/components/common/badge";
 import { Breadcrumb } from "@/components/common/breadcrumb";
 import { Container } from "@/components/common/container";
 import { EmptyState } from "@/components/common/empty-state";
-import { SectionHeader } from "@/components/common/section-header";
 import { Button } from "@/components/ui/button";
 
 const HERO_IMAGE = "/images/topics/topic-road.png";
+
+const HOW_ICONS = {
+  pick: Play,
+  hosted: MonitorPlay,
+  notHosted: ImageOff,
+  thenPractice: Footprints,
+} as const satisfies Record<
+  string,
+  ComponentType<{ className?: string; "aria-hidden"?: boolean }>
+>;
 
 const NOT_ICONS = {
   notGovernment: Landmark,
@@ -90,10 +99,18 @@ function VideosPage({
   const howItems = getVideosHowItems(t);
   const notItems = getVideosNotItems(t);
   const moreItems = getVideosMoreItems(t);
+  const readyCount = allVideos.filter((video) => video.youtubeId).length;
+
+  const jumpLinks = [
+    { href: "#videos-list", label: copy.jump.clips },
+    { href: "#videos-how", label: copy.jump.how },
+    { href: "#videos-not", label: copy.jump.notThis },
+    { href: "#videos-more", label: copy.jump.more },
+  ];
 
   return (
     <div className={cn(isBangla && "font-bengali")}>
-      <section className="relative isolate overflow-hidden bg-primary">
+      <section className="relative isolate overflow-hidden bg-text">
         <div className="absolute inset-0" aria-hidden="true">
           <Image
             src={HERO_IMAGE}
@@ -106,29 +123,35 @@ function VideosPage({
         </div>
         <div
           aria-hidden="true"
-          className="absolute inset-0 bg-linear-to-r from-text/90 via-text/72 to-text/30"
+          className="absolute inset-0 bg-linear-to-r from-text/80 via-text/50 to-text/20 lg:from-text/75 lg:via-text/40 lg:to-transparent"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-linear-to-t from-text/70 via-transparent to-text/25"
         />
 
-        <Container className="relative flex flex-col gap-8 pt-14 pb-16 sm:pt-16 sm:pb-20 lg:pt-20 lg:pb-24">
+        <Container className="relative flex flex-col gap-4 pt-6 pb-7 sm:pt-7 sm:pb-8 lg:pt-8 lg:pb-8">
           <Breadcrumb
             tone="onPrimary"
+            className="text-sm sm:text-base"
             items={[
               { label: t.nav.links.home, href: ROUTES.home },
               { label: t.nav.resources.videos },
             ]}
           />
-          <div className="flex max-w-2xl flex-col gap-5">
+
+          <div className="flex max-w-2xl flex-col gap-3 rounded-2xl bg-text/50 p-4 ring-1 ring-white/15 backdrop-blur-md sm:gap-3.5 sm:p-5">
             <h1
               className={cn(
-                "text-hero-mobile font-semibold text-balance text-white lg:text-5xl",
-                isBangla && "leading-tight",
+                "text-[1.75rem] leading-[1.28] font-semibold text-balance text-white sm:text-[2.125rem] sm:leading-snug lg:text-4xl lg:leading-[1.2]",
+                isBangla && "leading-[1.32] sm:leading-[1.3]",
               )}
             >
               {copy.title}
             </h1>
             <p
               className={cn(
-                "max-w-xl text-body text-white/85",
+                "text-base text-white/85 sm:text-body",
                 isBangla && "leading-[1.8]",
               )}
             >
@@ -136,232 +159,214 @@ function VideosPage({
             </p>
             <p
               className={cn(
-                "max-w-xl text-base text-white/70",
+                "text-sm text-white/70",
                 isBangla && "leading-[1.75]",
               )}
             >
               {copy.sampleNote}
             </p>
+            <ul className="m-0 flex list-none flex-wrap gap-2 p-0">
+              <HeroChip
+                icon={<Clapperboard className="size-3.5" aria-hidden />}
+                label={formatTemplate(copy.stats.clips, {
+                  count: allVideos.length,
+                })}
+              />
+              <HeroChip
+                icon={<Play className="size-3.5" aria-hidden />}
+                label={formatTemplate(copy.stats.ready, { count: readyCount })}
+              />
+            </ul>
           </div>
+
           <nav aria-label={copy.jump.label}>
-            <ul className="m-0 flex list-none flex-wrap gap-x-4 gap-y-2 p-0 text-base">
-              {(
-                [
-                  ["videos-list", copy.jump.clips],
-                  ["videos-how", copy.jump.how],
-                  ["videos-not", copy.jump.notThis],
-                  ["videos-more", copy.jump.more],
-                ] as const
-              ).map(([href, label]) => (
-                <li key={href}>
+            <p className="text-sm font-semibold text-white">
+              {copy.jump.label}
+            </p>
+            <ol className="mt-2 flex list-none flex-wrap gap-1.5 p-0">
+              {jumpLinks.map((link) => (
+                <li key={link.href}>
                   <a
-                    href={`#${href}`}
-                    className="font-medium text-white/85 outline-none hover:text-white hover:underline focus-visible:ring-3 focus-visible:ring-white/50"
+                    href={link.href}
+                    className="inline-flex h-8 items-center rounded-btn bg-white/10 px-3 text-sm font-medium text-white/90 ring-1 ring-white/15 transition-colors duration-200 ease-standard hover:bg-white/18 hover:text-white"
                   >
-                    {label}
+                    {link.label}
                   </a>
                 </li>
               ))}
-            </ul>
+            </ol>
           </nav>
         </Container>
         <span className="sr-only">{copy.heroImageAlt}</span>
       </section>
 
-      <section className="bg-background pt-8 pb-0 md:pt-10">
-        <Container>
-          <aside
-            className="flex gap-3 rounded-card bg-light-green p-5 ring-1 ring-border sm:p-6"
-            aria-labelledby="videos-notice-heading"
-          >
-            <ShieldAlert
-              className="mt-0.5 size-5 shrink-0 text-primary"
-              aria-hidden
-            />
-            <div className="min-w-0">
-              <h2
-                id="videos-notice-heading"
-                className="text-base font-semibold text-foreground"
-              >
-                {copy.notice.title}
-              </h2>
-              <p
-                className={cn(
-                  "mt-2 text-sm text-text-secondary",
-                  isBangla && "leading-[1.75]",
-                )}
-              >
-                {copy.notice.body}
-              </p>
-            </div>
-          </aside>
-        </Container>
-      </section>
-
-      {(selectedVideo || selectedMissing) && (
-        <section
-          id="video-watching"
-          aria-labelledby="video-watching-heading"
-          className="scroll-mt-28 bg-background py-section-mobile md:py-section-tablet lg:py-section-desktop"
-        >
-          <Container>
-            {selectedVideo ? (
-              <article className="overflow-hidden rounded-card bg-surface ring-1 ring-border">
-                {selectedVideo.youtubeId ? (
-                  <div className="overflow-hidden bg-text">
-                    <div className="relative aspect-video">
-                      <iframe
-                        src={`https://www.youtube.com/embed/${selectedVideo.youtubeId}`}
-                        title={selectedVideo.title}
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        referrerPolicy="strict-origin-when-cross-origin"
-                        allowFullScreen
-                        className="absolute inset-0 size-full border-0"
-                      />
+      <div className="bg-background py-6 md:py-7 lg:py-8">
+        <Container className="flex flex-col gap-3 sm:gap-4">
+          {(selectedVideo || selectedMissing) && (
+            <section
+              id="video-watching"
+              aria-labelledby="video-watching-heading"
+              className="scroll-mt-28"
+            >
+              {selectedVideo ? (
+                <article className="overflow-hidden rounded-card bg-surface shadow-card ring-1 ring-border">
+                  <div className="grid lg:grid-cols-[minmax(0,1.35fr)_minmax(16rem,0.85fr)]">
+                    <div className="min-w-0 bg-text">
+                      {selectedVideo.youtubeId ? (
+                        <>
+                          <div className="relative aspect-video">
+                            <iframe
+                              src={`https://www.youtube.com/embed/${selectedVideo.youtubeId}`}
+                              title={selectedVideo.title}
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                              referrerPolicy="strict-origin-when-cross-origin"
+                              allowFullScreen
+                              className="absolute inset-0 size-full border-0"
+                            />
+                          </div>
+                          <p
+                            className={cn(
+                              "px-4 py-2 text-center text-xs text-white/70",
+                              isBangla && "leading-[1.7]",
+                            )}
+                          >
+                            {copy.watching.hostedNote}
+                          </p>
+                        </>
+                      ) : (
+                        <div className="relative min-h-52 overflow-hidden sm:min-h-72 lg:min-h-full">
+                          <Image
+                            src={selectedVideo.image}
+                            alt={selectedVideo.imageAlt}
+                            fill
+                            sizes="(min-width: 1024px) 60vw, 100vw"
+                            className="object-cover"
+                            priority
+                          />
+                        </div>
+                      )}
                     </div>
-                    <p
-                      className={cn(
-                        "px-4 py-2.5 text-center text-xs text-white/70",
-                        isBangla && "leading-[1.7]",
-                      )}
-                    >
-                      {copy.watching.hostedNote}
-                    </p>
-                  </div>
-                ) : (
-                  <div className="relative min-h-52 overflow-hidden sm:min-h-72">
-                    <Image
-                      src={selectedVideo.image}
-                      alt={selectedVideo.imageAlt}
-                      fill
-                      sizes="100vw"
-                      className="object-cover"
-                      priority
-                    />
-                  </div>
-                )}
 
-                <div className="flex flex-col p-5 sm:p-8">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <Badge variant="info">{selectedVideo.topicTitle}</Badge>
-                    <Badge variant="outline">{copy.watching.sampleBadge}</Badge>
-                  </div>
-                  <h2
-                    id="video-watching-heading"
-                    className={cn(
-                      "mt-4 text-section-heading font-semibold text-balance text-foreground",
-                      isBangla && "leading-tight",
-                    )}
-                  >
-                    {selectedVideo.title}
-                  </h2>
-                  <p
-                    className={cn(
-                      "mt-3 max-w-2xl text-body text-text-secondary",
-                      isBangla && "leading-[1.8]",
-                    )}
-                  >
-                    {selectedVideo.description}
-                  </p>
-                  <p className="mt-3 text-sm font-medium text-text-secondary">
-                    {formatTemplate(clips.minutes, {
-                      count: selectedVideo.minutes,
-                    })}
-                  </p>
-                  {!selectedVideo.youtubeId ? (
-                    <>
-                      <p
+                    <div className="flex flex-col gap-3 p-4 sm:p-5">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="rounded-btn bg-light-green px-2.5 py-1 text-xs font-semibold text-primary">
+                          {selectedVideo.topicTitle}
+                        </span>
+                        <span className="rounded-btn bg-background px-2.5 py-1 text-xs font-medium text-text-secondary ring-1 ring-border">
+                          {copy.watching.sampleBadge}
+                        </span>
+                      </div>
+                      <h2
+                        id="video-watching-heading"
                         className={cn(
-                          "mt-6 text-base font-semibold text-foreground",
-                          isBangla && "leading-[1.45]",
+                          "text-xl font-semibold text-balance text-foreground sm:text-2xl",
+                          isBangla && "leading-tight",
                         )}
                       >
-                        {copy.watching.missingTitle}
-                      </p>
+                        {selectedVideo.title}
+                      </h2>
                       <p
                         className={cn(
-                          "mt-2 max-w-2xl text-sm text-text-secondary",
-                          isBangla && "leading-[1.75]",
+                          "text-sm text-text-secondary sm:text-base",
+                          isBangla && "leading-[1.8]",
                         )}
                       >
-                        {copy.watching.missingBody}
+                        {selectedVideo.description}
                       </p>
-                    </>
-                  ) : null}
-                  <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                    {selectedVideo.youtubeHref ? (
-                      <Button asChild className="w-fit text-primary-foreground">
-                        <a
-                          href={selectedVideo.youtubeHref}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                      <p className="inline-flex items-center gap-1.5 text-sm font-medium text-text-secondary">
+                        <Clock className="size-3.5 text-primary" aria-hidden />
+                        {formatTemplate(clips.minutes, {
+                          count: selectedVideo.minutes,
+                        })}
+                      </p>
+                      {!selectedVideo.youtubeId ? (
+                        <div className="rounded-btn bg-background px-3 py-2.5 ring-1 ring-border">
+                          <p className="text-sm font-semibold text-foreground">
+                            {copy.watching.missingTitle}
+                          </p>
+                          <p
+                            className={cn(
+                              "mt-1 text-sm text-text-secondary",
+                              isBangla && "leading-[1.75]",
+                            )}
+                          >
+                            {copy.watching.missingBody}
+                          </p>
+                        </div>
+                      ) : null}
+                      <div className="mt-auto flex flex-col gap-2 pt-1">
+                        {selectedVideo.youtubeHref ? (
+                          <Button asChild className="h-11 rounded-btn">
+                            <a
+                              href={selectedVideo.youtubeHref}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {copy.watching.youtubeCta}
+                              <ExternalLink className="size-3.5" aria-hidden />
+                            </a>
+                          </Button>
+                        ) : null}
+                        <Button
+                          asChild
+                          variant="outline"
+                          className="h-11 rounded-btn"
                         >
-                          {copy.watching.youtubeCta}
-                          <ExternalLink className="size-4" aria-hidden />
-                        </a>
-                      </Button>
-                    ) : null}
-                    <Button
-                      asChild
-                      variant={selectedVideo.youtubeHref ? "outline" : "default"}
-                      className={cn(
-                        "w-fit",
-                        !selectedVideo.youtubeHref && "text-primary-foreground",
-                      )}
-                    >
-                      <Link href={selectedVideo.topicHref}>
-                        {copy.watching.topicCta}
-                        <ArrowRight className="size-4" aria-hidden />
-                      </Link>
-                    </Button>
-                    {selectedVideo.courseHref ? (
-                      <Button asChild variant="outline" className="w-fit">
-                        <Link href={selectedVideo.courseHref}>
-                          {copy.watching.courseCta}
-                          <ArrowRight className="size-4" aria-hidden />
+                          <Link href={selectedVideo.topicHref}>
+                            {copy.watching.topicCta}
+                            <ArrowRight className="size-3.5" aria-hidden />
+                          </Link>
+                        </Button>
+                        {selectedVideo.courseHref ? (
+                          <Button
+                            asChild
+                            variant="outline"
+                            className="h-11 rounded-btn"
+                          >
+                            <Link href={selectedVideo.courseHref}>
+                              {copy.watching.courseCta}
+                              <ArrowRight className="size-3.5" aria-hidden />
+                            </Link>
+                          </Button>
+                        ) : null}
+                        <Link
+                          href={ROUTES.videos}
+                          className="text-sm font-semibold text-primary outline-none hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
+                        >
+                          {copy.watching.backCta}
                         </Link>
-                      </Button>
-                    ) : null}
-                    <Button asChild variant="outline" className="w-fit">
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              ) : (
+                <EmptyState
+                  title={
+                    <span id="video-watching-heading">
+                      {copy.missing.title}
+                    </span>
+                  }
+                  description={copy.missing.description}
+                  action={
+                    <Button asChild variant="outline">
                       <Link href={ROUTES.videos}>{copy.watching.backCta}</Link>
                     </Button>
-                  </div>
-                </div>
-              </article>
-            ) : (
-              <EmptyState
-                title={
-                  <span id="video-watching-heading">{copy.missing.title}</span>
-                }
-                description={copy.missing.description}
-                action={
-                  <Button asChild variant="outline">
-                    <Link href={ROUTES.videos}>{copy.watching.backCta}</Link>
-                  </Button>
-                }
-              />
-            )}
-          </Container>
-        </section>
-      )}
+                  }
+                />
+              )}
+            </section>
+          )}
 
-      <section
-        id="videos-list"
-        aria-labelledby="videos-list-heading"
-        className={cn(
-          "scroll-mt-28 py-section-mobile md:py-section-tablet lg:py-section-desktop",
-          selectedVideo || selectedMissing ? "bg-light-green" : "bg-background",
-        )}
-      >
-        <Container>
-          <SectionHeader
-            title={<span id="videos-list-heading">{copy.list.title}</span>}
+          <VideosBodySection
+            id="videos-list"
+            headingId="videos-list-heading"
+            title={copy.list.title}
             description={copy.list.description}
-          />
-
-          <div className="mt-8 flex flex-col gap-4 sm:mt-10 sm:flex-row sm:items-center sm:justify-between">
-            <nav aria-label={copy.filter.label}>
-              <ul className="m-0 flex list-none flex-wrap gap-2 p-0">
+            meta={formatTemplate(copy.filter.showing, { count: videos.length })}
+            isBangla={isBangla}
+          >
+            <nav aria-label={copy.filter.label} className="mb-4">
+              <ul className="m-0 flex list-none flex-wrap gap-1.5 p-0">
                 {filters.map((filter) => {
                   const isActive = filter.topicKey === selectedTopic;
 
@@ -371,10 +376,10 @@ function VideosPage({
                         href={filter.href}
                         aria-current={isActive ? "page" : undefined}
                         className={cn(
-                          "inline-flex h-9 items-center rounded-btn px-3 text-sm font-medium outline-none ring-1 transition-colors focus-visible:ring-3 focus-visible:ring-ring/50",
+                          "inline-flex h-9 items-center rounded-btn px-3 text-sm font-medium outline-none ring-1 transition-colors duration-200 ease-standard focus-visible:ring-3 focus-visible:ring-ring/50",
                           isActive
                             ? "bg-primary text-primary-foreground ring-primary"
-                            : "bg-surface text-text-secondary ring-border hover:bg-light-green hover:text-primary",
+                            : "bg-background text-text-secondary ring-border hover:bg-light-green hover:text-primary",
                         )}
                       >
                         {filter.label}
@@ -384,178 +389,227 @@ function VideosPage({
                 })}
               </ul>
             </nav>
-            <p className="text-sm text-text-secondary">
-              {formatTemplate(copy.filter.showing, { count: videos.length })}
-            </p>
-          </div>
 
-          <ul className="mt-8 grid list-none gap-4 p-0 sm:mt-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
-            {videos.map((video) => (
-              <li key={video.key} id={video.slug}>
-                <VideoClipCard
-                  href={video.href}
-                  image={video.image}
-                  imageAlt={video.imageAlt}
-                  kicker={video.topicTitle}
-                  title={video.title}
-                  description={video.description}
-                  meta={formatTemplate(clips.minutes, { count: video.minutes })}
-                  cta={clips.watch}
-                  badge={clips.sampleBadge}
-                  hosted={Boolean(video.youtubeId)}
-                  selected={selectedVideo?.slug === video.slug}
-                  isBangla={isBangla}
-                />
-              </li>
-            ))}
-          </ul>
-        </Container>
-      </section>
-
-      <section
-        id="videos-how"
-        aria-labelledby="videos-how-heading"
-        className={cn(
-          "scroll-mt-28 py-section-mobile md:py-section-tablet lg:py-section-desktop",
-          selectedVideo || selectedMissing ? "bg-background" : "bg-light-green",
-        )}
-      >
-        <Container>
-          <SectionHeader
-            title={<span id="videos-how-heading">{copy.how.title}</span>}
-            description={copy.how.description}
-          />
-          <ol className="mt-10 m-0 grid list-none gap-4 p-0 sm:mt-12 sm:grid-cols-2 lg:gap-5">
-            {howItems.map((item, index) => (
-              <li key={item.key}>
-                <article className="flex h-full flex-col rounded-card bg-surface p-5 ring-1 ring-border sm:p-6">
-                  <p className="text-sm font-semibold tabular-nums text-primary">
-                    {String(index + 1).padStart(2, "0")}
-                  </p>
-                  <h3
-                    className={cn(
-                      "mt-3 text-lg font-semibold text-foreground",
-                      isBangla && "leading-[1.45]",
-                    )}
-                  >
-                    {item.title}
-                  </h3>
-                  <p
-                    className={cn(
-                      "mt-2 text-sm text-text-secondary",
-                      isBangla && "leading-[1.75]",
-                    )}
-                  >
-                    {item.body}
-                  </p>
-                </article>
-              </li>
-            ))}
-          </ol>
-        </Container>
-      </section>
-
-      <section
-        id="videos-not"
-        aria-labelledby="videos-not-heading"
-        className={cn(
-          "scroll-mt-28 py-section-mobile md:py-section-tablet lg:py-section-desktop",
-          selectedVideo || selectedMissing ? "bg-light-green" : "bg-background",
-        )}
-      >
-        <Container>
-          <SectionHeader
-            title={<span id="videos-not-heading">{copy.notThis.title}</span>}
-            description={copy.notThis.description}
-          />
-          <ul className="mt-10 grid list-none gap-4 p-0 sm:mt-12 lg:grid-cols-3 lg:gap-5">
-            {notItems.map((item) => {
-              const Icon = NOT_ICONS[item.key];
-
-              return (
-                <li key={item.key}>
-                  <article className="flex h-full flex-col rounded-card bg-surface p-5 ring-1 ring-border sm:p-6">
-                    <span className="flex size-10 shrink-0 items-center justify-center rounded-btn bg-light-green text-primary">
-                      <Icon className="size-4" aria-hidden />
-                    </span>
-                    <h3
-                      className={cn(
-                        "mt-4 text-lg font-semibold text-foreground",
-                        isBangla && "leading-[1.45]",
-                      )}
-                    >
-                      {item.title}
-                    </h3>
-                    <p
-                      className={cn(
-                        "mt-2 text-sm text-text-secondary",
-                        isBangla && "leading-[1.75]",
-                      )}
-                    >
-                      {item.body}
-                    </p>
-                  </article>
+            <ul className="m-0 grid list-none gap-3 p-0 sm:grid-cols-2 lg:grid-cols-3">
+              {videos.map((video) => (
+                <li key={video.key} id={video.slug}>
+                  <VideoClipCard
+                    href={video.href}
+                    image={video.image}
+                    imageAlt={video.imageAlt}
+                    kicker={video.topicTitle}
+                    title={video.title}
+                    description={video.description}
+                    meta={formatTemplate(clips.minutes, {
+                      count: video.minutes,
+                    })}
+                    cta={clips.watch}
+                    status={
+                      video.youtubeId
+                        ? copy.list.readyToPlay
+                        : copy.list.photoOnly
+                    }
+                    hosted={Boolean(video.youtubeId)}
+                    selected={selectedVideo?.slug === video.slug}
+                    isBangla={isBangla}
+                  />
                 </li>
-              );
-            })}
-          </ul>
-        </Container>
-      </section>
+              ))}
+            </ul>
+          </VideosBodySection>
 
-      <section
-        id="videos-more"
-        aria-labelledby="videos-more-heading"
-        className={cn(
-          "scroll-mt-28 py-section-mobile md:py-section-tablet lg:py-section-desktop",
-          selectedVideo || selectedMissing ? "bg-background" : "bg-light-green",
-        )}
-      >
-        <Container>
-          <SectionHeader
-            title={<span id="videos-more-heading">{copy.more.title}</span>}
-            description={copy.more.description}
-          />
-          <ul className="mt-10 grid list-none gap-4 p-0 sm:mt-12 lg:grid-cols-3 lg:gap-5">
-            {moreItems.map((item) => {
-              const Icon = MORE_ICONS[item.key];
+          <VideosBodySection
+            id="videos-how"
+            headingId="videos-how-heading"
+            title={copy.how.title}
+            description={copy.how.description}
+            isBangla={isBangla}
+          >
+            <ol className="m-0 grid list-none gap-0 p-0 sm:grid-cols-4">
+              {howItems.map((item, index) => {
+                const Icon = HOW_ICONS[item.key];
+                const last = index === howItems.length - 1;
 
-              return (
-                <li key={item.key}>
-                  <article className="flex h-full flex-col rounded-card bg-surface p-5 ring-1 ring-border sm:p-6">
-                    <span className="flex size-10 shrink-0 items-center justify-center rounded-btn bg-light-green text-primary">
+                return (
+                  <li
+                    key={item.key}
+                    className={cn(
+                      "relative flex gap-3 sm:flex-col sm:items-center sm:px-2 sm:text-center",
+                      !last &&
+                        "sm:after:absolute sm:after:top-5 sm:after:left-[calc(50%+1.35rem)] sm:after:right-[-50%] sm:after:h-px sm:after:bg-border sm:after:content-['']",
+                    )}
+                  >
+                    <div className="flex flex-col items-center">
+                      <span className="relative z-10 flex size-10 shrink-0 items-center justify-center rounded-full bg-light-green text-primary ring-4 ring-surface">
+                        <Icon className="size-4" aria-hidden />
+                      </span>
+                      {last ? null : (
+                        <span
+                          aria-hidden
+                          className="my-1 w-px min-h-5 flex-1 bg-border sm:hidden"
+                        />
+                      )}
+                    </div>
+                    <div className="min-w-0 pb-4 sm:pt-2.5 sm:pb-0">
+                      <p className="text-sm font-semibold text-foreground">
+                        {item.title}
+                      </p>
+                      <p
+                        className={cn(
+                          "mt-1 text-xs text-text-secondary",
+                          isBangla && "leading-[1.65]",
+                        )}
+                      >
+                        {item.body}
+                      </p>
+                    </div>
+                  </li>
+                );
+              })}
+            </ol>
+          </VideosBodySection>
+
+          <VideosBodySection
+            id="videos-not"
+            headingId="videos-not-heading"
+            title={copy.notThis.title}
+            description={copy.notThis.description}
+            isBangla={isBangla}
+          >
+            <ul className="m-0 divide-y divide-border overflow-hidden rounded-card bg-background ring-1 ring-border">
+              {notItems.map((item) => {
+                const Icon = NOT_ICONS[item.key];
+
+                return (
+                  <li
+                    key={item.key}
+                    className="flex items-start gap-3 px-3.5 py-3 sm:items-center"
+                  >
+                    <span className="flex size-9 shrink-0 items-center justify-center rounded-btn bg-light-green text-primary">
                       <Icon className="size-4" aria-hidden />
                     </span>
-                    <h3
-                      className={cn(
-                        "mt-4 text-lg font-semibold text-foreground",
-                        isBangla && "leading-[1.45]",
-                      )}
-                    >
-                      {item.title}
-                    </h3>
-                    <p
-                      className={cn(
-                        "mt-2 text-sm text-text-secondary",
-                        isBangla && "leading-[1.75]",
-                      )}
-                    >
-                      {item.body}
-                    </p>
+                    <div className="min-w-0">
+                      <p className="text-sm font-semibold text-foreground">
+                        {item.title}
+                      </p>
+                      <p
+                        className={cn(
+                          "mt-0.5 text-sm text-text-secondary",
+                          isBangla && "leading-[1.7]",
+                        )}
+                      >
+                        {item.body}
+                      </p>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          </VideosBodySection>
+
+          <VideosBodySection
+            id="videos-more"
+            headingId="videos-more-heading"
+            title={copy.more.title}
+            description={copy.more.description}
+            isBangla={isBangla}
+          >
+            <ul className="m-0 grid list-none gap-3 p-0 sm:grid-cols-3">
+              {moreItems.map((item) => {
+                const Icon = MORE_ICONS[item.key];
+
+                return (
+                  <li key={item.key}>
                     <Link
                       href={item.href}
-                      className="mt-auto inline-flex items-center gap-1.5 pt-4 text-sm font-semibold text-primary outline-none hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
+                      className="flex h-full cursor-pointer flex-col gap-3 rounded-card bg-background p-4 outline-none ring-1 ring-border transition-shadow duration-200 ease-standard hover:shadow-card focus-visible:ring-3 focus-visible:ring-ring/50"
                     >
-                      {item.cta}
-                      <ArrowRight className="size-3.5" aria-hidden />
+                      <span className="flex size-9 items-center justify-center rounded-btn bg-light-green text-primary">
+                        <Icon className="size-4" aria-hidden />
+                      </span>
+                      <p className="text-sm font-semibold text-foreground">
+                        {item.title}
+                      </p>
+                      <p
+                        className={cn(
+                          "text-sm text-text-secondary",
+                          isBangla && "leading-[1.7]",
+                        )}
+                      >
+                        {item.body}
+                      </p>
+                      <span className="mt-auto inline-flex items-center gap-1.5 text-sm font-semibold text-primary">
+                        {item.cta}
+                        <ArrowRight className="size-3.5" aria-hidden />
+                      </span>
                     </Link>
-                  </article>
-                </li>
-              );
-            })}
-          </ul>
+                  </li>
+                );
+              })}
+            </ul>
+          </VideosBodySection>
         </Container>
-      </section>
+      </div>
     </div>
+  );
+}
+
+function HeroChip({ icon, label }: { icon: ReactNode; label: string }) {
+  return (
+    <li className="inline-flex max-w-full items-center gap-1.5 rounded-btn bg-white/12 px-2.5 py-1 text-sm font-medium text-white ring-1 ring-white/15">
+      {icon}
+      <span>{label}</span>
+    </li>
+  );
+}
+
+function VideosBodySection({
+  id,
+  headingId,
+  title,
+  description,
+  meta,
+  isBangla,
+  children,
+}: {
+  id: string;
+  headingId: string;
+  title: string;
+  description: string;
+  meta?: string;
+  isBangla: boolean;
+  children: ReactNode;
+}) {
+  return (
+    <section id={id} aria-labelledby={headingId} className="scroll-mt-28">
+      <article className="rounded-card bg-surface p-4 shadow-card ring-1 ring-border sm:p-5">
+        <div className="flex flex-col gap-1.5 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+          <h2
+            id={headingId}
+            className={cn(
+              "text-xl font-semibold text-foreground sm:text-2xl",
+              isBangla && "leading-tight",
+            )}
+          >
+            {title}
+          </h2>
+          {meta ? (
+            <p className="text-sm font-medium text-text-secondary sm:pt-1.5">
+              {meta}
+            </p>
+          ) : null}
+        </div>
+        <p
+          className={cn(
+            "mt-1.5 max-w-2xl text-body text-text-secondary",
+            isBangla && "leading-[1.8]",
+          )}
+        >
+          {description}
+        </p>
+        <div className="mt-4">{children}</div>
+      </article>
+    </section>
   );
 }
 
@@ -568,7 +622,7 @@ function VideoClipCard({
   description,
   meta,
   cta,
-  badge,
+  status,
   hosted,
   selected,
   isBangla,
@@ -581,7 +635,7 @@ function VideoClipCard({
   description: string;
   meta: string;
   cta: string;
-  badge: string;
+  status: string;
   hosted: boolean;
   selected: boolean;
   isBangla: boolean;
@@ -589,13 +643,13 @@ function VideoClipCard({
   return (
     <article
       className={cn(
-        "group flex h-full flex-col overflow-hidden rounded-card bg-surface shadow-card ring-1 ring-border",
+        "group flex h-full flex-col overflow-hidden rounded-card bg-background ring-1 ring-border",
         selected && "ring-2 ring-primary",
       )}
     >
       <Link
         href={href}
-        className="flex h-full flex-col outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
+        className="flex h-full cursor-pointer flex-col outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
       >
         <div className="relative aspect-16/10 overflow-hidden">
           <Image
@@ -607,27 +661,27 @@ function VideoClipCard({
           />
           <div
             aria-hidden="true"
-            className="absolute inset-0 bg-linear-to-t from-text/40 via-transparent to-text/10"
+            className="absolute inset-0 bg-linear-to-t from-text/45 via-transparent to-text/10"
           />
           {hosted ? (
             <span className="absolute inset-0 flex items-center justify-center">
-              <span className="flex size-12 items-center justify-center rounded-full bg-white text-primary shadow-card">
-                <Play className="size-5 fill-current" aria-hidden />
+              <span className="flex size-11 items-center justify-center rounded-full bg-white text-primary shadow-card">
+                <Play className="size-4 fill-current" aria-hidden />
               </span>
             </span>
           ) : null}
-          <Badge
-            variant="outline"
-            className="absolute top-3 left-3 h-6 bg-white/90 px-2.5"
-          >
-            {badge}
-          </Badge>
+          <span className="absolute top-3 left-3 rounded-btn bg-white/90 px-2 py-0.5 text-xs font-semibold text-primary">
+            {kicker}
+          </span>
+          <span className="absolute right-3 bottom-3 rounded-btn bg-text/70 px-2 py-0.5 text-xs font-medium text-white">
+            {meta}
+          </span>
         </div>
-        <div className="flex flex-1 flex-col gap-2 p-5">
-          <p className="text-xs font-semibold text-primary">{kicker}</p>
+        <div className="flex flex-1 flex-col gap-1.5 p-4">
+          <p className="text-xs font-medium text-text-secondary">{status}</p>
           <h3
             className={cn(
-              "text-lg font-semibold text-balance text-foreground",
+              "text-base font-semibold text-balance text-foreground",
               isBangla && "leading-[1.45]",
             )}
           >
@@ -635,19 +689,16 @@ function VideoClipCard({
           </h3>
           <p
             className={cn(
-              "text-sm text-text-secondary",
+              "line-clamp-2 text-sm text-text-secondary",
               isBangla && "leading-[1.75]",
             )}
           >
             {description}
           </p>
-          <div className="mt-auto flex items-center justify-between gap-3 pt-3">
-            <p className="text-sm font-medium text-text-secondary">{meta}</p>
-            <span className="inline-flex items-center gap-1 text-sm font-medium text-primary">
-              {cta}
-              <ArrowRight className="size-3.5" aria-hidden />
-            </span>
-          </div>
+          <span className="mt-auto inline-flex items-center gap-1 pt-2 text-sm font-semibold text-primary">
+            {cta}
+            <ArrowRight className="size-3.5" aria-hidden />
+          </span>
         </div>
       </Link>
     </article>

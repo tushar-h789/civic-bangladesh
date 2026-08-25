@@ -3,11 +3,15 @@ import type { TranslationShape } from "@/locales/types";
 export const videos = {
   title: "Short civic videos",
   description:
-    "Brief clips that teach one everyday habit. These are Civic Bangladesh learning clips — not official government films, and not a live TV channel.",
+    "A few minutes on one everyday habit. These are Civic Bangladesh learning clips — not government films, and not a TV channel.",
   sampleNote:
-    "Six sample clips. Two reuse videos already used in Civic Bangladesh courses. The others are catalog titles without a hosted file yet.",
+    "Six sample clips. Two can play here. The others teach the habit with a still photo until a video file is ready.",
   heroImageAlt:
     "Pedestrians using a zebra crossing while vehicles wait at a red light",
+  stats: {
+    clips: "{count} sample clips",
+    ready: "{count} ready to play",
+  },
   jump: {
     label: "On this page",
     clips: "Sample clips",
@@ -17,63 +21,65 @@ export const videos = {
   },
   notice: {
     title: "Sample clips. Not government films.",
-    body: "A hosted clip plays on YouTube’s player. YouTube may set its own cookies. Playing a video is not an application, and it is not a ministry broadcast.",
+    body: "A hosted clip plays in YouTube’s player. YouTube may set its own cookies. Playing a video is not an application, and it is not a ministry broadcast.",
   },
   filter: {
     label: "Topic",
-    all: "All",
-    showing: "{count} sample clips",
+    all: "All topics",
+    showing: "{count} clips",
   },
   watching: {
     sampleBadge: "Sample clip",
     hostedNote:
-      "This player is YouTube. Civic Bangladesh does not process an application when you press play.",
-    missingTitle: "This clip is not hosted yet",
+      "This player is YouTube. Pressing play does not file an application.",
+    missingTitle: "This clip is not ready to play yet",
     missingBody:
-      "The title is in the sample catalog so you can learn the habit. There is no Civic Bangladesh video file here, and we have not invented a government film to fill the gap.",
-    youtubeCta: "Open on YouTube",
-    topicCta: "Practice this in civic learning",
+      "The title is in this sample so you can still learn the habit. There is no video file here, and we have not invented a government film to fill the gap.",
+    youtubeCta: "Watch on YouTube",
+    topicCta: "Open this civic topic",
     courseCta: "Open the related course",
-    backCta: "All sample clips",
+    backCta: "Back to all clips",
   },
   missing: {
     title: "That clip is not in this sample",
     description:
-      "This catalog has six teaching clips. Pick one below. Nothing here is an official government film.",
+      "This page has six teaching clips. Choose one below. None of them is an official government film.",
   },
   list: {
-    title: "Six sample clips",
+    title: "Sample clips",
     description:
       "Roads, cleanliness, trees, buses, queues, and a shared wall. Watch one, then keep the habit the same day.",
+    readyToPlay: "Ready to play",
+    photoOnly: "Photo only for now",
   },
   how: {
-    title: "A clip is a lesson, not an office",
+    title: "How to use these clips",
     description:
-      "Use these videos to remember one civic choice. Confirm any official service step on the national portal — not in the player.",
+      "Watch, then practice. Confirm any official service step on the government portal — not in the player.",
     pick: {
-      title: "Pick a short clip",
-      body: "Each title teaches one habit. Minutes are sample lengths for this catalog.",
+      title: "Choose a short clip",
+      body: "Each title teaches one habit. The minutes shown are sample lengths.",
     },
     hosted: {
-      title: "Some clips play on YouTube",
-      body: "Where a course lesson already has a video, we reuse that same file. YouTube’s own terms and privacy rules apply to the player.",
+      title: "Some clips play here",
+      body: "If a course already has a video, we reuse that same file. YouTube’s own terms apply to the player.",
     },
     notHosted: {
-      title: "Some titles have no file yet",
-      body: "Those cards still teach the habit through the still image and the civic topic. We do not invent a government film to stand in.",
+      title: "Some clips are still photos",
+      body: "Those cards still teach the habit. We do not invent a government film to stand in.",
     },
     thenPractice: {
       title: "Then practice the habit",
-      body: "Open the related civic topic, a free course, or a challenge. Watching is not a certificate.",
+      body: "Open the related topic, a free course, or a challenge. Watching is not a certificate.",
     },
   },
   notThis: {
-    title: "What these videos are not",
+    title: "What this is not",
     description:
-      "Keep the line clear between Civic Bangladesh learning and anything official.",
+      "Civic Bangladesh helps you learn. It does not speak for a government office.",
     notGovernment: {
       title: "Not government films",
-      body: "These clips are not ministry broadcasts, public-service announcements from an office, or official training cinema.",
+      body: "These clips are not ministry broadcasts or official training cinema.",
     },
     notChannel: {
       title: "Not an official YouTube channel",
@@ -85,9 +91,9 @@ export const videos = {
     },
   },
   more: {
-    title: "After the clip",
+    title: "Keep learning after the clip",
     description:
-      "A video is a few minutes. The habit lives on the street, in a queue, and in a class.",
+      "A video lasts a few minutes. The habit lives on the street, in a queue, and in a class.",
     civicLearning: {
       title: "Civic learning",
       body: "Free topics, lessons, and the same short clips in context.",
@@ -95,12 +101,12 @@ export const videos = {
     },
     courses: {
       title: "Courses",
-      body: "Longer civic and service-preparation lessons, including the two hosted clips.",
+      body: "Longer civic and service-preparation lessons, including the two clips that can play here.",
       cta: "Open courses",
     },
     stories: {
       title: "Stories",
-      body: "Sample teaching stories about the same everyday choices.",
+      body: "Short teaching stories about the same everyday choices.",
       cta: "Open stories",
     },
   },
