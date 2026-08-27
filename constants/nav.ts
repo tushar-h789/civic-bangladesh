@@ -26,6 +26,7 @@ export function getResourceNavLinks(nav: NavTranslations): NavLink[] {
     { label: nav.resources.certificates, href: ROUTES.certificates },
     { label: nav.resources.pricing, href: ROUTES.pricing },
     { label: nav.resources.faq, href: ROUTES.faq },
+    { label: nav.resources.roadmap, href: ROUTES.roadmap },
   ];
 }
 

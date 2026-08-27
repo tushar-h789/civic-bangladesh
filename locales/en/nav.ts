@@ -19,6 +19,7 @@ export const nav = {
     faq: "FAQ",
     certificates: "Certificates",
     pricing: "Pricing",
+    roadmap: "Platform roadmap",
   },
   more: {
     campaigns: "Campaigns",

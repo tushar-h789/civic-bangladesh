@@ -36,6 +36,7 @@ import { serviceGuides } from "./service-guides";
 import { serviceLearning } from "./service-learning";
 import { serviceSource } from "./service-source";
 import { stories } from "./stories";
+import { roadmap } from "./roadmap";
 import { terms } from "./terms";
 import { videos } from "./videos";
 
@@ -78,6 +79,7 @@ export const en = {
   serviceSource,
   terms,
   videos,
+  roadmap,
 };
 
 export type Dictionary = TranslationShape<typeof en>;

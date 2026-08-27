@@ -19,6 +19,7 @@ export const nav: NavTranslations = {
     faq: "প্রশ্নোত্তর",
     certificates: "সনদ",
     pricing: "মূল্য",
+    roadmap: "প্ল্যাটফর্ম রোডম্যাপ",
   },
   more: {
     campaigns: "ক্যাম্পেইন",
